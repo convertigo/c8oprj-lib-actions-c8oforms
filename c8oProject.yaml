@@ -1,0 +1,6 @@
+↑convertigo: 7.6.0.m006
+↓lib_Actions_C8Oforms [core.Project]: 
+  comment: Mashup Sequencer project
+  ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
+  ↓forms_notify_response_by_mail [sequences.GenericSequence]: 🗏 sequences/forms_notify_response_by_mail.yaml
+  ↓NewSequence [sequences.GenericSequence]: 🗏 sequences/NewSequence.yaml

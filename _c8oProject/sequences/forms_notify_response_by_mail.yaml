@@ -1,0 +1,114 @@
+comment: Sends a mail when a new response is submited
+↓Input_variables [steps.InputVariablesStep-1591970129015]: 
+↓jSimpleSource [steps.SimpleSourceStep-1591970129018]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./originalDoc/_id
+  variableName: id
+↓Sequence_JS [steps.SimpleStep-1591970129021]: 
+  expression: |
+    //todo
+    //var a = context.getProjectDirectory() + "/csv/"+ formId;
+    var a = context.getConvertigoUrl();
+    var b = context.getAbsoluteRequestedUrl();
+    var c = context.getRootContext();
+    var d = context.getProjectUrl().replace("/fullsync/c8oforms_response_fs/_bulk_docs/", "/");
+    log.warning(a);
+    log.warning(b);
+    log.warning(c);
+    log.warning(d);
+    log.warning(id);
+    
+    var emailSubject = "Convertigo Forms, Nouvelle réponse";
+    
+  output: true
+↓obj [steps.XMLElementStep-1591970129024]: 
+  nodeName: email
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./originalDoc/creator/text()
+↓obj1 [steps.XMLElementStep-1591970129027]: 
+  nodeName: formName
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./originalDoc/name/text()
+↓Element [steps.XMLElementStep-1591970129030]: 
+  nodeName: emailBodyPrefix
+  nodeText: Une réponse à été recue pour le formualire suivant :
+↓Concat [steps.XMLConcatStep-1591970129033]: 
+  nodeName: emailBody
+  sourcesDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: description
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1591970129030
+                - java.lang.String: 
+                  - ↑value: .
+            - java.lang.String: 
+              - ↑value: ''
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: description
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1591970129027
+                - java.lang.String: 
+                  - ↑value: .
+            - java.lang.String: 
+              - ↑value: ''
+↓Element1 [steps.XMLElementStep-1591970129036]: 
+  nodeName: emailSubject
+  nodeText: Convertigo Forms, Nouvelle réponse
+↓Element2 [steps.XMLElementStep-1591970129039]: 
+  nodeName: emailLogo
+  nodeText: https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2020/Feb/24/1281954440-0-c8oforms-logo_avatar.png
+↓jSimpleSource1 [steps.SimpleSourceStep-1591970129042]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129024
+        - java.lang.String: 
+          - ↑value: ./text()
+  variableName: email
+↓SMTP_send [steps.SmtpStep-1591970129045]: 
+  smtpAuthType: sslTls
+  smtpPassword: x8c2a90d9ab90d81769f77c4873a6b260
+  smtpPort: 465
+  smtpRecipients: email
+  smtpSender: '"Convertigo Cloud <noreply@convertigo.com>"'
+  smtpServer: smtp.gmail.com
+  smtpSubject: emailSubject
+  smtpUsername: noreply@convertigo.com
+  xslFilepath: '".//emails/accountConfirmed.xsl"'
+↓doc [variables.RequestableVariable-1591970129048]: 
+↓originalDoc [variables.RequestableVariable-1591970129051]: 
