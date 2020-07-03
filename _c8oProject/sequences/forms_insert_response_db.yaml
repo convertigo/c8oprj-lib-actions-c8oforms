@@ -257,6 +257,7 @@ comment: Save responses to an external Database (demo).
       };
       
       var jDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, false));
+      //var xjDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
       log.debug(JSON.stringify(jDoc));
       
       var date = jDoc.variable.timestamp;
