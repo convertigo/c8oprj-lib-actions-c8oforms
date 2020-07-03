@@ -1,0 +1,29 @@
+jdbcDriverClassName: org.mariadb.jdbc.Driver
+jdbcURL: jdbc:mysql://${lib.actions.c8oforms.sql.host}:${lib.actions.c8oforms.sql.port}
+jdbcUserName: ${lib.actions.c8oforms.sql.user}
+jdbcUserPassword: x731c565d55a2a2e3f9747ad43539421b584740e3853230345834c29a553db475
+↓Default_transaction [transactions.SqlTransaction]: 
+  ↑default: true
+↓get_responses_by_form [transactions.SqlTransaction]: 
+  sqlQuery: SELECT * FROM {{sql_TBName}} WHERE formId = '{{sql_formID}}'
+  ↓sql_TBName [variables.RequestableVariable-1593761527244]: 
+    description: sql_TBName
+  ↓sql_formID [variables.RequestableVariable-1593761527246]: 
+    description: sql_formID
+↓saveResponse [transactions.SqlTransaction]: 
+  sqlQuery: |
+    CREATE DATABASE IF NOT EXISTS {{sql_DBName}};
+    USE  {{sql_DBName}};
+    CREATE TABLE IF NOT EXISTS {{sql_TBResponses}} {{sql_TBColumns}};
+    INSERT INTO {{sql_TBResponses}} VALUES {{response}};
+    
+  ↓sql_DBName [variables.RequestableVariable-1593690651135]: 
+    description: sql_DBName
+    value: forms_backup
+  ↓sql_TBResponses [variables.RequestableVariable-1593690694858]: 
+    description: sql_TBResponses
+    value: responses
+  ↓sql_TBColumns [variables.RequestableVariable-1593709522433]: 
+    description: sql_TBColumns
+  ↓response [variables.RequestableVariable-1593709522435]: 
+    description: response

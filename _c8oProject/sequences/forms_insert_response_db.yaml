@@ -1,0 +1,305 @@
+comment: Save responses to an external Database (demo).
+↓Input_variables [steps.InputVariablesStep-1593615427315]: 
+↓jIf [steps.IfStep-1593612668335]: 
+  condition: db_type == "fs"
+  ↓Concat [steps.XMLConcatStep-1593615890229]: 
+    nodeName: backup_id
+    output: false
+    separator: _
+    sourcesDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: description
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: backup
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: description
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                - com.twinsoft.convertigo.beans.common.XMLVector: 
+                  - java.lang.String: 
+                    - ↑value: 1593615427315
+                  - java.lang.String: 
+                    - ↑value: ./originalDoc/_id/text()
+              - java.lang.String: 
+                - ↑value: ''
+  ↓Call_Transaction [steps.TransactionStep-1593615830411]: 
+    sourceTransaction: lib_Actions_C8Oforms.c8oforms_forms_reponses_backup.OriginalFormDocument
+    ↓_id [variables.StepVariable-1593615830413]: 
+      description: Document id
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1593615890229
+            - java.lang.String: 
+              - ↑value: ./text()
+    ↓data [variables.StepVariable-1593616184055]: 
+      description: Document content
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1593615427315
+            - java.lang.String: 
+              - ↑value: ./originalDoc
+  ↓IfExistThenElse [steps.IfExistThenElseStep-1593616408524]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1593615830411
+          - java.lang.String: 
+            - ↑value: ./document/couchdb_output/ok
+    ↓jThen [steps.ThenStep-1593616409219]: 
+      ↓Call_Transaction [steps.TransactionStep-1593616549017]: 
+        sourceTransaction: lib_Actions_C8Oforms.c8oforms_forms_reponses_backup.FormResponsesDocument
+        ↓parent [variables.StepVariable-1593616623665]: 
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1593615890229
+                - java.lang.String: 
+                  - ↑value: ./text()
+        ↓data [variables.StepVariable-1593616549021]: 
+          description: Document content
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1593615427315
+                - java.lang.String: 
+                  - ↑value: ./doc
+      ↓IfExistThenElse [steps.IfExistThenElseStep-1593618505459]: 
+        sourceDefinition: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: 1593616549017
+              - java.lang.String: 
+                - ↑value: ./document/couchdb_output/ok
+        ↓jThen [steps.ThenStep-1593618506344]: 
+          ↓Element [steps.XMLElementStep-1593618540110]: 
+            nodeName: success
+            nodeText: true
+        ↓jElse [steps.ElseStep-1593618506346]: 
+          ↓Element [steps.XMLElementStep-1593618564432]: 
+            nodeName: success
+            nodeText: false
+    ↓jElse [steps.ElseStep-1593616409221]: 
+      ↓Element [steps.XMLElementStep-1593618573545]: 
+        nodeName: success
+        nodeText: false
+↓jIf1 [steps.IfStep-1593674371330]: 
+  condition: db_type == "mysql"
+  ↓jSimpleSource [steps.SimpleSourceStep-1593708225466]: 
+    comment: Form name
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1593615427315
+          - java.lang.String: 
+            - ↑value: ./originalDoc/name/text()
+    variableName: jName
+  ↓jSimpleSource1 [steps.SimpleSourceStep-1593708989033]: 
+    comment: Form id
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1593615427315
+          - java.lang.String: 
+            - ↑value: ./doc/formId/text()
+    variableName: jFormId
+  ↓jSimpleSource11 [steps.SimpleSourceStep-1593709006698]: 
+    comment: Response id
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1593615427315
+          - java.lang.String: 
+            - ↑value: ./doc/_id/text()
+    variableName: jId
+  ↓jSimpleSource111 [steps.SimpleSourceStep-1593709097115]: 
+    comment: Response version
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1593615427315
+          - java.lang.String: 
+            - ↑value: ./doc/version/text()
+    variableName: jVersion
+  ↓FlatenizeDoc [steps.SimpleStep-1593693101513]: 
+    expression: |
+      '//function flatenize
+      var flatenize = function (doc, prefix, resp, myid){
+            for (var property in doc) {
+              if(doc[property].type != undefined){
+                if(doc[property].type == "ion-card"){
+                  flatenize(doc[property]["children"], doc[property]["name"]+"_", resp, myid);
+                }
+                else if(doc[property].type == "radio_group"){
+                    for(var ninos in doc[property].children){
+                      resp.push({"key":property+"_" + ninos, "value": doc[property].children[ninos]})
+                    }
+                }
+                else{
+                  if(doc[property].type == "checkbox"){
+                      var val ="";
+                      if(!Array.isArray(doc[property].children["item"])){
+                      	doc[property].children["item"] = [doc[property].children["item"]];
+                      }
+                      for (var child in doc[property].children["item"]) {
+                          if(doc[property].children["item"][child].selected == "true"){
+                              if(val == ""){
+                                  val = doc[property].children["item"][child].value + "";
+                              }
+                              else{
+                                  val = val + "," + doc[property].children["item"][child].value;
+                              }
+                            
+                        }
+                    }
+                    resp.push({"key":prefix + doc[property]["name"], "value": val});
+                  }
+                  else if(doc[property].type == "checkbox_group"){
+                    // foreach Line
+                    for(var ninos in doc[property].children){
+                      var val = "";
+                      // foreach Column
+                      for (var child in doc[property].children[ninos]["item"]) {
+                          if(doc[property].children[ninos]["item"][child].selected == "true"){
+                            if(val === ""){
+                              val = doc[property].children[ninos]["item"][child].value;
+                            }
+                            else{
+                              val = val + "," + doc[property].children[ninos]["item"][child].value;
+                            } 
+                          }
+                      }
+                      resp.push({"key":prefix + property+"_" + ninos, "value": val});
+                    }
+                  }
+                  else if(doc[property].type == "img"){
+                      if(doc[property].value != ""){
+                          resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__IMG,"+myid})  
+                      }
+                      else{
+                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]})
+                      }
+                    }
+                    else if(doc[property].type == "signature"){
+                      if(doc[property].value != ""){
+                        resp.push({"key":prefix + doc[property]["name"], "value": doc[property].value})
+                      }
+                      else{
+                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]})
+                      }
+                    }
+                    else if(doc[property].type == "file"){
+                      if(doc[property].value != ""){
+                        var str = "";
+                        for(var elem in doc[property]["value"]){
+                          str += "," + doc[property]["value"][elem];
+                        }
+                        resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__FILE,"+myid+str})
+                      } 
+                      else{
+                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]})
+                      }
+                    }
+                  else{
+                   resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]}) 
+                  }
+                }
+              }
+            }
+      };
+      
+      var columnize = function(ar, kv){
+      	var start = "(";
+      	var end = ")";
+      	var c = ""; //columns
+      	var q = (kv == "key")?"":"''"; // quotes
+      	for(var i=0;i<ar.length;i++){
+      		c+=q+ar[i][kv];
+      		t = (ar[i]["value"].indexOf("data:image")!=-1)?" BLOB":" VARCHAR(255)"; // data types
+      		c+=(kv == "key")?t:q;
+      		c+=(i<ar.length-1)?",":"";
+      	}
+      	log.debug(start+c+end);
+      	return (start+c+end);
+      };
+      
+      var jDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, false));
+      log.debug(JSON.stringify(jDoc));
+      
+      var date = jDoc.variable.timestamp;
+      var resp = [{"key":"horodateur", "value":date}, {"key":"name", "value":jName}, {"key":"formid", "value":jFormId}, {"key":"id", "value":jId}, {"key":"version", "value":jVersion}];
+      flatenize(jDoc.variable.resp, "", resp, jDoc.variable.resp._id);
+      log.debug(JSON.stringify(resp));'
+  ↓jElement [steps.ElementStep-1593717269989]: 
+    expression: columnize(resp, "key")
+    nodeName: Tcolumns
+    output: false
+  ↓jElement1 [steps.ElementStep-1593717465861]: 
+    expression: columnize(resp, "value")
+    nodeName: Tvalues
+    output: false
+  ↓Call_Transaction [steps.TransactionStep-1593719762537]: 
+    sourceTransaction: lib_Actions_C8Oforms.SQL_mariadb.saveResponse
+    ↓sql_DBName [variables.StepVariable-1593719762539]: 
+      description: sql_DBName
+      value: forms_backup
+    ↓sql_TBResponses [variables.StepVariable-1593719762541]: 
+      description: sql_TBResponses
+      value: responses
+    ↓sql_TBColumns [variables.StepVariable-1593719762543]: 
+      description: sql_TBColumns
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1593717269989
+            - java.lang.String: 
+              - ↑value: ./text()
+    ↓response [variables.StepVariable-1593719762545]: 
+      description: response
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1593717465861
+            - java.lang.String: 
+              - ↑value: ./text()
+↓db_type [variables.RequestableVariable-1593612654349]: 
+  value: mysql
+↓doc [variables.RequestableVariable-1593613152090]: 
+↓originalDoc [variables.RequestableVariable-1593613161338]: 

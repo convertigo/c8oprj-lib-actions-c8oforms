@@ -1,0 +1,32 @@
+databaseName: c8oforms_forms_reponses_backup
+↓FormResponsesDocument [transactions.couchdb.PostDocumentTransaction]: 
+  fullSyncAclPolicy: anonymous
+  ↓parent [variables.RequestableVariable-1593616616866]: 
+  ↓data [variables.RequestableVariable-1593616520232]: 
+    description: Document content
+↓GetServerInfo [transactions.couchdb.GetServerInfoTransaction]: 
+  ↑default: true
+↓OriginalFormDocument [transactions.couchdb.PostDocumentTransaction]: 
+  fullSyncAclPolicy: anonymous
+  policy: override
+  ↓_id [variables.RequestableVariable-1593615820175]: 
+    description: Document id
+  ↓data [variables.RequestableVariable-1593616148867]: 
+    description: Document content
+↓Design_document [couchdb.DesignDocument]: 
+  docdata: 
+    →: |
+      '{
+        "_id": "_design\/Design_document",
+        "filters": {},
+        "updates": {},
+        "views": {"responsesByForm": {"map": "function (doc) {\r\n
+          try {\r\n
+              if(doc.doc && doc.parent){\r\n
+                  emit(doc.parent + \"__\" + doc.doc.version, doc.doc);\r\n
+              }\r\n
+          } catch (err) {\r\n
+              log(err.message);\r\n
+          }\r\n
+      }"}}
+      }'
