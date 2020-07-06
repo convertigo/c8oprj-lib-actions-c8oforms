@@ -154,7 +154,7 @@ comment: Save responses to an external Database (demo).
           - java.lang.String: 
             - ↑value: ./doc/version/text()
     variableName: jVersion
-  ↓FlatenizeDoc [steps.SimpleStep-1593693101513]: 
+  ↓FlatenizeDoc [steps.SimpleStep-1594021261275]: 
     expression: |
       '//function flatenize
       var flatenize = function (doc, prefix, resp, myid){
@@ -165,60 +165,57 @@ comment: Save responses to an external Database (demo).
                 }
                 else if(doc[property].type == "radio_group"){
                     for(var ninos in doc[property].children){
-                      resp.push({"key":property+"_" + ninos, "value": doc[property].children[ninos]})
+                      resp.push({"key":property+"_" + ninos, "value": doc[property].children[ninos], "type": doc[property].type})
                     }
                 }
                 else{
                   if(doc[property].type == "checkbox"){
                       var val ="";
-                      if(!Array.isArray(doc[property].children["item"])){
-                      	doc[property].children["item"] = [doc[property].children["item"]];
-                      }
-                      for (var child in doc[property].children["item"]) {
-                          if(doc[property].children["item"][child].selected == "true"){
+                      for (var child in doc[property].children) {
+                          if(doc[property].children[child].selected){
                               if(val == ""){
-                                  val = doc[property].children["item"][child].value + "";
+                                  val = doc[property].children[child].value + "";
                               }
                               else{
-                                  val = val + "," + doc[property].children["item"][child].value;
+                                  val = val + "," + doc[property].children[child].value;
                               }
                             
                         }
                     }
-                    resp.push({"key":prefix + doc[property]["name"], "value": val});
+                    resp.push({"key":prefix + doc[property]["name"], "value": val, "type": doc[property].type});
                   }
                   else if(doc[property].type == "checkbox_group"){
                     // foreach Line
                     for(var ninos in doc[property].children){
                       var val = "";
                       // foreach Column
-                      for (var child in doc[property].children[ninos]["item"]) {
-                          if(doc[property].children[ninos]["item"][child].selected == "true"){
+                      for (var child in doc[property].children[ninos]) {
+                          if(doc[property].children[ninos][child].selected){
                             if(val === ""){
-                              val = doc[property].children[ninos]["item"][child].value;
+                              val = doc[property].children[ninos][child].value;
                             }
                             else{
-                              val = val + "," + doc[property].children[ninos]["item"][child].value;
+                              val = val + "," + doc[property].children[ninos][child].value;
                             } 
                           }
                       }
-                      resp.push({"key":prefix + property+"_" + ninos, "value": val});
+                      resp.push({"key":prefix + property+"_" + ninos, "value": val, "type": doc[property].type});
                     }
                   }
                   else if(doc[property].type == "img"){
                       if(doc[property].value != ""){
-                          resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__IMG,"+myid})  
+                          resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__IMG,"+myid, "type": doc[property].type})  
                       }
                       else{
-                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]})
+                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
                       }
                     }
                     else if(doc[property].type == "signature"){
                       if(doc[property].value != ""){
-                        resp.push({"key":prefix + doc[property]["name"], "value": doc[property].value})
+                        resp.push({"key":prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type})
                       }
                       else{
-                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]})
+                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
                       }
                     }
                     else if(doc[property].type == "file"){
@@ -227,41 +224,73 @@ comment: Save responses to an external Database (demo).
                         for(var elem in doc[property]["value"]){
                           str += "," + doc[property]["value"][elem];
                         }
-                        resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__FILE,"+myid+str})
+                        resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__FILE,"+myid+str, "type": doc[property].type})
                       } 
                       else{
-                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]})
+                         resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
                       }
                     }
                   else{
-                   resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"]}) 
+                   resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type}) 
                   }
                 }
               }
             }
       };
       
+      var getDataType = function(t){
+      	var dtype = "";
+      	var quotes = "";
+      	switch(t){
+      	case "text":
+      	case "checkbox":
+      	case "checkbox_group":
+      	case "radio":
+      	case "radio_group":
+      		dtype = "` VARCHAR(255)";
+      		quotes = "''";
+      		break;
+      	case "date":
+      		dtype = "` DATETIME";
+      		quotes = "";
+      		break;
+      	case "integer":
+      		dtype = "` INT";
+      		quotes = "";
+      		break;
+      	case "signature":
+      	case "img":
+      	case "file":
+      		dtype = "` BLOB";
+      		quotes = "''";
+      		break;
+      	default:
+      		dtype = "` VARCHAR(255)";
+      	quotes = "''";
+      	}
+      	return [dtype, quotes];
+      }
+      
       var columnize = function(ar, kv){
       	var start = "(";
       	var end = ")";
       	var c = ""; //columns
-      	var q = (kv == "key")?"":"''"; // quotes
       	for(var i=0;i<ar.length;i++){
+      		t = getDataType(ar[i]["type"]); // data types
+      		var q = (kv == "key")?"`":t[1]; //quotes
       		c+=q+ar[i][kv];
-      		t = (ar[i]["value"].indexOf("data:image")!=-1)?" BLOB":" VARCHAR(255)"; // data types
-      		c+=(kv == "key")?t:q;
+      		c+=(kv == "key")?t[0]:q;
       		c+=(i<ar.length-1)?",":"";
       	}
       	log.debug(start+c+end);
       	return (start+c+end);
       };
       
-      var jDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, false));
-      //var xjDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
+      var jDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
       log.debug(JSON.stringify(jDoc));
       
       var date = jDoc.variable.timestamp;
-      var resp = [{"key":"horodateur", "value":date}, {"key":"name", "value":jName}, {"key":"formid", "value":jFormId}, {"key":"id", "value":jId}, {"key":"version", "value":jVersion}];
+      var resp = [{"key":"horodateur", "value":date, "type": "text"}, {"key":"date", "value": "FROM_UNIXTIME(''"+date.substring(0,10)+"'')", "type": "date"}, {"key":"name", "value":jName, "type": "text"}, {"key":"formid", "value":jFormId, "type": "text"}, {"key":"id", "value":jId, "type": "text"}, {"key":"version", "value":jVersion, "type": "integer"}];
       flatenize(jDoc.variable.resp, "", resp, jDoc.variable.resp._id);
       log.debug(JSON.stringify(resp));'
   ↓jElement [steps.ElementStep-1593717269989]: 
@@ -272,6 +301,42 @@ comment: Save responses to an external Database (demo).
     expression: columnize(resp, "value")
     nodeName: Tvalues
     output: false
+  ↓Concat [steps.XMLConcatStep-1594035323404]: 
+    nodeName: Tresponses
+    output: false
+    separator: _
+    sourcesDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: formId
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                - com.twinsoft.convertigo.beans.common.XMLVector: 
+                  - java.lang.String: 
+                    - ↑value: 1593615427315
+                  - java.lang.String: 
+                    - ↑value: ./doc/formId/text()
+              - java.lang.String: 
+                - ↑value: ''
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: version
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                - com.twinsoft.convertigo.beans.common.XMLVector: 
+                  - java.lang.String: 
+                    - ↑value: 1593615427315
+                  - java.lang.String: 
+                    - ↑value: ./doc/version/text()
+              - java.lang.String: 
+                - ↑value: ''
   ↓Call_Transaction [steps.TransactionStep-1593719762537]: 
     sourceTransaction: lib_Actions_C8Oforms.SQL_mariadb.saveResponse
     ↓sql_DBName [variables.StepVariable-1593719762539]: 
@@ -279,7 +344,14 @@ comment: Save responses to an external Database (demo).
       value: forms_backup
     ↓sql_TBResponses [variables.StepVariable-1593719762541]: 
       description: sql_TBResponses
-      value: responses
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1594035323404
+            - java.lang.String: 
+              - ↑value: ./text()
     ↓sql_TBColumns [variables.StepVariable-1593719762543]: 
       description: sql_TBColumns
       sourceDefinition: 
