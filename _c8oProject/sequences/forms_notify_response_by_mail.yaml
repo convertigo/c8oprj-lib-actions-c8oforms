@@ -1,6 +1,7 @@
 comment: Sends a mail when a new response is submited
 ↓Input_variables [steps.InputVariablesStep-1591970129015]: 
 ↓jSimpleSource [steps.SimpleSourceStep-1591970129018]: 
+  isEnabled: false
   sourceDefinition: 
     - xmlizable: 
       - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -10,25 +11,75 @@ comment: Sends a mail when a new response is submited
         - java.lang.String: 
           - ↑value: ./originalDoc/_id
   variableName: id
-↓Sequence_JS [steps.SimpleStep-1591970129021]: 
-  expression: |
-    //todo
-    //var a = context.getProjectDirectory() + "/csv/"+ formId;
-    var a = context.getConvertigoUrl();
-    var b = context.getAbsoluteRequestedUrl();
-    var c = context.getRootContext();
-    var d = context.getProjectUrl().replace("/fullsync/c8oforms_response_fs/_bulk_docs/", "/");
-    log.warning(a);
-    log.warning(b);
-    log.warning(c);
-    log.warning(d);
-    log.warning(id);
-    
-    var emailSubject = "Convertigo Forms, Nouvelle réponse";
-    
-  output: true
-↓obj [steps.XMLElementStep-1591970129024]: 
+↓Concat11 [steps.XMLConcatStep-1594044771939]: 
+  nodeName: emailCreator
+  output: false
+  separator: 
+  sourcesDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: bcc
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: bcc:
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: creator
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1591970129015
+                - java.lang.String: 
+                  - ↑value: ./originalDoc/creator/text()
+            - java.lang.String: 
+              - ↑value: ''
+↓Concat1 [steps.XMLConcatStep-1594043459759]: 
   nodeName: email
+  separator: ;
+  sourcesDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: recipients
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1591970129015
+                - java.lang.String: 
+                  - ↑value: ./forms_mail_recipients/text()
+            - java.lang.String: 
+              - ↑value: ''
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: creator
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1594044771939
+                - java.lang.String: 
+                  - ↑value: ./text()
+            - java.lang.String: 
+              - ↑value: ''
+↓Element [steps.XMLElementStep-1591970129030]: 
+  nodeName: emailBodyPrefix
   sourceDefinition: 
     - xmlizable: 
       - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -36,7 +87,17 @@ comment: Sends a mail when a new response is submited
         - java.lang.String: 
           - ↑value: 1591970129015
         - java.lang.String: 
-          - ↑value: ./originalDoc/creator/text()
+          - ↑value: ./forms_mail_body/text()
+↓Element1 [steps.XMLElementStep-1594044385443]: 
+  nodeName: emailBodyTitle
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./forms_mail_body_title/text()
 ↓obj1 [steps.XMLElementStep-1591970129027]: 
   nodeName: formName
   sourceDefinition: 
@@ -47,11 +108,8 @@ comment: Sends a mail when a new response is submited
           - ↑value: 1591970129015
         - java.lang.String: 
           - ↑value: ./originalDoc/name/text()
-↓Element [steps.XMLElementStep-1591970129030]: 
-  nodeName: emailBodyPrefix
-  nodeText: Une réponse à été recue pour le formualire suivant :
-↓Concat [steps.XMLConcatStep-1591970129033]: 
-  nodeName: emailBody
+↓Concat [steps.XMLConcatStep-1594043247272]: 
+  nodeName: emailSubject
   sourcesDefinition: 
     - xmlizable: 
       - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -60,16 +118,12 @@ comment: Sends a mail when a new response is submited
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
-              - ↑value: description
+              - ↑value: C8O FORMS
             - xmlizable: 
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: 1591970129030
-                - java.lang.String: 
-                  - ↑value: .
             - java.lang.String: 
-              - ↑value: ''
+              - ↑value: '[CONVERTIGO FORMS BUILDER]'
         - xmlizable: 
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
@@ -79,36 +133,68 @@ comment: Sends a mail when a new response is submited
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1591970129027
+                  - ↑value: 1591970129015
                 - java.lang.String: 
-                  - ↑value: .
+                  - ↑value: ./forms_mail_subject/text()
             - java.lang.String: 
               - ↑value: ''
-↓Element1 [steps.XMLElementStep-1591970129036]: 
-  nodeName: emailSubject
-  nodeText: Convertigo Forms, Nouvelle réponse
 ↓Element2 [steps.XMLElementStep-1591970129039]: 
   nodeName: emailLogo
-  nodeText: https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2020/Feb/24/1281954440-0-c8oforms-logo_avatar.png
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./forms_mail_logo/text()
 ↓jSimpleSource1 [steps.SimpleSourceStep-1591970129042]: 
   sourceDefinition: 
     - xmlizable: 
       - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
       - com.twinsoft.convertigo.beans.common.XMLVector: 
         - java.lang.String: 
-          - ↑value: 1591970129024
+          - ↑value: 1594043459759
         - java.lang.String: 
           - ↑value: ./text()
-  variableName: email
+  variableName: jEmailRecipients
+↓jSimpleSource11 [steps.SimpleSourceStep-1594043604131]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1594043247272
+        - java.lang.String: 
+          - ↑value: ./text()
+  variableName: jEmailSubject
 ↓SMTP_send [steps.SmtpStep-1591970129045]: 
-  smtpAuthType: sslTls
-  smtpPassword: x8c2a90d9ab90d81769f77c4873a6b260
-  smtpPort: 465
-  smtpRecipients: email
-  smtpSender: '"Convertigo Cloud <noreply@convertigo.com>"'
-  smtpServer: smtp.gmail.com
-  smtpSubject: emailSubject
-  smtpUsername: noreply@convertigo.com
-  xslFilepath: '".//emails/accountConfirmed.xsl"'
+  smtpAuthType: ${lib.actions.c8oforms.smtp.security}
+  smtpPassword: x731c565d55a2a2e3f9747ad43539421b04757e850ab21835f960613f2598a1d841a76e4c1dcbed1b1cdb27c1501ffbee
+  smtpPort: ${lib.actions.c8oforms.smtp.port}
+  smtpRecipients: jEmailRecipients
+  smtpSender: '"${lib.actions.c8oforms.smtp.sender}"'
+  smtpServer: ${lib.actions.c8oforms.smtp.server}
+  smtpSubject: jEmailSubject
+  smtpUsername: ${lib.actions.c8oforms.smtp.user}
+  xslFilepath: '".//emails/responseMail.xsl"'
 ↓doc [variables.RequestableVariable-1591970129048]: 
 ↓originalDoc [variables.RequestableVariable-1591970129051]: 
+↓forms_mail_body [variables.RequestableVariable-1594042461556]: 
+  comment: Mail body (short string)
+  value: Nouvelle réponse dans votre formulaire :
+↓forms_mail_subject [variables.RequestableVariable-1594043020998]: 
+  comment: Mail subject (short string)
+  value: Nouvelle réponse !
+↓forms_mail_logo [variables.RequestableVariable-1594043103847]: 
+  comment: URL to a logo image
+  value: https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2020/Feb/24/1281954440-0-c8oforms-logo_avatar.png
+↓forms_mail_recipients [variables.RequestableVariable-1594043172097]: 
+  comment: |
+    Mail recipients
+    First address is necessarily the receiver (TO:)
+    Add address separated by comma (,) or semicolon (;) and you can use prefix "TO:", "CC:" or "BCC:"
+  value: To:grego.tws@gmail.com,bcc:charlesg@convertigo.com
+↓forms_mail_body_title [variables.RequestableVariable-1594044308212]: 
+  comment: Mail body title (short string)
+  value: Convertigo Forms Builder

@@ -110,7 +110,6 @@
 				</style>
 			</head>
 
-
 			<body class=""
 				style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
 				<table class="body"
@@ -139,16 +138,10 @@
 																	style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
 																	<img
 																		style="display: block; margin-left: auto; margin-right: auto;"
-																		src="https://www.convertigo.com/wp-content/themes/EightDegree/images/logo_convertigo.png"
-																		width="145" height="46" />
-																	<h1 style="text-align: center;">Convertigo Forms Builder</h1>
-																	
-																	
+																		src="{//emailLogo}" />
+																	<h1 style="text-align: center;"><xsl:value-of select="//emailBodyTitle"/></h1>
 																	<p
-																		style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">Nouvelle réponse dans votre formulaire <b> <xsl:value-of select="//formName" ></xsl:value-of></b></p>
-																	
-																	
-
+																		style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;"><xsl:value-of select="//emailBodyPrefix"/>&#160;<b><xsl:value-of select="//formName"/></b></p>
 																</td>
 															</tr>
 														</tbody>
@@ -167,14 +160,20 @@
 											border="0" cellspacing="0" cellpadding="0">
 											<tbody>
 												<tr>
+													<td style=" padding-top: 10px; padding-left: 10px;">
+														<img
+															style="display: block; margin-left: auto; margin-right: auto;"
+															src="https://www.convertigo.com/wp-content/themes/EightDegree/images/logo_convertigo.png"
+															width="145" height="46" />
+													</td>
 													<td class="content-block"
 														style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center; width: 556px;">
 														<span class="apple-link"
-															style="color: #ffffff; font-size: 12px; text-align: center;">Convertigo form builder is brought to you by Convertigo.SA</span>
+															style="color: #ffffff; font-size: 12px; text-align: center;">Convertigo forms builder is brought to you by Convertigo.SA</span>
 													</td>
 												</tr>
 												<tr>
-													<td class="content-block powered-by"
+													<td colspan="2" class="content-block powered-by"
 														style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px; padding-top: 10px; font-size: 12px; color: #999999; text-align: center; width: 556px;">
 														<span style="color: #ffffff;">
 															Please visit
