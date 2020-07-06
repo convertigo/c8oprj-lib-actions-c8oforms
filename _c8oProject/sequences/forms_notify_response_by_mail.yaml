@@ -1,16 +1,5 @@
 comment: Sends a mail when a new response is submited
 ↓Input_variables [steps.InputVariablesStep-1591970129015]: 
-↓jSimpleSource [steps.SimpleSourceStep-1591970129018]: 
-  isEnabled: false
-  sourceDefinition: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - java.lang.String: 
-          - ↑value: 1591970129015
-        - java.lang.String: 
-          - ↑value: ./originalDoc/_id
-  variableName: id
 ↓Concat11 [steps.XMLConcatStep-1594044771939]: 
   nodeName: emailCreator
   output: false
@@ -168,7 +157,166 @@ comment: Sends a mail when a new response is submited
         - java.lang.String: 
           - ↑value: ./text()
   variableName: jEmailSubject
+↓jSimpleSource2 [steps.SimpleSourceStep-1594055131192]: 
+  comment: Form name
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./originalDoc/name/text()
+  variableName: jName
+↓jSimpleSource111 [steps.SimpleSourceStep-1594055131195]: 
+  comment: Response version
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./doc/version/text()
+  variableName: jVersion
+↓jSimpleSource112 [steps.SimpleSourceStep-1594055464497]: 
+  comment: Response id
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1591970129015
+        - java.lang.String: 
+          - ↑value: ./doc/_id/text()
+  variableName: jId
+↓FlatenizeDoc [steps.SimpleStep-1594054796641]: 
+  expression: |
+    '//function flatenize
+    var flatenize = function (doc, prefix, resp, myid){
+          for (var property in doc) {
+            if(doc[property].type != undefined){
+              if(doc[property].type == "ion-card"){
+                flatenize(doc[property]["children"], doc[property]["name"]+"_", resp, myid);
+              }
+              else if(doc[property].type == "radio_group"){
+                  for(var ninos in doc[property].children){
+                    resp.push({"key":property+"_" + ninos, "value": doc[property].children[ninos], "type": doc[property].type})
+                  }
+              }
+              else{
+                if(doc[property].type == "checkbox"){
+                    var val ="";
+                    for (var child in doc[property].children) {
+                        if(doc[property].children[child].selected){
+                            if(val == ""){
+                                val = doc[property].children[child].value + "";
+                            }
+                            else{
+                                val = val + "," + doc[property].children[child].value;
+                            }
+                          
+                      }
+                  }
+                  resp.push({"key":prefix + doc[property]["name"], "value": val, "type": doc[property].type});
+                }
+                else if(doc[property].type == "checkbox_group"){
+                  // foreach Line
+                  for(var ninos in doc[property].children){
+                    var val = "";
+                    // foreach Column
+                    for (var child in doc[property].children[ninos]) {
+                        if(doc[property].children[ninos][child].selected){
+                          if(val === ""){
+                            val = doc[property].children[ninos][child].value;
+                          }
+                          else{
+                            val = val + "," + doc[property].children[ninos][child].value;
+                          } 
+                        }
+                    }
+                    resp.push({"key":prefix + property+"_" + ninos, "value": val, "type": doc[property].type});
+                  }
+                }
+                else if(doc[property].type == "img"){
+                    if(doc[property].value != ""){
+                        resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__IMG,"+myid, "type": doc[property].type})  
+                    }
+                    else{
+                       resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
+                    }
+                  }
+                  else if(doc[property].type == "signature"){
+                    if(doc[property].value != ""){
+                      resp.push({"key":prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type})
+                    }
+                    else{
+                       resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
+                    }
+                  }
+                  else if(doc[property].type == "file"){
+                    if(doc[property].value != ""){
+                      var str = "";
+                      for(var elem in doc[property]["value"]){
+                        str += "," + doc[property]["value"][elem];
+                      }
+                      resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__FILE,"+myid+str, "type": doc[property].type})
+                    } 
+                    else{
+                       resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
+                    }
+                  }
+                else{
+                 resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type}) 
+                }
+              }
+            }
+          }
+    };
+    
+    var writeFile = function(filep, filen, arr){
+    	var csvWriter = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter(filep + filen, true)));
+    	try {
+    		titles = "";
+    		values = "";
+    		for(var i = 0; i < arr.length; i++){
+    			titles+=arr[i]["key"] + ((i < arr.length-1)?";":"");
+    		}
+    		for(var i = 0; i < arr.length; i++){
+    			values+=arr[i]["value"] + ((i < arr.length-1)?";":"");
+    		}
+    		csvWriter.println(titles);
+    		csvWriter.println(values);
+    		csvWriter.close();
+    	}
+    	catch(e){
+    		csvWriter.close();
+    		log.warning(e + "");
+    	}
+    }
+    
+    var jDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
+    log.debug(JSON.stringify(jDoc));
+    
+    var date = jDoc.variable.timestamp;
+    var resp = [{"key":"horodateur", "value":date, "type": "text"}, {"key":"name", "value":jName, "type": "text"}, {"key":"version", "value":jVersion, "type": "integer"}];
+    flatenize(jDoc.variable.resp, "", resp, jDoc.variable.resp._id);
+    log.debug(JSON.stringify(resp));
+    var filepath = context.getProjectDirectory()+ "/csv/";
+    var filename = jId +".csv";
+    writeFile(filepath, filename, resp);'
 ↓SMTP_send [steps.SmtpStep-1591970129045]: 
+  attachments: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: filepath+filename
+            - java.lang.String: 
+              - ↑value: filename
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
   smtpPassword: x731c565d55a2a2e3f9747ad43539421b04757e850ab21835f960613f2598a1d841a76e4c1dcbed1b1cdb27c1501ffbee
   smtpPort: ${lib.actions.c8oforms.smtp.port}
@@ -178,6 +326,12 @@ comment: Sends a mail when a new response is submited
   smtpSubject: jEmailSubject
   smtpUsername: ${lib.actions.c8oforms.smtp.user}
   xslFilepath: '".//emails/responseMail.xsl"'
+↓wait [steps.SimpleStep-1594058435671]: 
+  expression: java.lang.Thread.sleep(5000);
+↓IfFileExists [steps.IfFileExistStep-1594058485379]: 
+  condition: filepath+filename
+  ↓Delete_file [steps.DeleteStep-1594058527966]: 
+    sourcePath: filepath+filename
 ↓doc [variables.RequestableVariable-1591970129048]: 
 ↓originalDoc [variables.RequestableVariable-1591970129051]: 
 ↓forms_mail_body [variables.RequestableVariable-1594042461556]: 
@@ -194,7 +348,7 @@ comment: Sends a mail when a new response is submited
     Mail recipients
     First address is necessarily the receiver (TO:)
     Add address separated by comma (,) or semicolon (;) and you can use prefix "TO:", "CC:" or "BCC:"
-  value: To:grego.tws@gmail.com,bcc:charlesg@convertigo.com
+  value: To:gregoryv@convertigo.com
 ↓forms_mail_body_title [variables.RequestableVariable-1594044308212]: 
   comment: Mail body title (short string)
   value: Convertigo Forms Builder
