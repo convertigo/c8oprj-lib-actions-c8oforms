@@ -1,4 +1,4 @@
-↑convertigo: 7.6.0.m006
+↑convertigo: 7.7.0.m006
 ↓lib_Actions_C8Oforms [core.Project]: 
   comment: Default actions provided with convertigo forms
   ↓c8oforms_forms_reponses_backup [connectors.FullSyncConnector]: 🗏 connectors/c8oforms_forms_reponses_backup.yaml
@@ -6,3 +6,5 @@
   ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
   ↓forms_insert_response_db [sequences.GenericSequence]: 🗏 sequences/forms_insert_response_db.yaml
   ↓forms_notify_response_by_mail [sequences.GenericSequence]: 🗏 sequences/forms_notify_response_by_mail.yaml
+  ↓C8Oforms_reference [references.ProjectSchemaReference]: 
+    projectName: C8Oforms=https://github.com/convertigo/C8oForms.git:branch=release/1.0.43

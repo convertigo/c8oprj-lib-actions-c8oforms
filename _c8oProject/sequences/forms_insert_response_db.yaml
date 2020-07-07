@@ -338,6 +338,14 @@ comment: Save responses to an external Database (demo).
               - java.lang.String: 
                 - ↑value: ''
   ↓Call_Transaction [steps.TransactionStep-1593719762537]: 
+    connectionStringDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1593615427315
+          - java.lang.String: 
+            - ↑value: ./forms_db_destination/text()
     sourceTransaction: lib_Actions_C8Oforms.SQL_mariadb.saveResponse
     ↓sql_DBName [variables.StepVariable-1593719762539]: 
       description: sql_DBName
@@ -384,5 +392,7 @@ comment: Save responses to an external Database (demo).
   value: mysql
 ↓forms_db_name [variables.RequestableVariable-1594053497293]: 
   value: forms_backup
+↓forms_db_destination [variables.RequestableVariable-1594112573085]: 
+  value: jdbc:mysql://192.168.99.102:33061/?user=root&password=bhytrd
 ↓doc [variables.RequestableVariable-1593613152090]: 
 ↓originalDoc [variables.RequestableVariable-1593613161338]: 
