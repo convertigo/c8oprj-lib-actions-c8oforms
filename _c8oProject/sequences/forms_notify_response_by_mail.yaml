@@ -1,7 +1,7 @@
 comment: Sends a mail when a new response is submited
 ↓Input_variables [steps.InputVariablesStep-1591970129015]: 
 ↓jIf1 [steps.IfStep-1594132233224]: 
-  condition: forms_mail_receiver == null || forms_mail_receiver == ""
+  condition: forms_mail_sender == null || forms_mail_sender == ""
   ↓IfIsIn [steps.IsInStep-1594132449246]: 
     sourceDefinition: 
       - xmlizable: 
@@ -56,7 +56,7 @@ comment: Sends a mail when a new response is submited
                 - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                 - com.twinsoft.convertigo.beans.common.XMLVector: 
                   - java.lang.String: 
-                    - ↑value: description
+                    - ↑value: C8Oreserved
                   - xmlizable: 
                     - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                     - com.twinsoft.convertigo.beans.common.XMLVector: 
@@ -66,7 +66,7 @@ comment: Sends a mail when a new response is submited
                 - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                 - com.twinsoft.convertigo.beans.common.XMLVector: 
                   - java.lang.String: 
-                    - ↑value: description
+                    - ↑value: c8oAcl
                   - xmlizable: 
                     - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
                     - com.twinsoft.convertigo.beans.common.XMLVector: 
@@ -107,29 +107,114 @@ comment: Sends a mail when a new response is submited
                   - ↑value: 1594132300911
                 - java.lang.String: 
                   - ↑value: ./document/couchdb_output/email/text()
-          variableName: forms_mail_ADreceiver
+          variableName: forms_mail_ADsender
+↓jIf11 [steps.IfStep-1594201355189]: 
+  condition: forms_mail_notify_owner == "true"
+  ↓Concat [steps.XMLConcatStep-1594201768402]: 
+    nodeName: c8oreserved_user
+    output: false
+    separator: 
+    sourcesDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: C8Oreserved
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: C8Oreserved_
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: creator
+              - xmlizable: 
+                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                - com.twinsoft.convertigo.beans.common.XMLVector: 
+                  - java.lang.String: 
+                    - ↑value: 1591970129015
+                  - java.lang.String: 
+                    - ↑value: ./originalDoc/creator/text()
+              - java.lang.String: 
+                - ↑value: ''
+  ↓Call_Transaction [steps.TransactionStep-1594201841295]: 
+    sourceTransaction: C8Oforms.c8oforms_fs.GetDocument
+    ↓_use_docid [variables.StepVariable-1594201841297]: 
+      description: Document ID
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1594201768402
+            - java.lang.String: 
+              - ↑value: ./text()
+      value: 
+  ↓IfExist [steps.IfExistStep-1594201888518]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1594201841295
+          - java.lang.String: 
+            - ↑value: ./document/couchdb_output/email
+    ↓jSimpleSource [steps.SimpleSourceStep-1594201888521]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1594201841295
+            - java.lang.String: 
+              - ↑value: ./document/couchdb_output/email/text()
+      variableName: forms_mail_owner
 ↓computeEmails [steps.SimpleStep-1594130802648]: 
   expression: |
     'var jEmailRecipients = "";
     
-    if(typeof(forms_mail_ADreceiver) != "undefined" && forms_mail_ADreceiver != ""){
-    	jEmailRecipients += "TO:" + forms_mail_ADreceiver + ";";
+    // Mail address from AD user on authenticated form response
+    if(typeof(forms_mail_ADsender) != "undefined" && forms_mail_ADsender != ""){
+    	jEmailRecipients += "TO:" + forms_mail_ADsender + ";";
     }
     
-    if(forms_mail_receiver && forms_mail_receiver != ""){
-    	jEmailRecipients += "TO:" + forms_mail_receiver + ";";
+    // Mail address of the form creator
+    if(typeof(forms_mail_owner) != "undefined" && forms_mail_owner != ""){
+    	jEmailRecipients += "BCC:" + forms_mail_owner + ";";
     }
     
-    for(var i=0; i < forms_mail_recipients_to.length; i++){
-    	jEmailRecipients += "TO:" + forms_mail_recipients_to[i] + ";";
+    // Mail address from variable for anonymous form response
+    if(forms_mail_sender && forms_mail_sender != ""){
+    	jEmailRecipients += "TO:" + forms_mail_sender + ";";
     }
     
-    for(var i=0; i < forms_mail_recipients_cc.length; i++){
-    	jEmailRecipients += "CC:" + forms_mail_recipients_cc[i] + ";";
+    // Mail addresses separated by comma or semicolon. Add prefix "TO:"
+    if(forms_mail_recipients_to && forms_mail_recipients_to != ""){
+    	var tos = forms_mail_recipients_to.split(/,|;/);
+    	for(var i=0; i < tos.length; i++){
+    		jEmailRecipients += "TO:" + tos[i] + ";";
+    	}
     }
     
-    for(var i=0; i < forms_mail_recipients_bcc.length; i++){
-    	jEmailRecipients += "BCC:" + forms_mail_recipients_bcc[i] + ";";
+    //Mail addresses separated by comma or semicolon. Add prefix "CC:"
+    if(forms_mail_recipients_cc && forms_mail_recipients_cc != ""){
+    	var ccs = forms_mail_recipients_cc.split(/,|;/);
+    	for(var i=0; i < ccs.length; i++){
+    		jEmailRecipients += "CC:" + ccs[i] + ";";
+    	}
+    }
+    
+    //Mail addresses separated by comma or semicolon. Add prefix "BCC:"
+    if(forms_mail_recipients_bcc && forms_mail_recipients_bcc != ""){
+    	var bccs = forms_mail_recipients_bcc.split(/,|;/);
+    	for(var i=0; i < bccs.length; i++){
+    		jEmailRecipients += "BCC:" + bccs[i] + ";";
+    	}
     }
     
     log.debug(">>>" + jEmailRecipients);'
@@ -187,7 +272,7 @@ comment: Sends a mail when a new response is submited
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
-              - ↑value: description
+              - ↑value: subject
             - xmlizable: 
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
@@ -406,42 +491,17 @@ comment: Sends a mail when a new response is submited
 ↓forms_mail_body_title [variables.RequestableVariable-1594044308212]: 
   comment: Mail body title (short string)
   value: Convertigo Forms Builder
-↓forms_mail_recipients_to [variables.RequestableMultiValuedVariable-1594130597554]: 
-  comment: |
-    Mail recipients
-    List of "TO" mail addresses
+↓forms_mail_recipients_to [variables.RequestableVariable-1594217279607]: 
+  comment: '"To" Mail recipients separated by comma or semicolon.'
   value: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-↓forms_mail_recipients_cc [variables.RequestableMultiValuedVariable-1594130601978]: 
-  comment: |
-    Mail recipients
-    List of "CC" mail addresses
+↓forms_mail_recipients_cc [variables.RequestableVariable-1594217283224]: 
+  comment: '"Cc" Mail recipients separated by comma or semicolon.'
   value: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - java.lang.String: 
-          - ↑value: gregoryv+cc1@convertigo.com
-        - java.lang.String: 
-          - ↑value: gregoryv+cc2@convertigo.com
-↓forms_mail_recipients_bcc [variables.RequestableMultiValuedVariable-1594130606213]: 
-  comment: |
-    Mail recipients
-    List of "BCC" mail addresses
+↓forms_mail_recipients_bcc [variables.RequestableVariable-1594217287751]: 
+  comment: '"Bcc" Mail recipients separated by comma or semicolon.'
   value: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - java.lang.String: 
-          - ↑value: gregoryv+bcc1@convertigo.com
-        - java.lang.String: 
-          - ↑value: gregoryv+bcc2@convertigo.com
-        - java.lang.String: 
-          - ↑value: gregoryv+bcc3@convertigo.com
-↓forms_mail_receiver [variables.RequestableVariable-1594131666450]: 
-  comment: |
-    Mail recipients
-    First address is necessarily the receiver (TO:)
-    Add address separated by comma (,) or semicolon (;) and you can use prefix "TO:", "CC:" or "BCC:"
+↓forms_mail_sender [variables.RequestableVariable-1594131666450]: 
+  comment: Mail recipient of sender for anonymous form. If empty, tries to retrieve mail address from C8OForms account
+↓forms_mail_notify_owner [variables.RequestableVariable-1594200852766]: 
+  comment: boolean
+  value: false

@@ -389,10 +389,12 @@ comment: Save responses to an external Database (demo).
             - java.lang.String: 
               - ↑value: ./text()
 ↓forms_db_type [variables.RequestableVariable-1593612654349]: 
+  comment: Database type. Supports "fs" or "mysql"
   value: mysql
 ↓forms_db_name [variables.RequestableVariable-1594053497293]: 
+  comment: Database name created to store form responses
   value: forms_backup
 ↓forms_db_destination [variables.RequestableVariable-1594112573085]: 
-  value: jdbc:mysql://192.168.99.102:33061/?user=root&password=bhytrd
+  comment: Can be used to override SQL symbols
 ↓doc [variables.RequestableVariable-1593613152090]: 
 ↓originalDoc [variables.RequestableVariable-1593613161338]: 
