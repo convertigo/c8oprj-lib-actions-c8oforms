@@ -5,7 +5,7 @@ comment: |
   <div class="it">Invia una <b>mail</b> quando viene inviata una nuova risposta</div>
 ↓Input_variables [steps.InputVariablesStep-1591970129015]: 
 ↓jIf1 [steps.IfStep-1594132233224]: 
-  condition: forms_mail_sender == null || forms_mail_sender == ""
+  condition: (forms_mail_sender == null || forms_mail_sender == "") && forms_mail.notify_sender == "true"
   ↓IfIsIn [steps.IsInStep-1594132449246]: 
     sourceDefinition: 
       - xmlizable: 
@@ -481,6 +481,22 @@ comment: |
   condition: filepath+filename
   ↓Delete_file [steps.DeleteStep-1594058527966]: 
     sourcePath: filepath+filename
+↓forms_mail_notify_sender [variables.RequestableVariable-1594821133473]: 
+  comment: |
+    <div class="en"><i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
+    <div class="fr"><i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
+    <div class="es"><i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
+    <div class="it"><i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
+  value: false
+↓forms_mail_notify_owner [variables.RequestableVariable-1594200852766]: 
+  comment: |
+    <div class="en"><i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
+    <div class="fr"><i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
+    <div class="es"><i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
+    <div class="it"><i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
+  value: false
+↓forms_mail_sender [variables.RequestableVariable-1594131666450]: 
+  comment: Mail recipient of sender for anonymous form. If empty, tries to retrieve mail address from C8OForms account
 ↓doc [variables.RequestableVariable-1591970129048]: 
 ↓originalDoc [variables.RequestableVariable-1591970129051]: 
 ↓forms_mail_body [variables.RequestableVariable-1594042461556]: 
@@ -504,12 +520,3 @@ comment: |
 ↓forms_mail_recipients_bcc [variables.RequestableVariable-1594217287751]: 
   comment: '"Bcc" Mail recipients separated by comma or semicolon.'
   value: 
-↓forms_mail_sender [variables.RequestableVariable-1594131666450]: 
-  comment: Mail recipient of sender for anonymous form. If empty, tries to retrieve mail address from C8OForms account
-↓forms_mail_notify_owner [variables.RequestableVariable-1594200852766]: 
-  comment: |
-    <div class="en"><i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
-    <div class="fr"><i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
-    <div class="es"><i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
-    <div class="it"><i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
-  value: false
