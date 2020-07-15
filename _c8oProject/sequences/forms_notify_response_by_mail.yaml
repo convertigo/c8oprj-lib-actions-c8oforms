@@ -5,7 +5,7 @@ comment: |
   <div class="it">Invia una <b>mail</b> quando viene inviata una nuova risposta</div>
 ↓Input_variables [steps.InputVariablesStep-1591970129015]: 
 ↓jIf1 [steps.IfStep-1594132233224]: 
-  condition: (forms_mail_sender == null || forms_mail_sender == "") && forms_mail.notify_sender == "true"
+  condition: (forms_mail_sender == null || forms_mail_sender == "") && forms_mail_notify_sender == "true"
   ↓IfIsIn [steps.IsInStep-1594132449246]: 
     sourceDefinition: 
       - xmlizable: 
