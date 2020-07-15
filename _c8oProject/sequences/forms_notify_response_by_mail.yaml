@@ -1,4 +1,8 @@
-comment: Sends a mail when a new response is submited
+comment: |
+  <div class="en">Sends a <b>mail</b> when a new response is submitted</div>
+  <div class="fr">Envoie un <b>e-mail</b> lorsqu'une nouvelle réponse est soumise</div>
+  <div class="es">Envía un <b>correo</b> cuando se envía una nueva respuesta</div>
+  <div class="it">Invia una <b>mail</b> quando viene inviata una nuova risposta</div>
 ↓Input_variables [steps.InputVariablesStep-1591970129015]: 
 ↓jIf1 [steps.IfStep-1594132233224]: 
   condition: forms_mail_sender == null || forms_mail_sender == ""
