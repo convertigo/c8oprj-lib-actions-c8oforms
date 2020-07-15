@@ -503,5 +503,9 @@ comment: Sends a mail when a new response is submited
 ↓forms_mail_sender [variables.RequestableVariable-1594131666450]: 
   comment: Mail recipient of sender for anonymous form. If empty, tries to retrieve mail address from C8OForms account
 ↓forms_mail_notify_owner [variables.RequestableVariable-1594200852766]: 
-  comment: boolean
+  comment: |
+    <div class="en"><i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
+    <div class="fr"><i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
+    <div class="es"><i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
+    <div class="it"><i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
   value: false
