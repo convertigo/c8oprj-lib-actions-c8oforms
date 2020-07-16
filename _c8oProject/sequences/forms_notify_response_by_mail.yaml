@@ -481,42 +481,74 @@ comment: |
   condition: filepath+filename
   ↓Delete_file [steps.DeleteStep-1594058527966]: 
     sourcePath: filepath+filename
+↓forms_mail_recipients_to [variables.RequestableVariable-1594217279607]: 
+  comment: |
+    <div class="en">"To" Mail recipients separated by comma or semicolon. || <i>(mandatory)</i></div>
+    <div class="fr">"À" Destinataires du courrier séparés par une virgule ou un point-virgule. || <i>(obligatoire)</i></div>
+    <div class="es">"To" Destinatarios de correo separados por coma o punto y coma. || <i>(obligatorio)</i></div>
+    <div class="it">"To" Destinatari di posta separati da virgola o punto e virgola. || <i>(obbligatorio)</i></div>
+  value: 
+↓forms_mail_recipients_cc [variables.RequestableVariable-1594217283224]: 
+  comment: |
+    <div class="en">"Cc" Mail recipients separated by comma or semicolon. || <i>(optional)</i></div>
+    <div class="fr">"Cc" Destinataires du courrier séparés par une virgule ou un point-virgule. || <i>(optionnel)</i></div>
+    <div class="es">"Cc" Destinatarios de correo separados por coma o punto y coma. || <i>(opcional)</i></div>
+    <div class="it">"Cc" Destinatari di posta separati da virgola o punto e virgola. || <i>(facoltativo)</i></div>
+  value: 
+↓forms_mail_recipients_bcc [variables.RequestableVariable-1594217287751]: 
+  comment: |
+    <div class="en">"Bcc" Mail recipients separated by comma or semicolon. || <i>(optional)</i></div>
+    <div class="fr">"Bcc" Destinataires du courrier séparés par une virgule ou un point-virgule. || <i>(optionnel)</i></div>
+    <div class="es">"Bcc" Destinatarios de correo separados por coma o punto y coma. || <i>(opcional)</i></div>
+    <div class="it">"Bcc" Destinatari di posta separati da virgola o punto e virgola. || <i>(facoltativo)</i></div>
+  value: 
 ↓forms_mail_notify_sender [variables.RequestableVariable-1594821133473]: 
   comment: |
-    <div class="en"><i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
-    <div class="fr"><i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
-    <div class="es"><i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
-    <div class="it"><i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
+    <div class="en">This setting allows you to activate the notification to the person who replied to the form. || <i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
+    <div class="fr">Ce paramétre vous permets d'activer la notification à la personne qui a répondu au formulaire. || <i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
+    <div class="es">Esta configuración le permite activar la notificación a la persona que respondió al formulario. || <i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
+    <div class="it">Questa impostazione ti consente di attivare la notifica alla persona che ha risposto al modulo. || <i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
   value: false
 ↓forms_mail_notify_owner [variables.RequestableVariable-1594200852766]: 
   comment: |
-    <div class="en"><i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
-    <div class="fr"><i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
-    <div class="es"><i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
-    <div class="it"><i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
+    <div class="en">This setting allows you to enable notification to the owner of the form. || <i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
+    <div class="fr">Ce paramétre vous permets d'activer la notification au propriétaire du formulaire. || <i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
+    <div class="es">Esta configuración le permite habilitar la notificación al propietario del formulario. || <i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
+    <div class="it">Questa impostazione consente di abilitare la notifica al proprietario del modulo. || <i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div>
   value: false
 ↓forms_mail_sender [variables.RequestableVariable-1594131666450]: 
-  comment: Mail recipient of sender for anonymous form. If empty, tries to retrieve mail address from C8OForms account
-↓doc [variables.RequestableVariable-1591970129048]: 
-↓originalDoc [variables.RequestableVariable-1591970129051]: 
+  comment: |
+    <div class="en">Email of sender for anonymous forms. If empty, we try to retrieve mail address from C8oForms account. || <i>(optional)</i></div>
+    <div class="fr">Courriel de l'expéditeur pour les formulaires anonymes. S'il est vide, nous essayons de récupérer l'adresse e-mail du compte C8oForms. || <i>(optionnel)</i></div>
+    <div class="es">Correo electrónico del remitente para formularios anónimos. Si está vacío, intentamos recuperar la dirección de correo de la cuenta de C8oForms. || <i>(opcional)</i></div>
+    <div class="it">Email del mittente per moduli anonimi. Se vuoto, proviamo a recuperare l'indirizzo e-mail dall'account C8oForms. || <i>(facoltativo)</i></div>
 ↓forms_mail_body [variables.RequestableVariable-1594042461556]: 
-  comment: Mail body (short string)
+  comment: |
+    <div class="en">Email body (short string). || <i>(optional)</i></div>
+    <div class="fr">Corps de l'e-mail (chaîne courte). || <i>(optionnel)</i></div>
+    <div class="es">Cuerpo del correo electrónico (cadena corta). || <i>(opcional)</i></div>
+    <div class="it">Corpo dell'email (stringa breve). || <i>(facoltativo)</i></div>
   value: Nouvelle réponse dans votre formulaire :
 ↓forms_mail_subject [variables.RequestableVariable-1594043020998]: 
-  comment: Mail subject (short string)
+  comment: |
+    <div class="en">Email subject (short string). || <i>(optional)</i></div>
+    <div class="fr">Objet de l'e-mail (chaîne courte). || <i>(optionnel)</i></div>
+    <div class="es">Asunto del correo electrónico (cadena corta). || <i>(opcional)</i></div>
+    <div class="it">Oggetto dell'email (stringa breve). || <i>(facoltativo)</i></div>
   value: Nouvelle réponse !
 ↓forms_mail_logo [variables.RequestableVariable-1594043103847]: 
-  comment: URL to a logo image
+  comment: |
+    <div class="en">URL to a logo. || <i>(optional)</i></div>
+    <div class="fr">URL vers un logo. || <i>(optionnel)</i></div>
+    <div class="es">URL a un logotipo. || <i>(opcional)</i></div>
+    <div class="it">OURL di un logo. || <i>(facoltativo)</i> </div>
   value: https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2020/Feb/24/1281954440-0-c8oforms-logo_avatar.png
 ↓forms_mail_body_title [variables.RequestableVariable-1594044308212]: 
-  comment: Mail body title (short string)
+  comment: |
+    <div class="en">Mail body title (short string). || <i>(optional)</i></div>
+    <div class="fr">Titre du corps du message (chaîne courte). || <i>(optionnel)</i></div>
+    <div class="es">Título del cuerpo del correo (cadena corta). || <i>(opcional)</i></div>
+    <div class="it">Titolo del corpo della posta (stringa corta). || <i>(facoltativo)</i></div>
   value: Convertigo Forms Builder
-↓forms_mail_recipients_to [variables.RequestableVariable-1594217279607]: 
-  comment: '"To" Mail recipients separated by comma or semicolon.'
-  value: 
-↓forms_mail_recipients_cc [variables.RequestableVariable-1594217283224]: 
-  comment: '"Cc" Mail recipients separated by comma or semicolon.'
-  value: 
-↓forms_mail_recipients_bcc [variables.RequestableVariable-1594217287751]: 
-  comment: '"Bcc" Mail recipients separated by comma or semicolon.'
-  value: 
+↓doc [variables.RequestableVariable-1591970129048]: 
+↓originalDoc [variables.RequestableVariable-1591970129051]: 
