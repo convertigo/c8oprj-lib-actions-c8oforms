@@ -1,0 +1,49 @@
+comment: |
+  <div class="en">Return the list of company employees</div>
+  <div class="fr">Renvoi la liste des collaborateurs de l'entreprise</div>
+  <div class="es">Devolver la lista de empleados de la empresa</div>
+  <div class="it">Restituisce l'elenco dei dipendenti dell'azienda</div>
+↓Input_variables [steps.InputVariablesStep-1599138036190]: 
+↓Sequence_JS [steps.SimpleStep-1599060454964]: 
+  expression: |
+    '//todo
+    
+    var names = [
+    "Deandre Marlin",
+    "Berry Laffey", 
+    "Quyen Hamblin",  
+    "Leena Wagoner",  
+    "Micah Mulcahy",  
+    "Sherrie Fino",  
+    "Brigitte Ronquillo",  
+    "Margie Letts",  
+    "Rubie Sand",  
+    "Loyd Ellenberger",  
+    "Major Hurrell",  
+    "Efren Lavergne",  
+    "Rikki Moxley",  
+    "Margert Hermann",  
+    "Shanta Fillman",  
+    "Gaynell Stermer",  
+    "Jeanetta Scroggins",  
+    "Franchesca Smotherman",  
+    "Alise Seifert",  
+    "Darlena Joshua",  
+    "Hyman Jarvis",  
+    "Samatha Harnish",  
+    "Nadine Cottrell",  
+    "Lindsy Breda",  
+    "Maximina Kirkendoll",  
+    "Yelena Goffney",  
+    "Shanda Eriksen",  
+    "Lyman Beatrice",  
+    "Julietta Neri",  
+    "Sade Gaumer"  
+    ].filter(word => word.toLowerCase().indexOf(forms_filter.toLowerCase()) == 0);
+    '
+↓jIterator [steps.SimpleIteratorStep-1599060570655]: 
+  expression: names
+  ↓jElement [steps.ElementStep-1599060570658]: 
+    expression: item
+    nodeName: value
+↓forms_filter [variables.RequestableVariable-1599053279786]: 

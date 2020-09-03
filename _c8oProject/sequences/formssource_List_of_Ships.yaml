@@ -1,0 +1,21 @@
+comment: |
+  <div class="en">Return the list of ships under construction</div>
+  <div class="fr">Renvoi la liste des navires en construction</div>
+  <div class="es">Devuelve la lista de barcos en construcción</div>
+  <div class="it">Restituisce l'elenco delle navi in costruzione</div>
+↓Input_variables [steps.InputVariablesStep-1599138029580]: 
+↓Sequence_JS [steps.SimpleStep-1599058907867]: 
+  expression: |
+    //todo
+    log.warning("forms_filter");
+    log.warning(forms_filter);
+    var ships = ["MSC Virtuosa", "Wonder of the Seas", "Celebrity Beyond", "MSC Europa"].filter(word => word.toLowerCase().indexOf(forms_filter.toLowerCase()) == 0);
+    		
+    
+↓jIterator [steps.SimpleIteratorStep-1599059286497]: 
+  expression: ships
+  ↓jElement [steps.ElementStep-1599060333600]: 
+    expression: item
+    nodeName: value
+↓forms_filter [variables.RequestableVariable-1599055352828]: 
+  value: 
