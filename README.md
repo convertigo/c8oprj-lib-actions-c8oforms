@@ -64,7 +64,7 @@ Can be used from a select component as a data source to fill your select.
 
 To expose a source sequence to Convertigo forms, you must name your sequence using `formssource_` prefix.
 
-Your sequence must have only one variable, that will be called with searchbar value, to allow you to perform actions, such as filter results for example.
+Your sequence must have only one variable prefixed with `froms_`, that will be called with searchbar value, to allow you to perform actions, such as filter results for example.
 
 ### formssource_List_of_company_employees
 
