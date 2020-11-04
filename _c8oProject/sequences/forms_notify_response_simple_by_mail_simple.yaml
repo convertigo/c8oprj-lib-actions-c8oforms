@@ -396,7 +396,12 @@ comment: |
     var filepath = context.getProjectDirectory()+ "/csv/";
     var attachPath = context.getProjectDirectory()+ "/att/";
     var attach2Path = context.getProjectDirectory()+ "/attach/";
-    var filename = jId +".csv";
+    
+    
+    var jName = java.lang.String(jId);
+    var digest  = java.security.MessageDigest.getInstance("SHA-256");
+    var encodedhash = digest.digest(jName.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    var filename = encodedhash +".csv";
     writeFile(filepath, filename, resp);
     
     var signatures = [];
@@ -601,17 +606,6 @@ comment: |
     **/'
   output: true
 ↓SMTP_send [steps.SmtpStep-1599570999694]: 
-  attachments: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace1\\lib_Actions_C8Oforms/attach/1601045878179_C80C80_chien.jpg_C80C80_1601046605830"'
-            - java.lang.String: 
-              - ↑value: '"chien.jpg"'
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
   smtpPassword: x731c565d55a2a2e3f9747ad43539421b04757e850ab21835f960613f2598a1d841a76e4c1dcbed1b1cdb27c1501ffbee
   smtpPort: ${lib.actions.c8oforms.smtp.port}

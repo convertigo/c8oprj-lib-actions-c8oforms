@@ -452,7 +452,10 @@ comment: |
     flatenize(jDoc.variable.resp, "", resp, jDoc.variable.resp._id);
     log.debug(JSON.stringify(resp));
     var filepath = context.getProjectDirectory()+ "/csv/";
-    var filename = jId +".csv";
+    var jName = java.lang.String(jId);
+    var digest  = java.security.MessageDigest.getInstance("SHA-256");
+    var encodedhash = digest.digest(jName.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    var filename = encodedhash +".csv";
     writeFile(filepath, filename, resp);'
 ↓SMTP_send [steps.SmtpStep-1591970129045]: 
   attachments: 
