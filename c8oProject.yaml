@@ -5,7 +5,7 @@
     <div class="fr">Actions par défaut fournies avec <i>Convertigo Form Builder</i></div>
     <div class="es">Acciones predeterminadas proporcionadas con <i>Convertigo Form Builder</i></div>
     <div class="it">Azioni predefinite fornite con <i>Convertigo Form Builder</i></div>
-  version: 1.0.6
+  version: 1.0.7
   ↓c8oforms_forms_reponses_backup [connectors.FullSyncConnector]: 🗏 connectors/c8oforms_forms_reponses_backup.yaml
   ↓SQL_mariadb [connectors.SqlConnector]: 🗏 connectors/SQL_mariadb.yaml
   ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
