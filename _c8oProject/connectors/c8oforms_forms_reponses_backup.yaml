@@ -1,3 +1,4 @@
+anonymousReplication: allow
 databaseName: c8oforms_forms_reponses_backup
 ↓FormResponsesDocument [transactions.couchdb.PostDocumentTransaction]: 
   fullSyncAclPolicy: anonymous
@@ -20,7 +21,9 @@ databaseName: c8oforms_forms_reponses_backup
         "_id": "_design\/Design_document",
         "filters": {},
         "updates": {},
-        "views": {"responsesByForm": {"map": "function (doc) {\r\n
+        "views": {
+          "responsesByForm": {
+            "map": "function (doc) {\r\n
           try {\r\n
               if(doc.doc && doc.parent){\r\n
                   emit(doc.parent + \"__\" + doc.doc.version, doc.doc);\r\n
@@ -28,5 +31,7 @@ databaseName: c8oforms_forms_reponses_backup
           } catch (err) {\r\n
               log(err.message);\r\n
           }\r\n
-      }"}}
+      }"
+          }
+        }
       }'
