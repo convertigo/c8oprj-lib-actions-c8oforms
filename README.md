@@ -10,6 +10,7 @@ Comments are exposed to Convertigo forms, please follow `formssource_List_of_Shi
   - [Actions sequences](#actions-sequences)
     - [forms_notify_response_by_mail](#forms_notify_response_by_mail)
     - [forms_insert_response_db](#forms_insert_response_db)
+    - [forms_fill_PDF](#forms_fill_PDF)
   - [Source Sequences](#source-sequences)
     - [formssource_List_of_company_employees](#formssource_list_of_company_employees)
     - [formssource_List_of_Ships](#formssource_list_of_ships)
@@ -58,6 +59,17 @@ Save responses to an external Database.
     - *forms_db_type* (Database type. Supports "fs" or "mysql")
     - *forms_db_name* (Database name created to store form responses)
     - *forms_db_destination* (Can be used to override SQL symbols)
+
+### forms_fill_PDF
+Fills a PDF Form template from C8OForm responses.
+
+- Variables:
+    - *forms_input_pdf_path* (Relative ("./" or ".//) or absolute path of the PDF template.)
+    - *forms_output_pdf_path* (Relative ("./" or ".//) or absolute path of the target PDF.)
+
+In your C8OForm form, the **Technical ID** of your component must match the field name in your PDF template.\
+For images, use a **Submit** button field and set its desired size in your PDF template.\
+For Checkboxes, in your PDF template, name them as **\<C8OForm Technical ID>_N**, where N is a number from 1 to N correponding to the number of checkboxes you have in your C8OForm form.
 
 ## Source Sequences
 Can be used from a select component as a data source to fill your select. 
