@@ -1,0 +1,236 @@
+comment: |
+  '{
+      "en": {
+          "displayName": "<p>forms_fill_PDF</p>",
+          "comment"    : "Fills a PDF Form template from C8OForm responses."
+      },
+      "fr": {
+          "displayName": "<p>forms_fill_PDF</p>",
+          "comment"    : "Remplit un template d''un formulaire PDF à partir des réponses d''un formulaire C8OForm."
+      },
+      "es": {
+          "displayName": "<p>forms_fill_PDF</p>",
+          "comment"    : "Llena una plantilla de formulario PDF a partir de las respuestas de C8OForm."
+      },
+      "it": {
+          "displayName": "<p>forms_fill_PDF</p>",
+          "comment"    : "Compila un modello di modulo PDF dalle risposte C8OForm."
+      }
+  }'
+↓Input_variables [steps.InputVariablesStep-1615308308810]: 
+↓Iterator [steps.IteratorStep-1615308308813]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1615308308810
+        - java.lang.String: 
+          - ↑value: ./doc
+  ↓fields [steps.XMLComplexStep-1615308308816]: 
+    nodeName: fields
+  ↓jSource [steps.SourceStep-1615308308819]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1615308308816
+          - java.lang.String: 
+            - ↑value: .
+    variableName: nl
+  ↓Iterator [steps.IteratorStep-1615308308822]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1615308308813
+          - java.lang.String: 
+            - ↑value: ./resp/*
+    ↓computeFields [steps.SimpleStep-1615308308825]: 
+      expression: |
+        'var xPath = context.getXpathApi();
+        
+        var name = item.getNodeName();
+        
+        var xLabel = xPath.selectSingleNode(item, "./label");
+        var internalLabel = xLabel != null ? ''''+xLabel.getTextContent() : "";
+        
+        var xLabelHtml = xPath.selectSingleNode(item, "./labelHtml");
+        var internalLabelHtml = xLabelHtml != null ? ''''+xLabelHtml.getTextContent() : "";
+        
+        var xName = xPath.selectSingleNode(item, "./name");
+        var internalName = xName != null ? ''''+xName.getTextContent() : "";
+        
+        var xType = xPath.selectSingleNode(item, "./type");
+        var internalType = xType != null ? ''''+xType.getTextContent() : "";
+        
+        var internalValue = "";
+        
+        switch (internalType) {
+        	case ''checkbox'':
+        		var xItems = xPath.selectNodeIterator(item, "./children/item");
+        		var i = 0;
+        		while((xItem=xItems.nextNode()) != null){
+        			i++;
+        			var xSelected = xPath.selectSingleNode(xItem, "./selected");
+        			if(xSelected != null){
+        				if((''''+xSelected.getTextContent()) == "true"){
+        					context.addTextNode(nl.item(0), internalName + "_" + i, "On");
+        				}else{
+        					context.addTextNode(nl.item(0), internalName + "_" + i, "Off");
+        				}
+        			}
+        		}
+        		break;
+        	case ''radio'':
+        		//TODO
+        	default:
+        		var xValue = xPath.selectSingleNode(item, "./value");
+        		internalValue = xValue != null ? xValue.getTextContent() : "";
+        		context.addTextNode(nl.item(0), internalName, internalValue);
+        }'
+  ↓Fill_Form_PDF [steps.PdfFormStep-1615308308828]: 
+    fieldsList: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: SOURCE
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1615214162659
+            - java.lang.String: 
+              - ↑value: .
+    filePath: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: JS
+          - →→: forms_input_pdf_path
+    targetFile: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: JS
+          - →→: forms_output_pdf_path
+↓jIf [steps.IfStep-1615308308831]: 
+  condition: forms_email != ""
+  isEnabled: false
+  ↓SMTP_send [steps.SmtpStep-1615308308834]: 
+    attachments: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: forms_output_pdf_path
+              - java.lang.String: 
+                - ↑value: ''
+↓originalDoc [variables.RequestableMultiValuedVariable-1615308308837]: 
+↓doc [variables.RequestableMultiValuedVariable-1615308308840]: 
+↓forms_input_pdf_path [variables.RequestableVariable-1615308308843]: 
+  comment: |
+    '{
+        "en": {
+            "displayName": "<p>forms_input_pdf_path</p>",
+            "comment"    : "Relative (\"./\" or \".//\) or absolute path of the PDF template. || <i>(mandatory)</i>"
+        },
+        "fr": {
+            "displayName": "<p>forms_input_pdf_path</p>",
+            "comment"    : "Chemin relatif (\"./\" ou \".//\") ou absolu du fichier PDF template. || <i>(obligatoire)</i>"
+        },
+        "es": {
+            "displayName": "<p>forms_input_pdf_path</p>",
+            "comment"    : "Ruta relativa (\"./\" o \".//\") o absoluta de la plantilla PDF. || <i>(obligatorio)</i>"
+        },
+        "it": {
+            "displayName": "<p>forms_input_pdf_path</p>",
+            "comment"    : "Percorso relativo (\"./\" o \".//\") o assoluto del modello PDF. || <i>(obbligatorio)</i>"
+        }
+    }'
+  value: 
+↓forms_output_pdf_path [variables.RequestableVariable-1615308308846]: 
+  comment: |
+    '{
+        "en": {
+            "displayName": "<p>forms_output_pdf_path</p>",
+            "comment"    : "Relative (\"./\" or \".//\") or absolute path of the target PDF. || <i>(mandatory)</i>"
+        },
+        "fr": {
+            "displayName": "<p>forms_output_pdf_path</p>",
+            "comment"    : "Chemin relatif (\"./\" ou \".//\") ou absolu du fichier PDF cible. || <i>(obligatoire)</i>"
+        },
+        "es": {
+            "displayName": "<p>forms_output_pdf_path</p>",
+            "comment"    : "Ruta relativa (\"./\" o \".//\") o absoluta del PDF de destino. || <i>(obligatorio)</i>"
+        },
+        "it": {
+            "displayName": "<p>forms_output_pdf_path</p>",
+            "comment"    : "Percorso relativo (\"./\" o \".//\") o assoluto del PDF di destinazione. || <i>(obbligatorio)</i>"
+        }
+    }'
+  value: 
+↓formXs_email_to [variables.RequestableVariable-1615308308849]: 
+  comment: |
+    '{
+        "en": {
+            "displayName": "<p>forms_email_to</p>",
+            "comment"    : "\"To\" Mail recipients separated by comma or semicolon. || <i>(optional)</i>"
+        },
+        "fr": {
+            "displayName": "<p>forms_email_to</p>",
+            "comment"    : "\"À\" Destinataires du courrier séparés par une virgule ou un point-virgule. || <i>(facultatif)</i>"
+        },
+        "es": {
+            "displayName": "<p>forms_email_to</p>",
+            "comment"    : "\"To\" Destinatarios de correo separados por coma o punto y coma. || <i>(Opcional)</i>"
+        },
+        "it": {
+            "displayName": "<p>forms_email_to</p>",
+            "comment"    : "\"To\" Destinatari di posta separati da virgola o punto e virgola. || <i>(opzionale)</i>"
+        }
+    }'
+  value: 
+↓formXs_email_htmlBody [variables.RequestableVariable-1615308308852]: 
+  comment: |
+    '{
+        "en": {
+            "displayName": "<p>forms_email_htmlBody</p>",
+            "comment"    : "The HTML of the mail body to send. || <i>(mandatory if forms_email_to is set)</i>"
+        },
+        "fr": {
+            "displayName": "<p>forms_email_htmlBody</p>",
+            "comment"    : "Le code HTML du corps de l''e-mail à envoyer. || <i>(obligatoire si forms_email_to est configuré)</i>"
+        },
+        "es": {
+            "displayName": "<p>forms_email_htmlBody</p>",
+            "comment"    : "El HTML del cuerpo del correo para enviar. || <i>(obligatorio si se establece forms_email_to)</i>"
+        },
+        "it": {
+            "displayName": "<p>forms_email_htmlBody</p>",
+            "comment"    : "L''HTML del corpo del messaggio da inviare. || <i>(obbligatorio se forms_email_to è impostato)</i>"
+        }
+    }'
+↓formXs_email_subject [variables.RequestableVariable-1615308308855]: 
+  comment: |
+    '{
+        "en": {
+            "displayName": "<p>forms_email_subject</p>",
+            "comment"    : "The subject of the e-mail to send. || <i>(mandatory if forms_email_to is set)</i>"
+        },
+        "fr": {
+            "displayName": "<p>forms_email_subject</p>",
+            "comment"    : "L''objet de l''e-mail à envoyer. || <i>(obligatoire si forms_email_to est configuré)</i>"
+        },
+        "es": {
+            "displayName": "<p>forms_email_subject</p>",
+            "comment"    : "El asunto del correo electrónico que se va a enviar. || <i>(obligatorio si se establece forms_email_to)</i>"
+        },
+        "it": {
+            "displayName": "<p>forms_email_subject</p>",
+            "comment"    : "L''oggetto dell''e-mail da inviare. || <i>(obbligatorio se forms_email_to è impostato)</i>"
+        }
+    }'
