@@ -453,13 +453,14 @@ comment: |
     		}
     		
     	}
-    	log.warning(JSON.stringify(elem));
-    	log.warning(JSON.stringify(resp[elem]));
     }
-    table_recap += "</tbody></table>";	
-    
-    
-    log.warning(JSON.stringify(table_recap));
+    for(var elem in jDoc.variable.actionsValue){
+    	table_recap += "<tr><td><p class=''under''>"+elem+"</p></td><td><p>" + jDoc.variable.actionsValue[elem]["value"]+"</p></td></tr>";
+    	if(jDoc.variable.actionsValue[elem]["valueType"] == "attachment"){
+    		attachmentsArray.push({name:jDoc.variable.actionsValue[elem]["value"], "value": (jDoc.variable.actionsValue[elem]["value"])});
+    	}
+    }
+    table_recap += "</tbody></table>";
     
     '
 ↓jIterator [steps.SimpleIteratorStep-1599656293391]: 
@@ -620,6 +621,31 @@ comment: |
     **/'
   output: true
 ↓SMTP_send [steps.SmtpStep-1599570999694]: 
+  attachments: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/camera1.jpg"'
+            - java.lang.String: 
+              - ↑value: '"camera1.jpg"'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/attach/1615467801943_C80C80_chien.jpg_C80C80_1615467852163"'
+            - java.lang.String: 
+              - ↑value: '"chien.jpg"'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/attach/submit1.pdf"'
+            - java.lang.String: 
+              - ↑value: '"submit1.pdf"'
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
   smtpPassword: x731c565d55a2a2e3f9747ad43539421ba369803d925e5f657302a8f9b0af91173177899c6a22f114f50b0b9bb5e982af
   smtpPort: ${lib.actions.c8oforms.smtp.port}
