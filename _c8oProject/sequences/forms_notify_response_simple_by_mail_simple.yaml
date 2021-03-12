@@ -18,115 +18,6 @@ comment: |
       }
   }'
 ↓Input_variables [steps.InputVariablesStep-1599570999604]: 
-↓jIf1 [steps.IfStep-1599570999607]: 
-  condition: (forms_mail_sender == null || forms_mail_sender == "") && forms_mail_notify_sender == "true"
-  isEnabled: false
-  ↓IfIsIn [steps.IsInStep-1599570999610]: 
-    sourceDefinition: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-        - com.twinsoft.convertigo.beans.common.XMLVector: 
-          - java.lang.String: 
-            - ↑value: 1599570999604
-          - java.lang.String: 
-            - ↑value: ./doc/_id/text()
-    testDefinition: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-        - com.twinsoft.convertigo.beans.common.XMLVector: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: NOT
-              - java.lang.String: 
-                - ↑value: ^anonymous
-    ↓Call_Transaction1 [steps.TransactionStep-1599570999613]: 
-      sourceTransaction: C8Oforms.c8oforms_response_fs.GetDocument
-      ↓_use_docid [variables.StepVariable-1599570999616]: 
-        description: Document ID
-        sourceDefinition: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: 1599570999604
-              - java.lang.String: 
-                - ↑value: ./doc/_id/text()
-        value: 
-    ↓IfExist [steps.IfExistStep-1599570999619]: 
-      sourceDefinition: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: 1599570999613
-            - java.lang.String: 
-              - ↑value: ./document/couchdb_output/_c8oAcl
-      ↓Concat [steps.XMLConcatStep-1599570999622]: 
-        nodeName: c8oreserved_user
-        output: false
-        separator: 
-        sourcesDefinition: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - xmlizable: 
-                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-                - com.twinsoft.convertigo.beans.common.XMLVector: 
-                  - java.lang.String: 
-                    - ↑value: C8Oreserved
-                  - xmlizable: 
-                    - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-                    - com.twinsoft.convertigo.beans.common.XMLVector: 
-                  - java.lang.String: 
-                    - ↑value: C8Oreserved_
-              - xmlizable: 
-                - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-                - com.twinsoft.convertigo.beans.common.XMLVector: 
-                  - java.lang.String: 
-                    - ↑value: c8oAcl
-                  - xmlizable: 
-                    - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-                    - com.twinsoft.convertigo.beans.common.XMLVector: 
-                      - java.lang.String: 
-                        - ↑value: 1599570999613
-                      - java.lang.String: 
-                        - ↑value: ./document/couchdb_output/_c8oAcl/text()
-                  - java.lang.String: 
-                    - ↑value: ''
-      ↓Call_Transaction [steps.TransactionStep-1599570999625]: 
-        sourceTransaction: C8Oforms.c8oforms_fs.GetDocument
-        ↓_use_docid [variables.StepVariable-1599570999628]: 
-          description: Document ID
-          sourceDefinition: 
-            - xmlizable: 
-              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-              - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: 1599570999622
-                - java.lang.String: 
-                  - ↑value: ./text()
-          value: 
-      ↓IfExist [steps.IfExistStep-1599570999631]: 
-        sourceDefinition: 
-          - xmlizable: 
-            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-            - com.twinsoft.convertigo.beans.common.XMLVector: 
-              - java.lang.String: 
-                - ↑value: 1599570999625
-              - java.lang.String: 
-                - ↑value: ./document/couchdb_output/email
-        ↓jSimpleSource [steps.SimpleSourceStep-1599570999634]: 
-          sourceDefinition: 
-            - xmlizable: 
-              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-              - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: 1599570999625
-                - java.lang.String: 
-                  - ↑value: ./document/couchdb_output/email/text()
-          variableName: forms_mail_ADsender
 ↓computeEmails [steps.SimpleStep-1599570999655]: 
   expression: |
     'var jEmailRecipients = "";
@@ -178,10 +69,6 @@ comment: |
     
     
     log.debug(">>>" + jEmailRecipients);'
-↓jIf [steps.IfStep-1599570999658]: 
-  condition: true
-  isEnabled: false
-  ↓Return [steps.ReturnStep-1599570999661]: 
 ↓Element [steps.XMLElementStep-1599570999664]: 
   nodeName: emailBodyPrefix
   sourceDefinition: 
@@ -212,56 +99,70 @@ comment: |
           - ↑value: 1599570999604
         - java.lang.String: 
           - ↑value: ./originalDoc/name/text()
-↓Concat [steps.XMLConcatStep-1599570999673]: 
-  nodeName: emailSubject
-  sourcesDefinition: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
+↓jIfThenElse [steps.IfThenElseStep-1615475909767]: 
+  condition: forms_mail_subject == undefined || forms_mail_subject == ''
+  ↓jThen [steps.ThenStep-1615475909769]: 
+    ↓Concat [steps.XMLConcatStep-1599570999673]: 
+      nodeName: emailSubject
+      sourcesDefinition: 
         - xmlizable: 
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: C8O FORMS
-            - xmlizable: 
-              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-              - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '[CONVERTIGO FORMS BUILDER]'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: subject
             - xmlizable: 
               - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
               - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: 1599570999604
+                  - ↑value: C8O FORMS
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
                 - java.lang.String: 
-                  - ↑value: ./forms_mail_subject/text()
+                  - ↑value: '[CONVERTIGO FORMS BUILDER]'
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: subject
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: 1599570999604
+                    - java.lang.String: 
+                      - ↑value: ./forms_mail_subject/text()
+                - java.lang.String: 
+                  - ↑value: ''
+    ↓Element2 [steps.XMLElementStep-1599570999676]: 
+      nodeName: emailLogo
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
-              - ↑value: ''
-↓Element2 [steps.XMLElementStep-1599570999676]: 
-  nodeName: emailLogo
-  sourceDefinition: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - java.lang.String: 
-          - ↑value: 1599570999604
-        - java.lang.String: 
-          - ↑value: ./forms_mail_logo/text()
-↓jSimpleSource11 [steps.SimpleSourceStep-1599570999679]: 
-  sourceDefinition: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - java.lang.String: 
-          - ↑value: 1599570999673
-        - java.lang.String: 
-          - ↑value: ./text()
-  variableName: jEmailSubject
+              - ↑value: 1599570999604
+            - java.lang.String: 
+              - ↑value: ./forms_mail_logo/text()
+    ↓jSimpleSource11 [steps.SimpleSourceStep-1599570999679]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1599570999673
+            - java.lang.String: 
+              - ↑value: ./text()
+      variableName: jEmailSubject
+  ↓jElse [steps.ElseStep-1615475909771]: 
+    ↓jSimpleSource [steps.SimpleSourceStep-1615475963687]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1599570999604
+            - java.lang.String: 
+              - ↑value: ./forms_mail_subject/text()
+      variableName: jEmailSubject
 ↓jSimpleSource2 [steps.SimpleSourceStep-1599570999682]: 
   comment: Form name
   sourceDefinition: 
@@ -436,15 +337,9 @@ comment: |
     			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + resp[elem]["key"]+".png</p></td></tr>";
     		}
     		else if(resp[elem]["type"] == "file"){
-    			log.warning(''resp[elem]["value"] = '' + resp[elem]["value"]);
-    			
     			var idx1 = resp[elem]["value"].indexOf("_C80C80_");
     			var idx2 = resp[elem]["value"].indexOf("_C80C80_", idx1 + 1);
     			var name = resp[elem]["value"].substring(idx1+8, idx2);
-    			
-    			log.warning(''idx1 = ''+ idx1);
-    			log.warning(''idx2 = ''+ idx2);
-    			log.warning(''name = ''+ name);
     			attachmentsArray.push({name:name, "value": (resp[elem]["value"])});
     			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + name+"</p></td></tr>";
     		}
@@ -457,7 +352,7 @@ comment: |
     for(var elem in jDoc.variable.actionsValue){
     	table_recap += "<tr><td><p class=''under''>"+elem+"</p></td><td><p>" + jDoc.variable.actionsValue[elem]["value"]+"</p></td></tr>";
     	if(jDoc.variable.actionsValue[elem]["valueType"] == "attachment"){
-    		attachmentsArray.push({name:jDoc.variable.actionsValue[elem]["value"], "value": (jDoc.variable.actionsValue[elem]["value"])});
+    		attachmentsArray.push({name: ""+jDoc.variable.actionsValue[elem]["value"], "value": (""+jDoc.variable.actionsValue[elem]["value"])});
     	}
     }
     table_recap += "</tbody></table>";
@@ -482,7 +377,7 @@ comment: |
   ↓jElement [steps.ElementStep-1599746917424]: 
     expression: item.value
   ↓jElement1 [steps.ElementStep-1599752298863]: 
-    expression: attach2Path + item.value
+    expression: attachPath + item.value
   ↓Call_Transaction [steps.TransactionStep-1599746937829]: 
     output: true
     sourceTransaction: C8Oforms.c8oforms_response_fs.GetDocumentAttachment
@@ -542,7 +437,7 @@ comment: |
     	log.warning(JSON.stringify(attachmentsArray))
     	for(var att in attachmentsArray){
     		var attachment = new com.twinsoft.convertigo.beans.common.XMLVector();
-    		var fPathName = ''"''+attach2Path + attachmentsArray[att].value +''"'';
+    		var fPathName = ''"''+attachPath + attachmentsArray[att].value +''"'';
     		log.warning(fPathName);
     		fPathName = fPathName.replace(/(\\)/g, ''$1$1'');
     		log.warning(fPathName);
@@ -629,21 +524,7 @@ comment: |
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/camera1.jpg"'
-            - java.lang.String: 
-              - ↑value: '"camera1.jpg"'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/attach/1615467801943_C80C80_chien.jpg_C80C80_1615467852163"'
-            - java.lang.String: 
-              - ↑value: '"chien.jpg"'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/attach/submit1.pdf"'
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/submit1.pdf"'
             - java.lang.String: 
               - ↑value: '"submit1.pdf"'
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
@@ -705,6 +586,69 @@ comment: |
             "comment":"<div>Destinatari di posta separati da virgola o punto e virgola. <i>(obbligatorio)</i></div>"
         }
     }'
+  value: 
+↓forms_mail_recipients_cc [variables.RequestableVariable-1615469168917]: 
+  comment: |
+    '{
+        "en":{
+          "displayName":"<p>Cc</p>",
+             "comment":"<div>Mail <b>copy</b> recipients separated by comma or semicolon. <i>(mandatory)</i></div>"
+          },
+          "fr":{
+              "displayName":"<p>Cc</p>",
+              "comment":"<div>Destinataires <b>en copie</b> du courrier séparés par une virgule ou un point-virgule. <i>(obligatoire)</i></div>"
+          },
+          "es":{
+              "displayName":"<p>Cc</p>",
+              "comment":"<div>Destinatarios <b>en copia<b/> de correo separados por coma o punto y coma. <i>(obligatorio)</i></div>"
+          },
+          "it":{
+              "displayName":"<p>Cc</p>",
+              "comment":"<div>Destinatari <b>della copia</b> di posta separati da virgola o punto e virgola. <i>(obbligatorio)</i></div>"
+          }
+      }'
+  value: 
+↓forms_mail_recipients_bcc [variables.RequestableVariable-1615469168920]: 
+  comment: |
+    '{
+        "en":{
+          "displayName":"<p>Bcc</p>",
+             "comment":"<div>Mail <b>blind</b> recipients separated by comma or semicolon. <i>(mandatory)</i></div>"
+          },
+          "fr":{
+              "displayName":"<p>Bcc</p>",
+              "comment":"<div>Destinataires <b>en copie cachée</b> du courrier séparés par une virgule ou un point-virgule. <i>(obligatoire)</i></div>"
+          },
+          "es":{
+              "displayName":"<p>Bcc</p>",
+              "comment":"<div>Destinatarios <b>ciegos<b/> de correo separados por coma o punto y coma. <i>(obligatorio)</i></div>"
+          },
+          "it":{
+              "displayName":"<p>Bcc</p>",
+              "comment":"<div>Destinatari <b>ciechi</b> di posta separati da virgola o punto e virgola. <i>(obbligatorio)</i></div>"
+          }
+      }'
+  value: 
+↓forms_mail_subject [variables.RequestableVariable-1615473057323]: 
+  comment: |
+    '{
+        "en":{
+          "displayName":"<p>Email subject</p>",
+             "comment":"<div>Email subject</div>"
+          },
+          "fr":{
+              "displayName":"<p>Objet de l''email</p>",
+              "comment":"<div>Objet de l''email</div>"
+          },
+          "es":{
+              "displayName":"<p>Asunto del correo electrónico</p>",
+              "comment":"<div>Asunto del correo electrónico</div>"
+          },
+          "it":{
+              "displayName":"<p>ggetto dell''email</p>",
+              "comment":"<div>ggetto dell''email</div>"
+          }
+      }'
   value: 
 ↓forms_mail_body [variables.RequestableVariable-1599570999724]: 
   comment: |
