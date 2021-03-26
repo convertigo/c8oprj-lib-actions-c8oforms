@@ -203,11 +203,11 @@ comment: |
           for (var property in doc) {
             if(doc[property].type != undefined){
               if(doc[property].type == "ion-card"){
-                flatenize(doc[property]["children"], doc[property]["name"]+"_", resp, myid);
+                flatenize(doc[property]["children"], doc[property]["labelHtml"], resp, myid);
               }
               else if(doc[property].type == "radio_group"){
                   for(var ninos in doc[property].children){
-                    resp.push({"key":property+"_" + ninos, "value": doc[property].children[ninos], "type": doc[property].type})
+                    resp.push({"key":prefix != "" ? prefix + "(" + ninos + ")":ninos, "value": doc[property].children[ninos], "type": doc[property].type})
                   }
               }
               else{
@@ -224,7 +224,7 @@ comment: |
                           
                       }
                   }
-                  resp.push({"key":prefix + doc[property]["name"], "value": val, "type": doc[property].type});
+                  resp.push({"key":prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")":doc[property]["labelHtml"], "value": val, "type": doc[property].type});
                 }
                 else if(doc[property].type == "checkbox_group"){
                   // foreach Line
@@ -241,23 +241,15 @@ comment: |
                           } 
                         }
                     }
-                    resp.push({"key":prefix + property+"_" + ninos, "value": val, "type": doc[property].type});
+                    resp.push({name:doc[property]["name"],col:doc[property]["labelHtml"],"key":prefix != "" ? prefix + "(" + ninos + ")":ninos, "value": val, "type": doc[property].type});
                   }
                 }
-                /*else if(doc[property].type == "img"){
-                    if(doc[property].value != ""){
-                        resp.push({"key":prefix + doc[property]["name"], "value": "__C8O__UNIQUE__IMG,"+myid, "type": doc[property].type})  
-                    }
-                    else{
-                       resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
-                    }
-                  }*/
-                  else if(doc[property].type == "signature"){
+    			else if(doc[property].type == "signature"){
                     if(doc[property].value != ""){
                       resp.push({"key":prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type})
                     }
                     else{
-                       resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
+                       resp.push({"key":prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")":doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type})
                     }
                   }
                   else if(doc[property].type == "file"){
@@ -266,14 +258,14 @@ comment: |
                       for(var elem in doc[property]["value"]){
                         str == "" ? str = doc[property]["value"][elem] : str += "," + doc[property]["value"][elem];
                       }
-                      resp.push({"key":prefix + doc[property]["name"], "value": str, "type": doc[property].type})
+                      resp.push({"key":prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")":doc[property]["labelHtml"], "value": str, "type": doc[property].type})
                     } 
                     else{
-                       resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type})
+                       resp.push({"key":prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")":doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type})
                     }
                   }
                 else{
-                 resp.push({"key":prefix + doc[property]["name"], "value": doc[property]["value"], "type": doc[property].type}) 
+                 resp.push({"key":prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")":doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type}) 
                 }
               }
             }
@@ -321,7 +313,7 @@ comment: |
     
     var signatures = [];
     var attachmentsArray = [];
-    
+    var headerCheckBoxGroup = {};
     var table_recap = "<table><thead><tr><td><p class=''under''>Date</p></td><td><p>" +new Date(+resp["0"]["value"])+"</p></td></tr>";
     table_recap += "<tr><td><p class=''under''>"+resp["1"]["key"]+"</p></td><td><p>" + resp["1"]["value"]+"</p></td></tr>";
     table_recap += "<tr><td><p class=''under''>"+resp["2"]["key"]+"</p></td><td><p>" + resp["2"]["value"]+"</p></td></tr></thead>";
@@ -342,6 +334,13 @@ comment: |
     			var name = resp[elem]["value"].substring(idx1+8, idx2);
     			attachmentsArray.push({name:name, "value": (resp[elem]["value"])});
     			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + name+"</p></td></tr>";
+    		}
+    		else if(resp[elem]["type"] == "checkbox_group"){
+    			if(headerCheckBoxGroup[resp[elem]["name"]] == undefined){
+    				headerCheckBoxGroup[resp[elem]["name"]] = true;
+    				table_recap += "<tr><tdcolspan=''2'' style=''text-align:center''><p class=''under''>"+resp[elem]["col"]+"</p></td></tr>";
+    			}
+    			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + resp[elem]["value"]+"</p></td></tr>";
     		}
     		else{
     			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + resp[elem]["value"]+"</p></td></tr>";
@@ -524,9 +523,23 @@ comment: |
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/submit1.pdf"'
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/lacamera.jpg"'
             - java.lang.String: 
-              - ↑value: '"submit1.pdf"'
+              - ↑value: '"lacamera.jpg"'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/signature1.png"'
+            - java.lang.String: 
+              - ↑value: '"signature1.png"'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/"'
+            - java.lang.String: 
+              - ↑value: '""'
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
   smtpPassword: x731c565d55a2a2e3f9747ad43539421ba369803d925e5f657302a8f9b0af91173177899c6a22f114f50b0b9bb5e982af
   smtpPort: ${lib.actions.c8oforms.smtp.port}

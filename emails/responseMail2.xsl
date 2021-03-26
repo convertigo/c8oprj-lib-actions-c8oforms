@@ -110,6 +110,10 @@
 					.under {
 						text-decoration: underline;
 					}
+					th, td {
+					  padding: 5px;
+					  text-align: left;
+					}
 				</style>
 			</head>
 
