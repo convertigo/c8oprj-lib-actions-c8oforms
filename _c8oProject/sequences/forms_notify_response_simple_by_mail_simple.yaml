@@ -336,11 +336,16 @@ comment: |
     			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + name+"</p></td></tr>";
     		}
     		else if(resp[elem]["type"] == "checkbox_group"){
+    			// table_recap += "<table>"; // table class=''cbgroup-table''
     			if(headerCheckBoxGroup[resp[elem]["name"]] == undefined){
     				headerCheckBoxGroup[resp[elem]["name"]] = true;
-    				table_recap += "<tr><tdcolspan=''2'' style=''text-align:center''><p class=''under''>"+resp[elem]["col"]+"</p></td></tr>";
-    			}
-    			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + resp[elem]["value"]+"</p></td></tr>";
+    				table_recap += "<tr><th colspan=''2'' class=''cbgroup-table-header''>" + resp[elem]["col"] + "</th></tr>";
+    				// table_recap += "<tr><tdcolspan=''2'' style=''text-align:center''><p class=''under''>"+resp[elem]["col"]+"</p></td></tr>"; // question of the checkbox_group
+    			}			
+    			// table_recap += "<tbody>";
+    			table_recap += "<tr><td class=''cbgroup-table-data''><p class=''under''>"+resp[elem]["key"]+"</p></td><td class=''cbgroup-table-data''><p>" + resp[elem]["value"]+"</p></td></tr>"; // answers of the checkbox_group
+    			
+    			// table_recap += "</tbody></table>"
     		}
     		else{
     			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + resp[elem]["value"]+"</p></td></tr>";
@@ -515,31 +520,6 @@ comment: |
     **/'
   output: true
 ↓SMTP_send [steps.SmtpStep-1599570999694]: 
-  attachments: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/lacamera.jpg"'
-            - java.lang.String: 
-              - ↑value: '"lacamera.jpg"'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/signature1.png"'
-            - java.lang.String: 
-              - ↑value: '"signature1.png"'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/"'
-            - java.lang.String: 
-              - ↑value: '""'
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
   smtpPassword: x731c565d55a2a2e3f9747ad43539421ba369803d925e5f657302a8f9b0af91173177899c6a22f114f50b0b9bb5e982af
   smtpPort: ${lib.actions.c8oforms.smtp.port}
