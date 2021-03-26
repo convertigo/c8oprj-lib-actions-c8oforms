@@ -207,8 +207,24 @@ comment: |
               }
               else if(doc[property].type == "radio_group"){
                   for(var ninos in doc[property].children){
-                    resp.push({"key":prefix != "" ? prefix + "(" + ninos + ")":ninos, "value": doc[property].children[ninos], "type": doc[property].type})
+                    resp.push({col:doc[property]["labelHtml"], "key":prefix != "" ? prefix + "(" + ninos + ")":ninos, "value": doc[property].children[ninos], "type": doc[property].type})
                   }
+    // foreach Line
+    //              for(var ninos in doc[property].children){
+    //                var val = "";
+    //                // foreach Column
+    //                for (var child in doc[property].children[ninos]) {
+    //                    if(doc[property].children[ninos][child].selected){
+    //                      if(val === ""){
+    //                        val = doc[property].children[ninos][child].value;
+    //                      }
+    //                      else{
+    //                        val = val + "," + doc[property].children[ninos][child].value;
+    //                      } 
+    //                    }
+    //                }
+    //                resp.push({name:doc[property]["name"],col:doc[property]["labelHtml"],"key":prefix != "" ? prefix + "(" + ninos + ")":ninos, "value": val, "type": doc[property].type});
+    //              }
               }
               else{
                 if(doc[property].type == "checkbox"){
@@ -294,7 +310,7 @@ comment: |
     }
     
     var jDoc = JSON.parse(''''+com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
-    log.debug(JSON.stringify(jDoc));
+    log.debug(JSON.stringify(jDoc)); 
     
     var date = jDoc.variable.timestamp;
     var resp = [{"key":"horodateur", "value":date, "type": "text"}, {"key":"name", "value":jName, "type": "text"}, {"key":"version", "value":jVersion, "type": "integer"}];
@@ -318,6 +334,9 @@ comment: |
     table_recap += "<tr><td><p class=''under''>"+resp["1"]["key"]+"</p></td><td><p>" + resp["1"]["value"]+"</p></td></tr>";
     table_recap += "<tr><td><p class=''under''>"+resp["2"]["key"]+"</p></td><td><p>" + resp["2"]["value"]+"</p></td></tr></thead>";
     table_recap += "<tbody>"
+    
+    log.warn("resp: " + JSON.stringify(resp));
+    
     for(var elem in resp){
     	if(+elem > 2){
     		if(resp[elem]["type"] == "signature"){
@@ -339,13 +358,23 @@ comment: |
     			// table_recap += "<table>"; // table class=''cbgroup-table''
     			if(headerCheckBoxGroup[resp[elem]["name"]] == undefined){
     				headerCheckBoxGroup[resp[elem]["name"]] = true;
-    				table_recap += "<tr><th colspan=''2'' class=''cbgroup-table-header''>" + resp[elem]["col"] + "</th></tr>";
+    				table_recap += "<tr><th colspan=''2'' class=''group-table-header''>" + resp[elem]["col"] + "</th></tr>";
     				// table_recap += "<tr><tdcolspan=''2'' style=''text-align:center''><p class=''under''>"+resp[elem]["col"]+"</p></td></tr>"; // question of the checkbox_group
     			}			
     			// table_recap += "<tbody>";
-    			table_recap += "<tr><td class=''cbgroup-table-data''><p class=''under''>"+resp[elem]["key"]+"</p></td><td class=''cbgroup-table-data''><p>" + resp[elem]["value"]+"</p></td></tr>"; // answers of the checkbox_group
+    			table_recap += "<tr><td class=''group-table-data''><p class=''under''>"+resp[elem]["key"]+"</p></td><td class=''group-table-data''><p>" + resp[elem]["value"]+"</p></td></tr>"; // answers of the checkbox_group
     			
     			// table_recap += "</tbody></table>"
+    		}
+    		else if(resp[elem]["type"] == "radio_group") {
+    			
+    			if(headerCheckBoxGroup[resp[elem]["name"]] == undefined){
+    				headerCheckBoxGroup[resp[elem]["name"]] = true;
+    				table_recap += "<tr><th colspan=''2'' class=''group-table-header''>" + resp[elem]["col"] + "</th></tr>";
+    				// table_recap += "<tr><tdcolspan=''2'' style=''text-align:center''><p class=''under''>"+resp[elem]["col"]+"</p></td></tr>"; // question of the checkbox_group
+    			}	
+    			table_recap += "<tr><td class=''group-table-data''><p class=''under''>"+resp[elem]["key"]+"</p></td><td class=''group-table-data''><p>" + resp[elem]["value"]+"</p></td></tr>";
+    			
     		}
     		else{
     			table_recap += "<tr><td><p class=''under''>"+resp[elem]["key"]+"</p></td><td><p>" + resp[elem]["value"]+"</p></td></tr>";

@@ -66,12 +66,6 @@
 					max-width: 100% !important;
 					width: auto !important;
 					}
-					table {
-						border: 1px solid black !important;
-					}
-					table thead tr th {
-						background-color: grey !important;
-					}
 					}
 
 					/*
@@ -120,16 +114,16 @@
 					  padding: 5px;
 					  text-align: left;
 					}
-					.cbgroup-table {
+					.group-table {
 						border: 1px solid black !important;
 						min-width: 100% !important;
 					}
-					.cbgroup-table-header {
+					.group-table-header {
 						background-color: grey !important;
 						text-align: center !important;
 					}
 
-					.cbgroup-table-data {
+					.group-table-data {
 						border: 1px solid black !important;
 						min-width: 100% !important;
 					}
