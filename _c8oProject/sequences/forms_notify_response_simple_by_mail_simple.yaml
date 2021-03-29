@@ -208,7 +208,7 @@ comment: |
                     }
                     else if (doc[property].type == "radio_group") {
                         for (var ninos in doc[property].children) {
-                            resp.push({ col: doc[property]["labelHtml"], "key": prefix != "" ? prefix + "(" + ninos + ")" : ninos, "value": doc[property].children[ninos], "type": doc[property].type })
+                            resp.push({ col: doc[property]["labelHtml"], "key": prefix != "" ? prefix + "(" + ninos + ")" : ninos, "value": doc[property].children[ninos], "type": doc[property].type, "name":  doc[property].name})
                         }
                     }
                     else if (doc[property].type == "checkbox") {
@@ -223,7 +223,7 @@ comment: |
                                 }
                             }
                         }
-                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": val, "type": doc[property].type });
+                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": val, "type": doc[property].type, "name":  doc[property].name });
                     }
                     else if (doc[property].type == "location") {
                         var val = doc[property].value;
@@ -233,7 +233,7 @@ comment: |
                         var showFormattedAddress = (formattedAddress != undefined && formattedAddress.length > 0) ? true : false;
                         var showBbox = (bBox != undefined) ? true : false;
                         var showCoordinates = (!showFormattedAddress && !showBbox) ? true : false;
-                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property].value, "type": doc[property].type, "showFormattedAddress": showFormattedAddress, "showBbox": showBbox, "showCoordinates": showCoordinates })
+                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property].value, "type": doc[property].type, "showFormattedAddress": showFormattedAddress, "showBbox": showBbox, "showCoordinates": showCoordinates, "name":  doc[property].name })
                     }
                     else if (doc[property].type == "checkbox_group") {
                         // foreach Line
@@ -250,15 +250,15 @@ comment: |
                                     }
                                 }
                             }
-                            resp.push({ name: doc[property]["name"], col: doc[property]["labelHtml"], "key": prefix != "" ? prefix + "(" + ninos + ")" : ninos, "value": val, "type": doc[property].type });
+                            resp.push({ name: doc[property]["name"], col: doc[property]["labelHtml"], "key": prefix != "" ? prefix + "(" + ninos + ")" : ninos, "value": val, "type": doc[property].type, "name":  doc[property].name });
                         }
                     }
                     else if (doc[property].type == "signature") {
                         if (doc[property].value != "") {
-                            resp.push({ "key": prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type })
+                            resp.push({ "key": prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type, "name":  doc[property].name })
                         }
                         else {
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
                         }
                     }
                     else if (doc[property].type == "file") {
@@ -267,22 +267,19 @@ comment: |
                             for (var elem in doc[property]["value"]) {
                                 str == "" ? str = doc[property]["value"][elem] : str += "," + doc[property]["value"][elem];
                             }
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": str, "type": doc[property].type })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": str, "type": doc[property].type, "name":  doc[property].name })
                         }
                         else {
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
                         }
                     }
                     else if(doc[property].type == "grid") {
-    					log.warn("grid");
                         if (doc[property].value != undefined) {
                             // if grid value is a string
                             if(typeof(doc[property].value) == "string"){
-    							log.warn("== string");
-                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type })
+                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
                             }
-                            else{
-    							log.warn("== string else");
+                            else if(Object.keys(doc[property].value).length > 0){
                                 var all = null;
                                 for(var i in doc[property].value){
                                     // if its a row
@@ -295,17 +292,18 @@ comment: |
                                     }
                                     break;
                                 }
-    							log.warn("all == "+all);
-                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "all": all })
+                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "all": all, "name":  doc[property].name })
                             }
+    						else{
+                            	resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type, "name":  doc[property].name})
+                        	}
                         }
                         else{
-    						log.warn("grid first else");
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type})
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type, "name":  doc[property].name})
                         }
                     }
                     else {
-                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type })
+                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
                     }
     
                 }
@@ -337,13 +335,41 @@ comment: |
         }
     }
     
+    var arrayOrder = ["c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o1","c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o2", "c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o3"];
+    var getOrder = (doc) => {
+    	for(var i in doc) {
+    		try {
+    			if(doc[i].type == "ion-card"){
+    				getOrder(doc[i]["children"])
+    			}
+    			else{
+    				arrayOrder.push(doc[i]["name"])
+    			}
+    		}
+    		catch(e){
+    			
+    		}
+    	}
+    }
+    
+    var applyOrder = (order, resp) =>{
+    	resp.sort((a, b) => {
+        	return order.indexOf(a.name) - order.indexOf(b.name)
+    	});
+    }
+    
     var jDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
     log.debug(JSON.stringify(jDoc));
     
     var date = jDoc.variable.timestamp;
-    var resp = [{ "key": "horodateur", "value": date, "type": "text" }, { "key": "name", "value": jName, "type": "text" }, { "key": "version", "value": jVersion, "type": "integer" }];
+    var resp = [{ "key": "horodateur", "value": date, "type": "text", "name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o1"  }, { "key": "name", "value": jName, "type": "text","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o2" }, { "key": "version", "value": jVersion, "type": "integer","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o3" }];
     flatenize(jDoc.variable.resp, "", resp, jDoc.variable._id);
-    log.debug(JSON.stringify(resp));
+    var jOriginalDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(originalDoc, true, true));
+    getOrder(jOriginalDoc.variable.formulaire);
+    log.warn("resp before: \n" + JSON.stringify(resp));
+    log.warn("retry: \n" + JSON.stringify(arrayOrder));
+    applyOrder(arrayOrder,resp);
+    log.warn("resp after: \n" + JSON.stringify(resp))
     var filepath = context.getProjectDirectory() + "/csv/";
     var attachPath = context.getProjectDirectory() + "/att/";
     var attach2Path = context.getProjectDirectory() + "/attach/";
