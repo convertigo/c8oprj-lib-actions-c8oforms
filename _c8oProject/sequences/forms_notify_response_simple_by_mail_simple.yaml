@@ -229,9 +229,9 @@ comment: |
     			else if(doc[property].type == "location") {
     				var val = doc[property].value;
     				
-    				var formattedAddress = (val.addr != undefined) ? val.addr.FormattedAddress : "";
-    				var bBox = (val.bounding_box != undefined) ? val.bounding_box : "";
-    				var coordinates = (val.gps != undefined) ? val.gps : "";
+    				var formattedAddress = (val.addr != undefined) ? val.addr.FormattedAddress : null;
+    				var bBox = (val.bounding_box != undefined) ? val.bounding_box : undefined;
+    				var coordinates = (val.gps != undefined) ? val.gps : null;
     				
     				var showFormattedAddress = (formattedAddress != undefined && formattedAddress.length > 0) ? true : false;
     				var showBbox = (bBox != undefined) ? true : false;
@@ -374,28 +374,23 @@ comment: |
     			table_recap += "<tr><td class=''group-table-data''><p class=''under''>"+resp[elem]["key"]+"</p></td><td class=''group-table-data''><p>" + resp[elem]["value"]+"</p></td></tr>";
     			
     		} else if (resp[elem]["type"] == "location") {
-    			table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td>";
-    			
+    			table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td>";			 
     			if(resp[elem][''showBbox'']) {
-    				var bboxTopLeftLat = resp[elem]["value"]["bounding_box"]["topLeft"]["lat"]
-    				var bboxTopLeftLong = resp[elem]["value"]["bounding_box"]["topLeft"]["lon"]
-    				var bboxbottomRightLat = resp[elem]["value"]["bounding_box"]["bottomRight"]["lat"]
-    				var bboxbottomRightLong = resp[elem]["value"]["bounding_box"]["bottomRight"]["lon"]
-    			}
-    			
-    			if(resp[elem][''showFormattedAddress'']) {
-    				table_recap += "<td>" + resp[elem]["value"]["addr"]["FormattedAddress"];
-    			} 
-    			
-    			if(resp[elem][''showBbox'']) {
-    				var bboxTopLeftLat = resp[elem]["value"]["bounding_box"]["topLeft"]["lat"]
-    				var bboxTopLeftLong = resp[elem]["value"]["bounding_box"]["topLeft"]["lon"]
-    				var bboxTopRightLat = resp[elem]["value"]["bounding_box"]["topRight"]["lat"]
-    				var bboxTopRightLong = resp[elem]["value"]["bounding_box"]["topRight"]["lon"]
-    				
+    				var bboxTopLeftLat = resp[elem]["value"]["bounding_box"]["topLeft"]["lat"];
+    				var bboxTopLeftLong = resp[elem]["value"]["bounding_box"]["topLeft"]["lon"];
+    				var bboxbottomRightLat = resp[elem]["value"]["bounding_box"]["bottomRight"]["lat"];
+    				var bboxbottomRightLong = resp[elem]["value"]["bounding_box"]["bottomRight"]["lon"];
     				table_recap += "<br /> Bounding Box : <br />" + bboxTopLeftLat + "<br />" + bboxTopLeftLong + "<br />" + bboxbottomRightLat + "<br />" + bboxbottomRightLong + "<br />"
     			}
-    			
+    			else if(resp[elem][''showFormattedAddress'']) {
+    				table_recap += "<td>" + resp[elem]["value"]["addr"]["FormattedAddress"];
+    			}
+    			else if(resp[elem][''showCoordinates'']) {
+    				var latitude = resp[elem]["value"]["gps"]["latitude"];
+    				var longitude = resp[elem]["value"]["gps"]["longitude"];
+    				var accuracy = resp[elem]["value"]["gps"]["accuracy"];
+    				table_recap += "<br /> Latitude: " + latitude + "<br /> Longitude: " + longitude + "<br /> Accuracy: " + accuracy+ " meters";
+    			}
     			table_recap += "</td>"
     				
     		}
@@ -580,9 +575,23 @@ comment: |
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
             - java.lang.String: 
-              - ↑value: '"C:\\Users\\convertigo\\studio-wp-forms\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.10/att/Ask your question here.jpg"'
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/Faites nous un jolie sourire !!! (caméra).jpg"'
             - java.lang.String: 
-              - ↑value: '"Ask your question here.jpg"'
+              - ↑value: '"Faites nous un jolie sourire !!! (caméra).jpg"'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/Fâites nous un jolie autographe !! (signature).png"'
+            - java.lang.String: 
+              - ↑value: '"Fâites nous un jolie autographe !! (signature).png"'
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/"'
+            - java.lang.String: 
+              - ↑value: '""'
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
   smtpPassword: x731c565d55a2a2e3f9747ad43539421ba369803d925e5f657302a8f9b0af91173177899c6a22f114f50b0b9bb5e982af
   smtpPort: ${lib.actions.c8oforms.smtp.port}
