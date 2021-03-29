@@ -685,7 +685,7 @@ comment: |
   smtpUsername: ${lib.actions.c8oforms.smtp.user}
   xslFilepath: '".//emails/responseMail2.xsl"'
 ↓wait [steps.SimpleStep-1599570999697]: 
-  expression: java.lang.Thread.sleep(30000);
+  expression: java.lang.Thread.sleep(60000);
 ↓IfFileExists [steps.IfFileExistStep-1599570999700]: 
   condition: filepath+filename
   ↓Delete_file [steps.DeleteStep-1599570999703]: 
