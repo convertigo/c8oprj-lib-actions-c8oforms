@@ -365,11 +365,11 @@ comment: |
     var resp = [{ "key": "horodateur", "value": date, "type": "text", "name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o1"  }, { "key": "name", "value": jName, "type": "text","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o2" }, { "key": "version", "value": jVersion, "type": "integer","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o3" }];
     flatenize(jDoc.variable.resp, "", resp, jDoc.variable._id);
     var jOriginalDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(originalDoc, true, true));
-    getOrder(jOriginalDoc.variable.formulaire);
-    log.warn("resp before: \n" + JSON.stringify(resp));
-    log.warn("retry: \n" + JSON.stringify(arrayOrder));
-    applyOrder(arrayOrder,resp);
-    log.warn("resp after: \n" + JSON.stringify(resp))
+    if(jOriginalDoc.variable.formulaire != undefined){
+    	getOrder(jOriginalDoc.variable.formulaire);
+    	applyOrder(arrayOrder,resp);
+    }
+    
     var filepath = context.getProjectDirectory() + "/csv/";
     var attachPath = context.getProjectDirectory() + "/att/";
     var attach2Path = context.getProjectDirectory() + "/attach/";
@@ -676,31 +676,6 @@ comment: |
     **/'
   output: true
 ↓SMTP_send [steps.SmtpStep-1599570999694]: 
-  attachments: 
-    - xmlizable: 
-      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-      - com.twinsoft.convertigo.beans.common.XMLVector: 
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/Faites nous un jolie sourire !!! (caméra).jpg"'
-            - java.lang.String: 
-              - ↑value: '"Faites nous un jolie sourire !!! (caméra).jpg"'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/Fâites nous un jolie autographe !! (signature).png"'
-            - java.lang.String: 
-              - ↑value: '"Fâites nous un jolie autographe !! (signature).png"'
-        - xmlizable: 
-          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '"C:\\dev\\convertigo_workspaces\\workspace790\\.metadata\\.plugins\\com.twinsoft.convertigo.studio\\git\\c8oprj-lib-actions-c8oforms_1.0.7/att/"'
-            - java.lang.String: 
-              - ↑value: '""'
   smtpAuthType: ${lib.actions.c8oforms.smtp.security}
   smtpPassword: x731c565d55a2a2e3f9747ad43539421ba369803d925e5f657302a8f9b0af91173177899c6a22f114f50b0b9bb5e982af
   smtpPort: ${lib.actions.c8oforms.smtp.port}
