@@ -359,20 +359,23 @@ comment: |
     }
     
     var jDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
-    log.debug(JSON.stringify(jDoc));
-    
     var date = jDoc.variable.timestamp;
     var resp = [{ "key": "horodateur", "value": date, "type": "text", "name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o1"  }, { "key": "name", "value": jName, "type": "text","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o2" }, { "key": "version", "value": jVersion, "type": "integer","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o3" }];
     flatenize(jDoc.variable.resp, "", resp, jDoc.variable._id);
     var jOriginalDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(originalDoc, true, true));
-    if(jOriginalDoc.variable.formulaire != undefined){
+    if(jOriginalDoc != undefined && jOriginalDoc.variable != undefined && jOriginalDoc.variable.formulaire != undefined){
     	getOrder(jOriginalDoc.variable.formulaire);
     	applyOrder(arrayOrder,resp);
     }
     
-    var filepath = context.getProjectDirectory() + "/csv/";
-    var attachPath = context.getProjectDirectory() + "/att/";
-    var attach2Path = context.getProjectDirectory() + "/attach/";
+    // Define var isWindows to detect unix like system or not
+    var isWindows = org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+    // Define separator switch os
+    var separator = isWindows ? "\\" :"/";
+    
+    var filepath = context.getProjectDirectory() + separator + "csv" + separator;
+    var attachPath = context.getProjectDirectory() + separator+ "att" + separator;
+    var attach2Path = context.getProjectDirectory() + separator + "attach" + separator;
     
     
     //var jName = java.lang.String(jId);
@@ -395,18 +398,18 @@ comment: |
         try {
             if (+elem > 2) {
                 if (resp[elem]["type"] == "signature") {
-                    signatures.push({ name: resp[elem]["key"] + ".png", "value": (resp[elem]["value"]).substring(22) });
+                    signatures.push({ name: new Date().getTime()+"_" +resp[elem]["key"] + ".png", "value": (resp[elem]["value"]).substring(22) });
                     table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + resp[elem]["key"] + ".png</p></td></tr>";
                 }
                 else if (resp[elem]["type"] == "img") {
-                    signatures.push({ name: resp[elem]["key"] + ".jpg", "value": (resp[elem]["value"]) });
+                    signatures.push({ name: new Date().getTime()+"_"+resp[elem]["key"] + ".jpg", "value": (resp[elem]["value"]) });
                     table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + resp[elem]["key"] + ".png</p></td></tr>";
                 }
                 else if (resp[elem]["type"] == "file") {
                     var idx1 = resp[elem]["value"].indexOf("_C80C80_");
                     var idx2 = resp[elem]["value"].indexOf("_C80C80_", idx1 + 1);
                     var name = resp[elem]["value"].substring(idx1 + 8, idx2);
-                    attachmentsArray.push({ name: name, "value": (resp[elem]["value"]) });
+                    attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (resp[elem]["value"]) });
                     table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
                 }
                 else if (resp[elem]["type"] == "checkbox_group") {
@@ -509,7 +512,7 @@ comment: |
         try {
             table_recap += "<tr><td><p class=''under''>" + elem + "</p></td><td><p>" + jDoc.variable.actionsValue[elem]["value"] + "</p></td></tr>";
             if (jDoc.variable.actionsValue[elem]["valueType"] == "attachment") {
-                attachmentsArray.push({ name: "" + jDoc.variable.actionsValue[elem]["value"], "value": ("" + jDoc.variable.actionsValue[elem]["value"]) });
+                attachmentsArray.push({ name: new Date().getTime()+"_"+ + jDoc.variable.actionsValue[elem]["value"], "value": ("" + jDoc.variable.actionsValue[elem]["value"]) });
             }
         }
         catch (e) {
@@ -575,146 +578,264 @@ comment: |
 ↓jElement [steps.ElementStep-1599572673725]: 
   expression: table_recap
   nodeName: tableBody
-↓setAttachmentsManually [steps.SimpleStep-1599656012175]: 
+↓SmtpStepSequence [steps.SimpleStep-1599656012175]: 
   expression: |
-    '// Define dynamically attachments
+    '/* re write smtp step */
     
-    	var parent = context.requestedObject.currentStep.getParent();
-    	var smtpStep = parent.getDatabaseObjectChild("SMTP_send").getOriginal();
-    
-    	var attachments = new com.twinsoft.convertigo.beans.common.XMLVector();
-    
-    	for(var att in signatures){
-    		var attachment = new com.twinsoft.convertigo.beans.common.XMLVector();
-    		var fPathName = ''"''+attachPath + signatures[att].name+''"'';
-    		fPathName = fPathName.replace(/(\\)/g, ''$1$1'');
-    		log.warning(fPathName);
-    		attachment.add(fPathName);//filepath+name
-    		attachment.add(''"''+signatures[att].name+''"'');//name
-    		attachments.add(attachment);
-    		log.warning("for att in " + attachPath + signatures[att].name)
-    	}
-    	log.warning(JSON.stringify(attachmentsArray))
-    	for(var att in attachmentsArray){
-    		var attachment = new com.twinsoft.convertigo.beans.common.XMLVector();
-    		var fPathName = ''"''+attachPath + attachmentsArray[att].value +''"'';
-    		log.warning(fPathName);
-    		fPathName = fPathName.replace(/(\\)/g, ''$1$1'');
-    		log.warning(fPathName);
-    		attachment.add(fPathName);//filepath+name
-    		attachment.add(''"''+attachmentsArray[att].name+''"'');//name
-    		attachments.add(attachment);
-    		log.warning("for att in " + attach2Path + attachmentsArray[att].name);
-    	}
-    	smtpStep.setAttachments(attachments);
-    
-    
-    //C:\dev\eclipse_software\eclipse-committers-2019-06-R-win32-x86_64\eclipse\devconvertigo_workspacesworkspace1lib_Actions_C8Oforms\att\signature1.png
-    //C:\dev\convertigo_workspaces\workspace1\lib_Actions_C8Oforms/att/signature1.png
-    
-    
-    /**
-    var smtpStep = new com.twinsoft.convertigo.beans.steps.SmtpStep();
-    
-    var attachments = new com.twinsoft.convertigo.beans.common.XMLVector();
+    // get all attachments
+    var attachments = [];
     
     for(var att in signatures){
-    	var attachment = new com.twinsoft.convertigo.beans.common.XMLVector();
-    	attachment.add(attachPath + signatures[att].name);//filepath+name
-    	attachment.add(signatures[att].name);//name
-    	attachments.add(attachment);
-    	log.warning("for att in " + attachPath + signatures[att].name)
+    	var attachment = {"path": attachPath + signatures[att].name, "name": signatures[att].name};
+    	attachments.push(attachment);
     }
-    // set attachment property to step smtp
-    smtpStep.setAttachments(attachments);
+    for(var att in attachmentsArray){
+    	var attachment = {"path": attachPath + signatures[att].name, "name": attachmentsArray[att].name};
+    	attachments.push(attachment);
+    }
     
-    //set SmtpRecipients property to step smtp
-    smtpStep.setSmtpRecipients(jEmailRecipients);
+    // entry parameters (most of them are defined by sequence variable)
+    var sRecipients = jEmailRecipients;
+    var sSubject = jEmailSubject;
+    var xslFilepath =".//emails/responseMail2.xsl"
+    var sContentType = "";
+    var currentProjectName = "lib_Actions_C8Oforms";
+    //var smtpAuthType = "${lib.actions.c8oforms.smtp.security}";
+    //var sSender = "${lib.actions.c8oforms.smtp.sender}"
+    //var smtpUsername ="${lib.actions.c8oforms.smtp.user}";
+    //var smtpPassword = "${lib.actions.c8oforms.smtp.password.secret}";
+    //var smtpServer = "${lib.actions.c8oforms.smtp.server}";
+    //var smtpPort = "${lib.actions.c8oforms.smtp.port}";
     
-    //set SmtpServer property to step smtp
-    smtpStep.setSmtpServer(smtpServer);
     
-    //set SmtpSubject property to step smtp
-    smtpStep.setSmtpSubject(jEmailSubject);
+    // define "enum" for auth type
+    var SmtpAuthType = {
+    		none: "None",
+    		basic: "Basic",
+    		startTls: "STARTTLS",
+    		sslTls: "SSL/TLS"
+    }
+    // deifne build mail function
+    var buildMail = (message)=>{
+    	var ret = message;
+    	try {
+    		var replies = [];
+    		replies[0] = new javax.mail.internet.InternetAddress(sSender);
+    		var recipients = sRecipients.split(/,|;/)
+    		// Adding sender
+    		ret.setFrom(new javax.mail.internet.InternetAddress(sSender));
+    		ret.setSender(new javax.mail.internet.InternetAddress(sSender));
+    		ret.setReplyTo(replies);
+    		
+    		//Adding recipients
+    		if (recipients[0].indexOf(":") != -1) {
+    			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0].split(":")[1]));
+    		} else {
+    			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0]));
+    		}
+    		for (var i = 1; i < recipients.length; i++) {
+    			if (recipients[i].indexOf(":") != -1) {
+    				var sRecipientType  = recipients[i].split(":")[0];
+    				var sRecipientAddress  = recipients[i].split(":")[1];
+    				if(sRecipientAddress != ""){
+    					if ("TO".toUpperCase() === sRecipientType.toUpperCase()) {
+    						ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(sRecipientAddress));
+    					} else if ("BCC".toUpperCase() === sRecipientType.toUpperCase()) {
+    						ret.addRecipient(javax.mail.Message.RecipientType.BCC, new javax.mail.internet.InternetAddress(sRecipientAddress));
+    					} else {
+    						ret.addRecipient(javax.mail.Message.RecipientType.CC, new javax.mail.internet.InternetAddress(sRecipientAddress));
+    					}
+    				}
+    			} else {
+    				if(recipients[i] != ""){
+    					ret.addRecipient(javax.mail.Message.RecipientType.CC, new javax.mail.internet.InternetAddress(recipients[i]));
+    				}
+    			}
+    		}		
+    		//Adding mail subject
+    		ret.setSubject(sSubject);
     
-    //set XslFilepath property to step smtp
-    smtpStep.setXslFilepath(".//emails/responseMail2.xsl");
+    		//Adding content
+    		if (bodyParts.size() > 0) {
+    			var multipart = new javax.mail.internet.MimeMultipart();
+    			var msgPart = new javax.mail.internet.MimeBodyPart();
+    			msgPart.setContent(sMessageText, sContentType);
+    			multipart.addBodyPart(msgPart);
+    			for(var i =0; i < bodyParts.size(); i++) {
+    				multipart.addBodyPart(bodyParts.get(i));
+    			}
+    			ret.setContent(multipart);
+    		} else {
+    			ret.setContent(sMessageText, sContentType);
+    		}
+    	} catch (e1) {
+    		log.error("(Sequence SmtpStep) An error occured while trying to build e-mail : " + e1);
+    	}
+    	return ret;
+    }
     
-    //set SmtpAuthType property to step smtp
-    var getSmtpAuthType = (val) => {
-    	switch(val){
-    		case "None":
-    				return com.twinsoft.convertigo.beans.steps.SmtpStep.SmtpAuthType.none;
-    			break;
-    		case "Basic":
-    				return com.twinsoft.convertigo.beans.steps.SmtpStep.SmtpAuthType.basic;
-    			break;
-    		case "STARTTLS":
-    				return com.twinsoft.convertigo.beans.steps.SmtpStep.SmtpAuthType.startTls;
-    			break;
-    		case "SSL/TLS":
-    				return com.twinsoft.convertigo.beans.steps.SmtpStep.SmtpAuthType.sslTls;
-    			break;
+    var fileXSL = null;
+    if (xslFilepath.length > 0) {
+    	fileXSL = new java.io.File(com.twinsoft.convertigo.engine.Engine.theApp.filePropertyManager.getFilepathFromProperty(xslFilepath, currentProjectName));
+    	if (!fileXSL.exists()) {
+    		log.error("(Sequence SmtpStep) SMTP step missing xsl file");
+    	}
+    }
+    if (sContentType.length == 0) {
+    	sContentType = fileXSL != null ? "text/html; charset=UTF-8" : "text/plain; charset=UTF-8";
+    }
+    var transformer = fileXSL != null ? com.twinsoft.convertigo.engine.util.XMLUtils.getNewTransformer(new javax.xml.transform.stream.StreamSource(fileXSL)) : com.twinsoft.convertigo.engine.util.XMLUtils.getNewTransformer();
+    transformer.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+    transformer.setOutputProperty(javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION, "yes");
+    var sw = new java.io.StringWriter();
+    
+    transformer.transform(new javax.xml.transform.dom.DOMSource(context.outputDocument), new javax.xml.transform.stream.StreamResult(sw));
+    sMessageText = sw.toString();
+    var bodyParts = new java.util.LinkedList();
+    bodyParts.clear();
+    for (var i in attachments) {
+    	var attachment = attachments[i];
+    	var filepath = attachment["path"];
+    	try {
+    		
+    		filepath = filepath == undefined  ? "" : filepath;
+    		if (filepath.length > 0) {
+    			var file = new java.io.File(com.twinsoft.convertigo.engine.Engine.theApp.filePropertyManager.getFilepathFromProperty(filepath, com.twinsoft.convertigo.engine.Engine.theApp.databaseObjectsManager.getOriginalProjectByName(currentProjectName).getName()));
+    			if (file.exists()) {
+    				if (file.isFile()) {
+    					var filename = attachment["name"];
+    					filename = filename == undefined ? file.getName() : filename;
+    					var bodyPart = new javax.mail.internet.MimeBodyPart();
+    					bodyPart.attachFile(file);
+    					var index = filename.indexOf("_");
+    					index = index == -1 ? 0 : index + 1
+    					bodyPart.setFileName(filename.substring(index));
+    					//bodyPart.setContentID("some-image-cid");
+    					//bodyPart.setDisposition(javax.mail.internet.MimeBodyPart.INLINE);
+    					bodyParts.add(bodyPart);
+    				} else {
+    					log.info("(Sequence SmtpStep) Unable attach a directory : " + file.getAbsolutePath());
+    				}
+    			} else {
+    				log.info("(Sequence SmtpStep) attach an unexisting file : " + file.getAbsolutePath());
+    			}
+    		} else {
+    			log.info("(Sequence SmtpStep) Unable attach an empty filepath");
+    		}
+    	} catch (e) {
+    		log.info("(Sequence SmtpStep) Unable attach " + filepath + " error: "+JSON.stringify(e));
+    	}							
+    }
+    var running = false;
+    var r = new java.lang.Runnable() {
+        run: () => {
+    		// copy variables before their deletion from scope
+    		var logRunnable = log;
+    		var SmtpAuthTypeRunnable = SmtpAuthType;
+    		var smtpAuthTypeRunnable = smtpAuthType;
+    		var smtpServerRunnable = smtpServer;
+    		var smtpPortRunnable = smtpPort;
+    		var smtpUsernameRunnable = smtpUsername;
+    		var smtpPasswordRunnable = smtpPassword;
+    		var attachmentsRunnable = attachments;
+    		var currentProjectNameRunnable = currentProjectName;
+    		// create deleteAttachmentsAfterEmail to execute after sending email
+    		var deleteAttachmentsAfterEmail = ()=>{
+    			for(var i in attachmentsRunnable){
+    				try{
+    					var current = attachmentsRunnable[i];
+    					var filepath = current == undefined || current["path"] == undefined ? "": current["path"];
+    					var file = new java.io.File(com.twinsoft.convertigo.engine.Engine.theApp.filePropertyManager.getFilepathFromProperty(filepath, com.twinsoft.convertigo.engine.Engine.theApp.databaseObjectsManager.getOriginalProjectByName(currentProjectNameRunnable).getName()));
+    					if(file.exists()){
+    						if(file.delete()){
+    							logRunnable.info("(Sequence SmtpStep) Attachment file ''"+current["name"]+"'' has been succesfully deleted");
+    						}
+    						else{
+    							logRunnable.warn("(Sequence SmtpStep) Can''t delete attachment file ''"+current["name"]+"''");
+    						}
+    					}
+    				}
+    				catch(e){
+    					logRunnable.warn("(Sequence SmtpStep) An error occured wile deleting attachment file ''"+current["name"]+"'' " + JSON.stringify(e));
+    				}
+    			}
+    		}
+    		running = true;
+    		logRunnable.info("(Sequence SmtpStep): starting async Thread");
+    		// equivalent to sendMess
+    		var mailcapCommandMap = null;
+    		var props = new java.util.Properties();
+    		try {
+    			if (mailcapCommandMap == null) {
+    				var mc = javax.activation.CommandMap.getDefaultCommandMap();
+    				if (mailcapCommandMap == null) {
+    					mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
+    					mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+    					mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+    					mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+    					mc.addMailcap("multipart/mixed;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+    					mc.addMailcap("message/rfc822;; x-java-content- handler=com.sun.mail.handlers.message_rfc822");
+    				}
+    				mailcapCommandMap = mc;
+    			}
+    			// define auth properties
+    			var smtpKind = smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls ? "smtps" : "smtp";
+    			props.put("mail.smtps.host", smtpServerRunnable);
+    			props.put("mail.smtps.port", smtpPortRunnable);
+    			props.put("mail.transport.protocol", smtpKind);
+    			props.put("mail.smtps.auth", ""+(smtpAuthTypeRunnable != SmtpAuthTypeRunnable.none));
+    			var auth = null;
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls){
+    				auth = new javax.mail.Authenticator({
+    					// override java 
+    					getPasswordAuthentication: function() {
+    						var username = smtpUsernameRunnable;
+    						var password = smtpPasswordRunnable;
+    						return new javax.mail.PasswordAuthentication(username, password);
+    					}
+    				});
+    			}
+    			
+    			var mailSession = javax.mail.Session.getInstance(props, auth);
+    			var message = new javax.mail.internet.MimeMessage(mailSession);
+    		
+    			// Building message
+    			message = buildMail(message);
+    		
+    			//Sending e-mail
+    			logRunnable.info("(Sequence SmtpStep) Sending e-mail with "+smtpAuthTypeRunnable);
+    			var transport = mailSession.getTransport(smtpKind);
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls || smtpAuthTypeRunnable == SmtpAuthTypeRunnable.basic){
+    				transport.connect(smtpServerRunnable, +smtpPortRunnable, smtpUsernameRunnable, smtpPasswordRunnable);
+    			}
+    			else if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls){
+    				transport.connect(smtpServerRunnable, smtpUsernameRunnable, smtpPasswordRunnable);
+    			}
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.none){
+    				javax.mail.Transport.send(message);
+    			}
+    			else{
+    				transport.sendMessage(message, message.getAllRecipients());
+    			}
+    			transport.close();
+    			logRunnable.info("(Sequence SmtpStep) E-mail has been sendeed");
+    			deleteAttachmentsAfterEmail();
+    			
+    		} catch (e) {
+    			logRunnable.error("(Sequence SmtpStep) An error occured while trying to send e-mail : " + e);
+    			deleteAttachmentsAfterEmail();
+    		}
+    		logRunnable.info("(Sequence SmtpStep): ending async Thread");
     	}
     };
-    smtpStep.setSmtpAuthType(getSmtpAuthType(authenticationType));
-    
-    //set SmtpSender property to step smtp
-    smtpStep.setSmtpSender(senderEmailAdress);
-    
-    //set SmtpPassword property to step smtp
-    smtpStep.setSmtpPassword(smtpPassword);
-    
-    //set SmtpPort property to step smtp
-    smtpStep.setSmtpPort(smtpPort);
-    
-    //set SmtpUsername property to step smtp
-    smtpStep.setSmtpUsername(smtpUser);
-    
-    // run step;
-    smtpStep.execute(context.requestedObject.runningThread.javascriptContext, context.requestedObject.scope);
-    **/'
+    new java.lang.Thread(r).start();
+    var cpt = 100;
+    while(running != true && --cpt){
+    	java.lang.Thread.sleep(50);
+    }
+    '
   output: true
-↓SMTP_send [steps.SmtpStep-1599570999694]: 
-  smtpAuthType: ${lib.actions.c8oforms.smtp.security}
-  smtpPassword: x731c565d55a2a2e3f9747ad43539421ba369803d925e5f657302a8f9b0af91173177899c6a22f114f50b0b9bb5e982af
-  smtpPort: ${lib.actions.c8oforms.smtp.port}
-  smtpRecipients: jEmailRecipients
-  smtpSender: '"${lib.actions.c8oforms.smtp.sender}"'
-  smtpServer: ${lib.actions.c8oforms.smtp.server}
-  smtpSubject: jEmailSubject
-  smtpUsername: ${lib.actions.c8oforms.smtp.user}
-  xslFilepath: '".//emails/responseMail2.xsl"'
-↓wait [steps.SimpleStep-1599570999697]: 
-  expression: java.lang.Thread.sleep(60000);
-↓IfFileExists [steps.IfFileExistStep-1599570999700]: 
-  condition: filepath+filename
-  ↓Delete_file [steps.DeleteStep-1599570999703]: 
-    sourcePath: filepath+filename
-↓jIterator2 [steps.SimpleIteratorStep-1601045465743]: 
-  expression: signatures
-  ↓Sequence_JS [steps.SimpleStep-1601045505349]: 
-    expression: |
-      //todo
-      
-      var fPathName = attachPath + item.name;
-      fPathName = fPathName.replace(/(\\)/g, '$1$1');
-  ↓IfFileExists [steps.IfFileExistStep-1601045488334]: 
-    condition: fPathName
-    ↓Delete_file [steps.DeleteStep-1601045488337]: 
-      sourcePath: fPathName
-↓jIterator21 [steps.SimpleIteratorStep-1601045586850]: 
-  expression: attachmentsArray
-  ↓Sequence_JS [steps.SimpleStep-1601045586853]: 
-    expression: |
-      //todo
-      
-      var fPathName = attach2Path + item.value;
-      fPathName = fPathName.replace(/(\\)/g, '$1$1');
-  ↓IfFileExists [steps.IfFileExistStep-1601045586856]: 
-    condition: fPathName
-    ↓Delete_file [steps.DeleteStep-1601045586859]: 
-      sourcePath: fPathName
 ↓forms_mail_recipients_to [variables.RequestableVariable-1599570999706]: 
   comment: |
     '{
@@ -823,3 +944,15 @@ comment: |
   value: Nouvelle réponse dans votre formulaire :
 ↓doc [variables.RequestableVariable-1599570999736]: 
 ↓originalDoc [variables.RequestableVariable-1599570999739]: 
+↓smtpServer [variables.RequestableVariable-1617699648242]: 
+  value: ${lib.actions.c8oforms.smtp.server}
+↓smtpPassword [variables.RequestableVariable-1617699651798]: 
+  value: ${lib.actions.c8oforms.smtp.password.secret}
+↓smtpUsername [variables.RequestableVariable-1617699652410]: 
+  value: ${lib.actions.c8oforms.smtp.user}
+↓smtpPort [variables.RequestableVariable-1617699652958]: 
+  value: ${lib.actions.c8oforms.smtp.port}
+↓sSender [variables.RequestableVariable-1617699653522]: 
+  value: ${lib.actions.c8oforms.smtp.sender}
+↓smtpAuthType [variables.RequestableVariable-1617700685648]: 
+  value: ${lib.actions.c8oforms.smtp.security}
