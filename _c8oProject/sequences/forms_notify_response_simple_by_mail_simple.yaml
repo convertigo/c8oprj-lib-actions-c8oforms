@@ -590,7 +590,7 @@ comment: |
     	attachments.push(attachment);
     }
     for(var att in attachmentsArray){
-    	var attachment = {"path": attachPath + signatures[att].name, "name": attachmentsArray[att].name};
+    	var attachment = {"path": attachPath + attachmentsArray[att].name, "name": attachmentsArray[att].name};
     	attachments.push(attachment);
     }
     
@@ -600,13 +600,14 @@ comment: |
     var xslFilepath =".//emails/responseMail2.xsl"
     var sContentType = "";
     var currentProjectName = "lib_Actions_C8Oforms";
-    //var smtpAuthType = "${lib.actions.c8oforms.smtp.security}";
-    //var sSender = "${lib.actions.c8oforms.smtp.sender}"
-    //var smtpUsername ="${lib.actions.c8oforms.smtp.user}";
-    //var smtpPassword = "${lib.actions.c8oforms.smtp.password.secret}";
-    //var smtpServer = "${lib.actions.c8oforms.smtp.server}";
-    //var smtpPort = "${lib.actions.c8oforms.smtp.port}";
     
+    /** symbols */
+    //var smtpAuthType = "lib.actions.c8oforms.smtp.security";
+    //var sSender = "lib.actions.c8oforms.smtp.sender"
+    //var smtpUsername ="lib.actions.c8oforms.smtp.user";
+    //var smtpPassword = "lib.actions.c8oforms.smtp.password.secret";
+    //var smtpServer = "lib.actions.c8oforms.smtp.server";
+    //var smtpPort = "lib.actions.c8oforms.smtp.port";
     
     // define "enum" for auth type
     var SmtpAuthType = {
