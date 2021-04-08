@@ -540,7 +540,7 @@ comment: |
   ↓jElement [steps.ElementStep-1599746917424]: 
     expression: item.value
   ↓jElement1 [steps.ElementStep-1599752298863]: 
-    expression: attachPath + item.value
+    expression: attachPath + item.name
   ↓Call_Transaction [steps.TransactionStep-1599746937829]: 
     output: true
     sourceTransaction: C8Oforms.c8oforms_response_fs.GetDocumentAttachment
