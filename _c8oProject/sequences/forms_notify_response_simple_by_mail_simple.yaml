@@ -863,19 +863,19 @@ comment: |
     '{
         "en":{
           "displayName":"<p>Cc</p>",
-             "comment":"<div>Mail <b>copy</b> recipients separated by comma or semicolon. <i>(mandatory)</i></div>"
+             "comment":"<div>Mail <b>copy</b> recipients separated by comma or semicolon.</div>"
           },
           "fr":{
               "displayName":"<p>Cc</p>",
-              "comment":"<div>Destinataires <b>en copie</b> du courrier séparés par une virgule ou un point-virgule. <i>(obligatoire)</i></div>"
+              "comment":"<div>Destinataires <b>en copie</b> du courrier séparés par une virgule ou un point-virgule.</div>"
           },
           "es":{
               "displayName":"<p>Cc</p>",
-              "comment":"<div>Destinatarios <b>en copia<b/> de correo separados por coma o punto y coma. <i>(obligatorio)</i></div>"
+              "comment":"<div>Destinatarios <b>en copia<b/> de correo separados por coma o punto y coma.</div>"
           },
           "it":{
               "displayName":"<p>Cc</p>",
-              "comment":"<div>Destinatari <b>della copia</b> di posta separati da virgola o punto e virgola. <i>(obbligatorio)</i></div>"
+              "comment":"<div>Destinatari <b>della copia</b> di posta separati da virgola o punto e virgola.</div>"
           }
       }'
   value: 
@@ -884,19 +884,19 @@ comment: |
     '{
         "en":{
           "displayName":"<p>Bcc</p>",
-             "comment":"<div>Mail <b>blind</b> recipients separated by comma or semicolon. <i>(mandatory)</i></div>"
+             "comment":"<div>Mail <b>blind</b> recipients separated by comma or semicolon.</div>"
           },
           "fr":{
               "displayName":"<p>Bcc</p>",
-              "comment":"<div>Destinataires <b>en copie cachée</b> du courrier séparés par une virgule ou un point-virgule. <i>(obligatoire)</i></div>"
+              "comment":"<div>Destinataires <b>en copie cachée</b> du courrier séparés par une virgule ou un point-virgule.</div>"
           },
           "es":{
               "displayName":"<p>Bcc</p>",
-              "comment":"<div>Destinatarios <b>ciegos<b/> de correo separados por coma o punto y coma. <i>(obligatorio)</i></div>"
+              "comment":"<div>Destinatarios <b>ciegos<b/> de correo separados por coma o punto y coma.</div>"
           },
           "it":{
               "displayName":"<p>Bcc</p>",
-              "comment":"<div>Destinatari <b>ciechi</b> di posta separati da virgola o punto e virgola. <i>(obbligatorio)</i></div>"
+              "comment":"<div>Destinatari <b>ciechi</b> di posta separati da virgola o punto e virgola.</div>"
           }
       }'
   value: 
@@ -926,19 +926,19 @@ comment: |
     '{
       "en":{
     	"displayName":"<p>Email body</p>",
-        "comment":"<div>Email body, the message you want to send to recipients. <i>(optional)</i></div>"
+        "comment":"<div>Email body, the message you want to send to recipients.</div>"
         },
         "fr":{
             "displayName":"<p>Corps de l''e-mail</p>",
-            "comment":"<div>Corps de l''e-mail, le message que vous voulez envoyer aux destinataires. <i>(optionnel)</i></div>"
+            "comment":"<div>Corps de l''e-mail, le message que vous voulez envoyer aux destinataires.</div>"
         },
         "es":{
             "displayName":"<p>Cuerpo del correo</p>",
-            "comment":"<div>Cuerpo del correo electrónico, el mensaje que desea enviar a los destinatarios. <i>(opcional)</i></div>"
+            "comment":"<div>Cuerpo del correo electrónico, el mensaje que desea enviar a los destinatarios.</div>"
         },
         "it":{
             "displayName":"<p>Corpo dell''email</p>",
-            "comment":"<div>Corpo dell''e-mail, il messaggio che si desidera inviare ai destinatari. <i>(facoltativo)</div>"
+            "comment":"<div>Corpo dell''e-mail, il messaggio che si desidera inviare ai destinatari.</div>"
         }
     }'
   description: html
