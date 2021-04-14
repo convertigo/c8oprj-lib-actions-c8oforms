@@ -264,13 +264,15 @@ comment: |
                     else if (doc[property].type == "file") {
                         if (doc[property].value != "") {
                             var str = "";
+    						var arrayVal = [];
                             for (var elem in doc[property]["value"]) {
-                                str == "" ? str = doc[property]["value"][elem] : str += "," + doc[property]["value"][elem];
+                                //str == "" ? str = doc[property]["value"][elem] : str += "," + doc[property]["value"][elem];
+    							arrayVal.push(doc[property]["value"][elem]);
                             }
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": str, "type": doc[property].type, "name":  doc[property].name })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": arrayVal, "type": doc[property].type, "name":  doc[property].name })
                         }
                         else {
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": [], "type": doc[property].type, "name":  doc[property].name })
                         }
                     }
                     else if(doc[property].type == "grid") {
@@ -383,7 +385,37 @@ comment: |
     //var encodedhash = digest.digest(jName.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     //var filename = encodedhash + ".csv";
     //writeFile(filepath, filename, resp);
-    
+    var findUniqueNameForFile = (attachmentsArray, signatures, name)=>{
+    	try{
+    		// get all attachment name
+    		var attachByName = attachmentsArray.map((elem)=>{
+    			return elem.name.substring(elem.name.indexOf("_")+1);
+    		});
+    		var signaturesByName = signatures.map((elem)=>{
+    			return elem.name.substring(elem.name.indexOf("_")+1);
+    		});
+    		// merge two existing array of attachments
+    		var allAttach = attachByName.concat(signaturesByName);
+    		
+    		//search for next name dispo
+    		var getNextNameDispo = (name, index)=>{
+    			var tryName = index == null ? name : ("("+index+")"+name);
+    			if(allAttach.indexOf(tryName) != -1){
+    				//if still exists call myself recursivly
+    				return getNextNameDispo(name, index == null ? 1: index +1 )
+    			}
+    			else{
+    				// if is dispo
+    				return tryName;
+    			}
+    		}
+    		name = getNextNameDispo(name, null);
+    		return name;
+    	}
+    	catch(e){
+    		return "";
+    	}
+    }
     var signatures = [];
     var attachmentsArray = [];
     var headerCheckBoxGroup = {};
@@ -398,19 +430,31 @@ comment: |
         try {
             if (+elem > 2) {
                 if (resp[elem]["type"] == "signature") {
-                    signatures.push({ name: new Date().getTime()+"_" +resp[elem]["key"] + ".png", "value": (resp[elem]["value"]).substring(22) });
-                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + resp[elem]["key"] + ".png</p></td></tr>";
+    				var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"] + ".png");
+    				var name =  uniqueName != "" ? uniqueName : resp[elem]["key"] + ".png";
+                    signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
+                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
                 }
                 else if (resp[elem]["type"] == "img") {
-                    signatures.push({ name: new Date().getTime()+"_"+resp[elem]["key"] + ".jpg", "value": (resp[elem]["value"]) });
-                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + resp[elem]["key"] + ".png</p></td></tr>";
+    				var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
+    				var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
+                    signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
+                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
                 }
                 else if (resp[elem]["type"] == "file") {
-                    var idx1 = resp[elem]["value"].indexOf("_C80C80_");
-                    var idx2 = resp[elem]["value"].indexOf("_C80C80_", idx1 + 1);
-                    var name = resp[elem]["value"].substring(idx1 + 8, idx2);
-                    attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (resp[elem]["value"]) });
-                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				var longName = "";
+    				for(var fileElem in resp[elem]["value"]){
+    					var currentE = resp[elem]["value"][fileElem];
+    					var idx1 = currentE.indexOf("_C80C80_");
+    	                var idx2 = currentE.indexOf("_C80C80_", idx1 + 1);
+    	                var name = currentE.substring(idx1 + 8, idx2);
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
+    					name = uniqueName != "" ? uniqueName : name;
+    					longName += ", "+name;
+    	                attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (currentE) });
+    				}
+                   	longName = longName.substring(2);
+                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + longName + "</p></td></tr>";
                 }
                 else if (resp[elem]["type"] == "checkbox_group") {
                     // table_recap += "<table>"; // table class=''cbgroup-table''
