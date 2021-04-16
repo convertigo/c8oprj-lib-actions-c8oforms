@@ -556,7 +556,7 @@ comment: |
         try {
             table_recap += "<tr><td><p class=''under''>" + elem + "</p></td><td><p>" + jDoc.variable.actionsValue[elem]["value"] + "</p></td></tr>";
             if (jDoc.variable.actionsValue[elem]["valueType"] == "attachment") {
-                attachmentsArray.push({ name: new Date().getTime()+"_"+ + jDoc.variable.actionsValue[elem]["value"], "value": ("" + jDoc.variable.actionsValue[elem]["value"]) });
+                attachmentsArray.push({ name: new Date().getTime()+"_"+ jDoc.variable.actionsValue[elem]["value"], "value": ("" + jDoc.variable.actionsValue[elem]["value"]) });
             }
         }
         catch (e) {
