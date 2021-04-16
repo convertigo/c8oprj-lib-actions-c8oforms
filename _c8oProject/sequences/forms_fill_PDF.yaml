@@ -184,19 +184,19 @@ comment: |
     '{
         "en": {
             "displayName": "<p>PDF template file</p>",
-            "comment"    : "Fill in the PDF file you want to use as a template"
+            "comment"    : "Fill in the dynamic PDF file you want to use as a template.<br/>You can use a tool such as <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> to make your PDF dynamic.<br/>You will be asked to create a new PDF or use an existing one.<br/>In PDF, the fields name must be identical to your form fields technical identifiers."
         },
         "fr": {
             "displayName": "<p>Fichier PDF modèle</p>",
-            "comment"    : "Renseignez le fichier PDF que vous voulez utiliser comme modèle"
+            "comment"    : "Renseignez le fichier PDF que vous voulez utiliser comme modèle.<br>Vous pouvez utiliser par exemple <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> pour rendre votre PDF dynamique.<br/>Vous pouvez soit partir d''un nouveau PDF soit d''un existant.<br/>Le nom des champs du PDF doit être identique aux identifiants des champs de votre formulaire."
         },
         "es": {
             "displayName": "<p>Archivo de plantilla PDF</p>",
-            "comment"    : "Complete el archivo PDF que desea usar como plantilla"
+            "comment"    : "Rellene el archivo PDF que desea utilizar como plantilla.<br>Puede utilizar, por ejemplo, <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> para que su PDF sea dinámico.<br/>Puede partir de un nuevo PDF o de uno ya existente.<br/>Los nombres de los campos del PDF deben ser idénticos a los ID de los campos de su formulario."
         },
         "it": {
             "displayName": "<p>File modello PDF</p>",
-            "comment"    : "Compila il file PDF che desideri utilizzare come modello"
+            "comment"    : "Compila il file PDF che vuoi usare come modello.<br>Puoi usare per esempio <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> per rendere il tuo PDF dinamico.<br/>Puoi partire da un nuovo PDF o da uno esistente.<br/>I nomi dei campi nel PDF devono essere identici agli ID dei campi del tuo modulo."
         }
     }'
   description: file
