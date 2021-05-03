@@ -19,6 +19,7 @@ comment: |
   }'
 ↓Input_variables [steps.InputVariablesStep-1615311582853]: 
 ↓Iterator [steps.IteratorStep-1615311582856]: 
+  isEnabled: false
   sourceDefinition: 
     - xmlizable: 
       - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -78,11 +79,17 @@ comment: |
         			i++;
         			var xSelected = xPath.selectSingleNode(xItem, "./selected");
         			if(xSelected != null){
+        				var normalizeName = com.twinsoft.convertigo.engine.util.StringUtils.normalize(internalName + "_" + i);
+        				var fieldNode = context.addTextNode(nl.item(0), normalizeName, ''''+xSelected.getTextContent() == "true" ? "On" : "Off");
+        				if(normalizeName != internalName + "_" + i){
+        					fieldNode.setAttribute("originalKeyName", internalName + "_" + i);
+        				}
+        				/*
         				if((''''+xSelected.getTextContent()) == "true"){
         					context.addTextNode(nl.item(0), internalName + "_" + i, "On");
         				}else{
         					context.addTextNode(nl.item(0), internalName + "_" + i, "Off");
-        				}
+        				}*/
         			}
         		}
         		break;
@@ -90,9 +97,54 @@ comment: |
         		//TODO
         	default:
         		var xValue = xPath.selectSingleNode(item, "./value");
-        		internalValue = xValue != null ? xValue.getTextContent() : "";
-        		context.addTextNode(nl.item(0), internalName, internalValue);
+        		internalValue = xValue != null ? xValue.getTextContent() : "";		
+        		var normalizeName = com.twinsoft.convertigo.engine.util.StringUtils.normalize(internalName);
+        		var fieldNode = context.addTextNode(nl.item(0), normalizeName, internalValue);
+        		if(normalizeName != internalName){
+        			fieldNode.setAttribute("originalKeyName", internalName);
+        		}
         }'
+  ↓Fill_Form_PDF [steps.PdfFormStep-1615311582871]: 
+    fieldsList: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: SOURCE
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1615311582859
+            - java.lang.String: 
+              - ↑value: .
+    filePath: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: JS
+          - →→: forms_input_pdf_path
+    targetFile: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+        - SmartType: 
+          - ↑mode: JS
+          - →→: path
+  ↓Call_Transaction [steps.TransactionStep-1615397498827]: 
+    sourceTransaction: C8Oforms.c8oforms_response_fs.PutDocumentAttachmentFromFile
+    ↓_use_attname [variables.StepVariable-1615397548530]: 
+      description: Attachment name
+    ↓_use_attpath [variables.StepVariable-1615397548532]: 
+      description: Attachment path  This path is either absolute or relative to Convertigo environment. Relative paths starting with:<br/><br/>• <span class="computer">./</span> are relative to Convertigo workspace,<br/>• <span class="computer">.//</span> are relative to current project folder. <br/><br/>
+    ↓_use_docid [variables.StepVariable-1615397548534]: 
+      description: Document ID
+    ↓_use_attcontent_type [variables.StepVariable-1615397548536]: 
+      description: Attachment ContentType  Define the ContentType of the attachment. This is the ContentType returned when the attachment is requested.
+  ↓Delete_file [steps.DeleteStep-1615397419746]: 
+    sourcePath: path
+  ↓Call_Transaction2 [steps.TransactionStep-1615465301061]: 
+    sourceTransaction: C8Oforms.c8oforms_response_fs.PostDocumentJBASE
+    ↓_use_json_base [variables.StepVariable-1615465485624]: 
+      description: (string) – JSON use as a base for the document (js object). Optional
+    ↓_id [variables.StepVariable-1615465485626]: 
+      description: Document id
   ↓generateUniquePath [steps.SimpleStep-1615397273864]: 
     expression: |
       '//imports and utils
@@ -136,67 +188,285 @@ comment: |
       
       
       log.warn("has_exec");'
-  ↓Fill_Form_PDF [steps.PdfFormStep-1615311582871]: 
-    fieldsList: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-        - SmartType: 
-          - ↑mode: SOURCE
-          - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: 1615311582859
-            - java.lang.String: 
-              - ↑value: .
-    filePath: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-        - SmartType: 
-          - ↑mode: JS
-          - →→: forms_input_pdf_path
-    targetFile: 
-      - xmlizable: 
-        - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
-        - SmartType: 
-          - ↑mode: JS
-          - →→: path
-  ↓Call_Transaction [steps.TransactionStep-1615397498827]: 
-    sourceTransaction: C8Oforms.c8oforms_response_fs.PutDocumentAttachmentFromFile
-    ↓_use_attname [variables.StepVariable-1615397548530]: 
-      description: Attachment name
-    ↓_use_attpath [variables.StepVariable-1615397548532]: 
-      description: Attachment path  This path is either absolute or relative to Convertigo environment. Relative paths starting with:<br/><br/>• <span class="computer">./</span> are relative to Convertigo workspace,<br/>• <span class="computer">.//</span> are relative to current project folder. <br/><br/>
-    ↓_use_docid [variables.StepVariable-1615397548534]: 
-      description: Document ID
-    ↓_use_attcontent_type [variables.StepVariable-1615397548536]: 
-      description: Attachment ContentType  Define the ContentType of the attachment. This is the ContentType returned when the attachment is requested.
-  ↓Delete_file [steps.DeleteStep-1615397419746]: 
-    sourcePath: path
-  ↓Call_Transaction2 [steps.TransactionStep-1615465301061]: 
-    sourceTransaction: C8Oforms.c8oforms_response_fs.PostDocumentJBASE
-    ↓_use_json_base [variables.StepVariable-1615465485624]: 
-      description: (string) – JSON use as a base for the document (js object). Optional
-    ↓_id [variables.StepVariable-1615465485626]: 
-      description: Document id
-↓originalDoc [variables.RequestableMultiValuedVariable-1615311582880]: 
-↓doc [variables.RequestableMultiValuedVariable-1615311582883]: 
+↓generateUniquePath [steps.SimpleStep-1619790822194]: 
+  expression: |
+    '//imports and utils
+    var  XMLUtils = use(''com.twinsoft.convertigo.engine.util.XMLUtils'');
+    // Define var isWindows to detect unix like system or not
+    var isWindows = org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+    // Define separator switch os
+    var separator = isWindows ? "\\" :"/";
+    // function to generate pseudo random char
+    var result           = '''';
+    var characters       = ''ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 10; i++ ) {
+    	result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    
+    
+    // generate a path to put generated PDF
+    var path = _use_attpath = com.twinsoft.convertigo.engine.Engine.theApp.databaseObjectsManager.getOriginalProjectByName("lib_Actions_C8Oforms").getDirPath() + separator+"csv"+separator  +new Date().getTime()+"_"+result;
+    
+    // get response docID
+    var _use_docid = _id = (JSON.parse(''''+XMLUtils.XmlToJson(doc, true, true))).variables["variable"]["_id"];
+    
+    // get current action
+    var currentAction = JSON.parse(currentAction)["item"];
+    // get current action name
+    var currentActionName = currentAction["name"];
+    // get current action executing sequence
+    //var currentSeq = Object.keys(currentAction["actions"])[0];
+    
+    // generate an attachment name to put generated PDF
+    var _use_attname = currentActionName + ".pdf";
+    // define attachment type
+    var _use_attcontent_type = "application/pdf";
+    
+    // set a value to an action 
+    var _use_json_base = {"actionsValue":{}};
+    _use_json_base["actionsValue"][currentActionName] = {"value":_use_attname, "valueType": "attachment"};
+    _use_json_base = "" + JSON.stringify(_use_json_base);
+    log.debug("actionsValue=>"+_use_json_base);
+    
+    
+    log.warn("has_exec");'
+  isEnabled: false
+↓DefineFlatenize [steps.SimpleStep-1619788214494]: 
+  expression: |
+    '//function flatenize
+    var flatenize = function (doc, prefix, resp, myid) {
+        for (var property in doc) {
+            try {
+                if (doc[property].type != undefined) {
+                    if (doc[property].type == "ion-card") {
+                        flatenize(doc[property]["children"], "", resp, myid);
+                    }
+                    else if (doc[property].type == "radio_group") {
+    					log.warn("radio group is not supported by forms_fill_PDF action")
+                        /* not supported for now
+    					for (var ninos in doc[property].children) {
+    						resp.push({[doc[property]["name"]]:""})
+                        }
+    					*/
+                    }
+                    else if (doc[property].type == "checkbox" || doc[property].type == "radio") {
+    					/* supported */
+                        for (var child in doc[property].children) {
+    						resp[doc[property]["name"]] = doc[property].children[child].selected ? "On" : "Off";
+                        }
+                    }
+    				else if (doc[property].type == "radio") {
+    					log.warn("radio is not supported by forms_fill_PDF action")
+    					/* not supported for now
+                        for (var child in doc[property].children) {
+    						var obj ={};
+    						obj[doc[property]["name"]] = doc[property].children[child].selected ? "On" : "Off";
+    						resp.push(obj);
+                        }
+    					*/
+                    }
+                    else if (doc[property].type == "location") {
+    					/* supported */
+                        var val = doc[property].value;
+                        var formattedAddress = (val.addr != undefined) ? val.addr.FormattedAddress : null;
+                        var bBox = (val.bounding_box != undefined) ? val.bounding_box : undefined;
+                        var coordinates = (val.gps != undefined) ? val.gps : null;
+                        var showFormattedAddress = (formattedAddress != undefined && formattedAddress.length > 0) ? true : false;
+                        var showBbox = (bBox != undefined) ? true : false;
+                        var showCoordinates = (!showFormattedAddress && !showBbox) ? true : false;
+    					var value = "";
+    					if (resp[elem][''showBbox'']) {
+    	                    var bboxTopLeftLat = resp[elem]["value"]["bounding_box"]["topLeft"]["lat"];
+    	                    var bboxTopLeftLong = resp[elem]["value"]["bounding_box"]["topLeft"]["lon"];
+    	                    var bboxbottomRightLat = resp[elem]["value"]["bounding_box"]["bottomRight"]["lat"];
+    	                    var bboxbottomRightLong = resp[elem]["value"]["bounding_box"]["bottomRight"]["lon"];
+    	                    value = "Bounding Box : " + bboxTopLeftLat + " " + bboxTopLeftLong + " " + bboxbottomRightLat + " " + bboxbottomRightLong + " ";
+    	                }
+    	                else if (resp[elem][''showFormattedAddress'']) {
+    	                    value = resp[elem]["value"]["addr"]["FormattedAddress"];
+    	                }
+    	                else if (resp[elem][''showCoordinates'']) {
+    	                    var latitude = resp[elem]["value"]["gps"]["latitude"];
+    	                    var longitude = resp[elem]["value"]["gps"]["longitude"];
+    	                    var accuracy = resp[elem]["value"]["gps"]["accuracy"];
+    	                    value = "Latitude: " + latitude + " Longitude: " + longitude + " Accuracy: " + accuracy + " meters";
+    	                }
+    					resp[doc[property]["name"]] = value
+                    }
+                    else if (doc[property].type == "checkbox_group") {
+    					log.warn("checkbox group is not supported by forms_fill_PDF action");
+                        /* not supported for now
+                        for (var ninos in doc[property].children) {
+                            resp.push({[doc[property]["name"]]:""})
+                        }
+    					*/
+                    }
+                    else if (doc[property].type == "file") {
+    					log.warn("file is not supported by forms_fill_PDF action");
+                        /*	not supported for now
+    						if (doc[property].value != "") {
+                            var str = "";
+    						var arrayVal = [];
+                            for (var elem in doc[property]["value"]) {
+                                //str == "" ? str = doc[property]["value"][elem] : str += "," + doc[property]["value"][elem];
+    							arrayVal.push(doc[property]["value"][elem]);
+                            }
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": arrayVal, "type": doc[property].type, "name":  doc[property].name })
+                        }
+                        else {
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": [], "type": doc[property].type, "name":  doc[property].name })
+                        }*/
+                    }
+                    else if(doc[property].type == "grid") {
+    					log.warn("grid is not supported by forms_fill_PDF action");
+                        /* grid is not supported 
+    					if (doc[property].value != undefined) {
+                            // if grid value is a string
+                            if(typeof(doc[property].value) == "string"){
+                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
+                            }
+                            else if(Object.keys(doc[property].value).length > 0){
+                                var all = null;
+                                for(var i in doc[property].value){
+                                    // if its a row
+                                    if(typeof(doc[property].value[i]) == "string"){
+                                        all = false;
+                                    }
+                                    // if its all data
+                                    else{
+                                        all = true;
+                                    }
+                                    break;
+                                }
+                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "all": all, "name":  doc[property].name })
+                            }
+    						else{
+                            	resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type, "name":  doc[property].name})
+                        	}
+                        }
+                        else{
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type, "name":  doc[property].name})
+                        }*/
+                    }
+                    else {
+    					/* others are supported*/
+    					resp[doc[property]["name"]] = doc[property].value;
+                    }
+    
+                }
+            }
+            catch (e) {
+                log.error("[forms_fill_PDF] an error occurred while computing values: \n" + JSON.stringify(e));
+            }
+        }
+    };'
+↓ComputeFieldsWIthFlatenize [steps.SimpleStep-1619788167814]: 
+  expression: |
+    '// convert XML to JSON doc
+    var jDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
+    var resp = {};
+    flatenize(jDoc.variable.resp, "", resp, jDoc.variable._id);
+    
+    var strDoc = JSON.stringify(resp);
+    
+    
+    // Define var isWindows to detect unix like system or not
+    var isWindows = org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+    // Define separator switch os
+    var separator = isWindows ? "\\" :"/";
+    // function to generate pseudo random char
+    var result           = '''';
+    var characters       = ''ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 10; i++ ) {
+    	result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    
+    
+    // generate a path to put generated PDF
+    var path = _use_attpath = com.twinsoft.convertigo.engine.Engine.theApp.databaseObjectsManager.getOriginalProjectByName("lib_Actions_C8Oforms").getDirPath() + separator+"csv"+separator  +new Date().getTime()+"_"+result;
+    
+    // get response docID
+    var _use_docid = _id = jDoc.variable._id;
+    
+    // get current action
+    var currentAction = JSON.parse(currentAction)["item"];
+    // get current action name
+    var currentActionName = currentAction["name"];
+    // get current action executing sequence
+    //var currentSeq = Object.keys(currentAction["actions"])[0];
+    
+    // generate an attachment name to put generated PDF
+    var _use_attname = currentActionName + ".pdf";
+    // define attachment type
+    var _use_attcontent_type = "application/pdf";
+    
+    // set a value to an action 
+    var _use_json_base = {"actionsValue":{}};
+    _use_json_base["actionsValue"][currentActionName] = {"value":_use_attname, "valueType": "attachment"};
+    _use_json_base = "" + JSON.stringify(_use_json_base);
+    log.debug("actionsValue=>"+_use_json_base);
+    
+    
+    log.warn("has_exec");'
+↓Fill_Form_PDF [steps.PdfFormStep-1619789928700]: 
+  fieldsList: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: strDoc
+  filePath: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: forms_input_pdf_path
+  targetFile: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: path
+↓Call_Transaction [steps.TransactionStep-1619789928703]: 
+  sourceTransaction: C8Oforms.c8oforms_response_fs.PutDocumentAttachmentFromFile
+  ↓_use_attname [variables.StepVariable-1619789928706]: 
+    description: Attachment name
+  ↓_use_attpath [variables.StepVariable-1619789928709]: 
+    description: Attachment path  This path is either absolute or relative to Convertigo environment. Relative paths starting with:<br/><br/>• <span class="computer">./</span> are relative to Convertigo workspace,<br/>• <span class="computer">.//</span> are relative to current project folder. <br/><br/>
+  ↓_use_docid [variables.StepVariable-1619789928712]: 
+    description: Document ID
+  ↓_use_attcontent_type [variables.StepVariable-1619789928715]: 
+    description: Attachment ContentType  Define the ContentType of the attachment. This is the ContentType returned when the attachment is requested.
+↓Delete_file [steps.DeleteStep-1619789928718]: 
+  sourcePath: path
+↓Call_Transaction2 [steps.TransactionStep-1619789928721]: 
+  sourceTransaction: C8Oforms.c8oforms_response_fs.PostDocumentJBASE
+  ↓_use_json_base [variables.StepVariable-1619789928724]: 
+    description: (string) – JSON use as a base for the document (js object). Optional
+  ↓_id [variables.StepVariable-1619789928727]: 
+    description: Document id
+↓originalDoc [variables.RequestableVariable-1619790461009]: 
+↓doc [variables.RequestableVariable-1619790458721]: 
 ↓forms_input_pdf_path [variables.RequestableVariable-1615311582886]: 
   comment: |
     '{
         "en": {
             "displayName": "<p>PDF template file</p>",
-            "comment"    : "Fill in the dynamic PDF file you want to use as a template.<br/>You can use a tool such as <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> to make your PDF dynamic.<br/>You will be asked to create a new PDF or use an existing one.<br/>In PDF, the fields name must be identical to your form fields technical identifiers."
+            "comment"    : "Fill in the dynamic PDF file you want to use as a template. You can use for example <a href=''https://www.pdfescape.com/open/'' target=''_blank''> PDFescape </a> to make your PDF dynamic, either from a new PDF or from ''an existing one. <br/> The name of the PDF fields must be identical to the technical identifiers of the fields in your form. <br/>Only the fields \"input text\", \"checkbox\", \"date\", \"time\", \"camera\", \"group\", \"barcode\", \"signature\", and \"location\" are supported. <Br / > For the checkboxes, each box of the PDF must have the technical name + \"_1\", + \"_2\" etc ..."
         },
         "fr": {
             "displayName": "<p>Fichier PDF modèle</p>",
-            "comment"    : "Renseignez le fichier PDF que vous voulez utiliser comme modèle.<br>Vous pouvez utiliser par exemple <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> pour rendre votre PDF dynamique.<br/>Vous pouvez soit partir d''un nouveau PDF soit d''un existant.<br/>Le nom des champs du PDF doit être identique aux identifiants des champs de votre formulaire."
+            "comment"    : "Renseignez le fichier PDF dynamique que vous voulez utiliser comme modèle. Vous pouvez utiliser par exemple <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> pour rendre votre PDF dynamique. Soit à partir d''un nouveau PDF soit d''un existant.<br/>Le nom des champs du PDF doit être identique aux identifiants techniques des champs de votre formulaire.<br/>Seul les champs « saisie de donnée », « case à cocher », « date », « heure », « camera », « groupe », « code barre », « signature », et « localisation » sont supportés.<br/>Pour les cases à cocher, chaque case du PDF doit porter le nom technique suivit de : « _1 »,  « _2 » etc…"
         },
         "es": {
             "displayName": "<p>Archivo de plantilla PDF</p>",
-            "comment"    : "Rellene el archivo PDF que desea utilizar como plantilla.<br>Puede utilizar, por ejemplo, <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> para que su PDF sea dinámico.<br/>Puede partir de un nuevo PDF o de uno ya existente.<br/>Los nombres de los campos del PDF deben ser idénticos a los ID de los campos de su formulario."
+            "comment"    : "Complete el archivo PDF dinámico que desea utilizar como plantilla. Puede utilizar, por ejemplo, <a href=''https://www.pdfescape.com/open/'' target=''_blank''> PDFescape </a> para hacer que su PDF sea dinámico, ya sea desde un nuevo PDF o desde ''un existente uno. <br/> El nombre de los campos PDF debe ser idéntico a los identificadores técnicos de los campos en su formulario. <br/>Solo se admiten los campos \"pida de texto\", \"casillas de verificación\", \"fecha\", \"hora\", \"cámara\", \"grupo\", \"código de barras\", \"firma\" y \"ubicación\". <Br /> Para la verificación casillas, cada casilla del PDF debe tener el nombre técnico + \"_1\", + \"_2\" etc ..."
         },
         "it": {
             "displayName": "<p>File modello PDF</p>",
-            "comment"    : "Compila il file PDF che vuoi usare come modello.<br>Puoi usare per esempio <a href=''https://www.pdfescape.com/open/'' target=''_blank''>PDFescape</a> per rendere il tuo PDF dinamico.<br/>Puoi partire da un nuovo PDF o da uno esistente.<br/>I nomi dei campi nel PDF devono essere identici agli ID dei campi del tuo modulo."
+            "comment"    : "Compila il file PDF dinamico che desideri utilizzare come modello. Puoi utilizzare ad esempio <a href=''https://www.pdfescape.com/open/'' target=''_blank''> PDFescape </a> per rendere dinamico il tuo PDF, da un nuovo PDF o da un ''esistente uno. <br/> Il nome dei campi PDF deve essere identico agli identificatori tecnici dei campi nel modulo. <br/>Sono supportati solo i campi \"testo di input\", \"casella di controllo\", \"data\", \"tempo\", \"macchini fotografica\", \"gruppo\", \"codice a barre\", \"firma\" e \"posizione\". <Br /> Per il controllo caselle, ogni casella del PDF deve avere il nome tecnico + \"_1\", + \"_2\" ecc ..."
         }
     }'
   description: file
