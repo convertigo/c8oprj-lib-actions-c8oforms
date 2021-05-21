@@ -826,10 +826,11 @@ comment: |
     			}
     			// define auth properties
     			var smtpKind = smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls ? "smtps" : "smtp";
-    			props.put("mail.smtps.host", smtpServerRunnable);
-    			props.put("mail.smtps.port", smtpPortRunnable);
+    			props.put("mail."+smtpKind+".host", ""+smtpServerRunnable);
+    			props.put("mail."+smtpKind+".port", ""+smtpPortRunnable);
     			props.put("mail.transport.protocol", smtpKind);
-    			props.put("mail.smtps.auth", ""+(smtpAuthTypeRunnable != SmtpAuthTypeRunnable.none));
+    			props.put("mail."+smtpKind+".auth", ""+(smtpAuthTypeRunnable != SmtpAuthTypeRunnable.none));
+    			props.put("mail.smtp.starttls.enable", ""+(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls));
     			var auth = null;
     			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls){
     				auth = new javax.mail.Authenticator({
