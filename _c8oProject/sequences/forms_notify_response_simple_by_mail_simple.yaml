@@ -661,7 +661,7 @@ comment: |
     		sslTls: "SSL/TLS"
     }
     // deifne build mail function
-    var buildMail = (message)=>{
+    var buildMail = (message, log)=>{
     	var ret = message;
     	try {
     		var replies = [];
@@ -847,7 +847,7 @@ comment: |
     			var message = new javax.mail.internet.MimeMessage(mailSession);
     		
     			// Building message
-    			message = buildMail(message);
+    			message = buildMail(message, logRunnable);
     		
     			//Sending e-mail
     			logRunnable.info("(Sequence SmtpStep) Sending e-mail with "+smtpAuthTypeRunnable);
