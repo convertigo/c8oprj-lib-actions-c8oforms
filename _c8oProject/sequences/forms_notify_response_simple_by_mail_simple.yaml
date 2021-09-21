@@ -17,6 +17,7 @@ comment: |
           "comment": "<div>Invia una <b>mail</b> quando viene inviata una nuova risposta</div>"
       }
   }'
+responseTimeout: 600
 ↓Input_variables [steps.InputVariablesStep-1599570999604]: 
 ↓computeEmails [steps.SimpleStep-1599570999655]: 
   expression: |
@@ -806,7 +807,7 @@ comment: |
     				}
     			}
     		}
-    		running = true;
+    		
     		logRunnable.info("(Sequence SmtpStep): starting async Thread");
     		// equivalent to sendMess
     		var mailcapCommandMap = null;
@@ -852,6 +853,7 @@ comment: |
     			//Sending e-mail
     			logRunnable.info("(Sequence SmtpStep) Sending e-mail with "+smtpAuthTypeRunnable);
     			var transport = mailSession.getTransport(smtpKind);
+    			running = true;
     			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls || smtpAuthTypeRunnable == SmtpAuthTypeRunnable.basic){
     				transport.connect(smtpServerRunnable, +smtpPortRunnable, smtpUsernameRunnable, smtpPasswordRunnable);
     			}
@@ -876,7 +878,7 @@ comment: |
     	}
     };
     new java.lang.Thread(r).start();
-    var cpt = 100;
+    var cpt = 500;
     while(running != true && --cpt){
     	java.lang.Thread.sleep(50);
     }
