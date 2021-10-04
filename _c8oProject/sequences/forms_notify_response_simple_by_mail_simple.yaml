@@ -672,18 +672,19 @@ responseTimeout: 600
     		ret.setFrom(new javax.mail.internet.InternetAddress(sSender));
     		ret.setSender(new javax.mail.internet.InternetAddress(sSender));
     		ret.setReplyTo(replies);
-    		
+    		log.debug("(Sequence SmtpStep) list of recipients: "+ JSON.stringify(recipients));
     		//Adding recipients
-    		if (recipients[0].indexOf(":") != -1) {
+    		/*if (recipients[0].indexOf(":") != -1) {
     			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0].split(":")[1]));
     		} else {
     			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0]));
-    		}
+    		}*/
     		for (var i = 1; i < recipients.length; i++) {
     			if (recipients[i].indexOf(":") != -1) {
     				var sRecipientType  = recipients[i].split(":")[0];
     				var sRecipientAddress  = recipients[i].split(":")[1];
-    				if(sRecipientAddress != ""){
+    				if(sRecipientAddress != "" && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(sRecipientAddress)){
+    					log.debug("(Sequence SmtpStep) valid email adress : "+ sRecipientAddress+ " we will add it to recipients");
     					if ("TO".toUpperCase() === sRecipientType.toUpperCase()) {
     						ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(sRecipientAddress));
     					} else if ("BCC".toUpperCase() === sRecipientType.toUpperCase()) {
@@ -691,6 +692,9 @@ responseTimeout: 600
     					} else {
     						ret.addRecipient(javax.mail.Message.RecipientType.CC, new javax.mail.internet.InternetAddress(sRecipientAddress));
     					}
+    				}
+    				else{
+    					log.warn("(Sequence SmtpStep) invalid email adress : "+ sRecipientAddress+ " we will ignore it");
     				}
     			} else {
     				if(recipients[i] != ""){
@@ -867,7 +871,7 @@ responseTimeout: 600
     				transport.sendMessage(message, message.getAllRecipients());
     			}
     			transport.close();
-    			logRunnable.info("(Sequence SmtpStep) E-mail has been sendeed");
+    			logRunnable.info("(Sequence SmtpStep) E-mail has been sent");
     			deleteAttachmentsAfterEmail();
     			
     		} catch (e) {
