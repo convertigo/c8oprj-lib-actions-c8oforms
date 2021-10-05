@@ -674,11 +674,12 @@ responseTimeout: 600
     		ret.setReplyTo(replies);
     		log.debug("(Sequence SmtpStep) list of recipients: "+ JSON.stringify(recipients));
     		//Adding recipients
-    		/*if (recipients[0].indexOf(":") != -1) {
+    		// when there is just 1 reciepent
+    		if (recipients[0].indexOf(":") != -1) {
     			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0].split(":")[1]));
     		} else {
     			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0]));
-    		}*/
+    		}
     		for (var i = 1; i < recipients.length; i++) {
     			if (recipients[i].indexOf(":") != -1) {
     				var sRecipientType  = recipients[i].split(":")[0];
