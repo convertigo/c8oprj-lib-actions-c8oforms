@@ -254,12 +254,13 @@ responseTimeout: 600
                             resp.push({ name: doc[property]["name"], col: doc[property]["labelHtml"], "key": prefix != "" ? prefix + "(" + ninos + ")" : ninos, "value": val, "type": doc[property].type, "name":  doc[property].name });
                         }
                     }
-                    else if (doc[property].type == "signature") {
+                    else if (doc[property].type == "signature" || doc[property].type == "img") {
                         if (doc[property].value != "") {
-                            resp.push({ "key": prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type, "name":  doc[property].name })
+    						
+                            resp.push({ "key": prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true})
                         }
                         else {
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true })
                         }
                     }
                     else if (doc[property].type == "file") {
@@ -270,10 +271,10 @@ responseTimeout: 600
                                 //str == "" ? str = doc[property]["value"][elem] : str += "," + doc[property]["value"][elem];
     							arrayVal.push(doc[property]["value"][elem]);
                             }
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": arrayVal, "type": doc[property].type, "name":  doc[property].name })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": arrayVal, "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true })
                         }
                         else {
-                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": [], "type": doc[property].type, "name":  doc[property].name })
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": [], "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true })
                         }
                     }
                     else if(doc[property].type == "grid") {
@@ -431,16 +432,34 @@ responseTimeout: 600
         try {
             if (+elem > 2) {
                 if (resp[elem]["type"] == "signature") {
-    				var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"] + ".png");
-    				var name =  uniqueName != "" ? uniqueName : resp[elem]["key"] + ".png";
-                    signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
-                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				if(resp[elem]["att_type"] == true){
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["name"] + ".png");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["name"] + ".png";
+    					attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    					log.warn("pushing :" + resp[elem]["value"])
+    	                //signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				}
+    				else{
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"] + ".png");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"] + ".png";
+    	                signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				}
                 }
                 else if (resp[elem]["type"] == "img") {
-    				var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
-    				var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
-                    signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
-                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				if(resp[elem]["att_type"] == true){
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["name"]+".jpg");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["name"]+".jpg";
+    	               	attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				}
+    				else{
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
+    	                signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				}
                 }
                 else if (resp[elem]["type"] == "file") {
     				var longName = "";
@@ -568,6 +587,10 @@ responseTimeout: 600
     table_recap += "</tbody></table>";'
 ↓jIterator [steps.SimpleIteratorStep-1599656293391]: 
   expression: signatures
+  ↓Sequence_JS [steps.SimpleStep-1633714999119]: 
+    expression: |
+      log.warn("into signatures");
+      log.warn(""+JSON.stringify(item))
   ↓jElement [steps.ElementStep-1599656460191]: 
     expression: item.value
   ↓Write_binary_from_Base64 [steps.WriteBase64Step-1599578642292]: 
@@ -582,6 +605,10 @@ responseTimeout: 600
             - ↑value: ./text()
 ↓jIterator1 [steps.SimpleIteratorStep-1599746917421]: 
   expression: attachmentsArray
+  ↓Sequence_JS [steps.SimpleStep-1633715584571]: 
+    expression: |
+      log.warn("into att arr");
+      log.warn(""+JSON.stringify(item))
   ↓jElement [steps.ElementStep-1599746917424]: 
     expression: item.value
   ↓jElement1 [steps.ElementStep-1599752298863]: 
