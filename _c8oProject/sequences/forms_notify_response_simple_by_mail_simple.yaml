@@ -903,7 +903,8 @@ responseTimeout: 600
     			deleteAttachmentsAfterEmail();
     			
     		} catch (e) {
-    			logRunnable.error("(Sequence SmtpStep) An error occured while trying to send e-mail : " + e);
+    			logRunnable.error("(Sequence SmtpStep) An error occured while trying to send e-mail : " + e + (e.javaException != undefined ? "\n"+e.javaException : ""));
+    			
     			deleteAttachmentsAfterEmail();
     		}
     		logRunnable.info("(Sequence SmtpStep): ending async Thread");

@@ -349,6 +349,16 @@ comment: |
                             resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type, "name":  doc[property].name})
                         }*/
                     }
+    				else if(doc[property].type == "img" || doc[property].type == "signature") {
+    					// base64 is no longer more inserted into doc[property].value we will search it from document attachments
+    					if(doc[property].att_type == true){
+    						resp[doc[property]["name"]] = {att_type: true, name: doc[property].value};
+    					}
+    					//legacy mode base64 was inserted directly into doc[property].value;
+    					else{
+    						resp[doc[property]["name"]] = doc[property].value;
+    					}
+    				}
                     else {
     					/* others are supported*/
     					resp[doc[property]["name"]] = doc[property].value;
@@ -363,12 +373,45 @@ comment: |
     };'
 ↓ComputeFieldsWIthFlatenize [steps.SimpleStep-1619788167814]: 
   expression: |
-    '// convert XML to JSON doc
-    var jDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
+    // convert XML to JSON doc
+    var jDoc = JSON.parse('' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
     var resp = {};
     flatenize(jDoc.variable.resp, "", resp, jDoc.variable._id);
     
-    var strDoc = JSON.stringify(resp);
+    var _use_docid = jDoc.variable._id;
+↓jIterator [steps.SimpleIteratorStep-1634225730926]: 
+  expression: Object.keys(resp)
+  ↓jIf [steps.IfStep-1634225752240]: 
+    condition: resp[item].att_type === true
+    ↓getAttachmentName [steps.SimpleStep-1634225942156]: 
+      expression: |
+        var _use_attname = resp[item].name;
+        b64Value = "";
+      output: true
+    ↓Call_Transaction [steps.TransactionStep-1634225772700]: 
+      sourceTransaction: C8Oforms.c8oforms_response_fs.GetDocumentAttachment
+      ↓_use_attname [variables.StepVariable-1634225819646]: 
+        description: Attachment name
+      ↓_use_docid [variables.StepVariable-1634225819648]: 
+        description: Document ID
+      ↓_use_attpath [variables.StepVariable-1634225819650]: 
+        description: Attachment path  This path is either absolute or relative to Convertigo environment. Relative paths starting with:<br/><br/>• <span class="computer">./</span> are relative to Convertigo workspace,<br/>• <span class="computer">.//</span> are relative to current project folder. <br/><br/>
+    ↓jSimpleSource [steps.SimpleSourceStep-1634226030312]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1634225772700
+            - java.lang.String: 
+              - ↑value: ./document/couchdb_output/data/text()
+      variableName: b64Value
+    ↓setB64Value [steps.SimpleStep-1634227778896]: 
+      expression: resp[item] = b64Value;
+      output: true
+↓InsertData [steps.SimpleStep-1634225626617]: 
+  expression: |
+    'var strDoc = JSON.stringify(resp);
     
     
     // Define var isWindows to detect unix like system or not
@@ -388,7 +431,7 @@ comment: |
     var path = _use_attpath = com.twinsoft.convertigo.engine.Engine.theApp.databaseObjectsManager.getOriginalProjectByName("lib_Actions_C8Oforms").getDirPath() + separator+"csv"+separator  +new Date().getTime()+"_"+result;
     
     // get response docID
-    var _use_docid = _id = jDoc.variable._id;
+    _use_docid = _id = jDoc.variable._id;
     
     // get current action
     var currentAction = JSON.parse(currentAction)["item"];
