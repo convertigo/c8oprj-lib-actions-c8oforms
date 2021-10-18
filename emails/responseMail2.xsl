@@ -143,6 +143,7 @@
 								style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; margin: 0 auto; max-width: 580px; padding: 10px; width: 580px;">
 								<div class="content"
 									style="box-sizing: border-box; display: block; margin: 0 auto; max-width: 580px; padding: 10px;">
+									<!-- BODY -->
 									<table class="main"
 										style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; background: #ffffff; border-radius: 3px;"><!-- START MAIN CONTENT AREA -->
 										<tbody>
@@ -156,11 +157,15 @@
 															<tr>
 																<td
 																	style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
+																	<!-- shows a logo if emailLogo is defined in sequence scope -->
 																	<img
 																		style="display: block; margin-left: auto; margin-right: auto;"
 																		src="{//emailLogo}" />
-																	<h1 style="text-align: center;"><xsl:value-of select="//formName"/></h1>		
+																	<!-- displays form's title if formName is defined in sequence scope -->	
+																	<h1 style="text-align: center;"><xsl:value-of select="//formName"/></h1>
+																	<!-- displays form's email body define by user in the form -->			
 																	<xsl:value-of disable-output-escaping="yes" select="//emailBodyPrefix"/>
+																	<!-- displays the form's response resume automatically generated -->	
 																	<xsl:value-of select="//tableBody" disable-output-escaping="yes" />
 																</td>
 															</tr>
@@ -170,10 +175,10 @@
 											</tr>
 										</tbody>
 									</table>
-									
+									<!-- END BODY -->
 
 									<br /><br /><br />
-
+									<!-- FOOTER -->
 									<div class="footer"
 										style="clear: both; margin-top: 10px; text-align: center; width: 100%;">
 										<table

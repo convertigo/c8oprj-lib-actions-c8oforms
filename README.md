@@ -10,7 +10,7 @@ Comments are exposed to Convertigo forms, please follow `formssource_List_of_Shi
   - [Actions sequences](#actions-sequences)
     - [forms_notify_response_by_mail](#forms_notify_response_by_mail)
     - [forms_insert_response_db](#forms_insert_response_db)
-    - [forms_fill_PDF](#forms_fill_PDF)
+    - [forms_fill_PDF](#forms_fill_pdf)
   - [Source Sequences](#source-sequences)
     - [formssource_List_of_company_employees](#formssource_list_of_company_employees)
     - [formssource_List_of_Ships](#formssource_list_of_ships)
@@ -33,6 +33,14 @@ This can also be used to send mails to multiple addresses.
     - *lib.actions.c8oforms.smtp.sender* (Defines the email address of the sender.)
     - *lib.actions.c8oforms.smtp.user* (Defines the SMTP server authentication username.)
     - *lib.actions.c8oforms.smtp.pwd* (Defines the SMTP server authentication user password.)
+    - *lib.actions.c8oforms.email.xslFilePath* (Defines the file path to the xsl file to be used to built emails).
+      -  Default value is .//emails/responseMail2.xsl
+      -  You can provide your own xsl file with an external project.
+      -  For example: if you provide an external Project1 with the following structure:
+         -  Project1
+            -  email
+               -  customEmail.xsl
+      -  You must provide ./Project1/emails/customEmail.xsl as symbole value to use this xsl
 
 - Variables:
     - *forms_mail_subject* (Mail subject - short string)

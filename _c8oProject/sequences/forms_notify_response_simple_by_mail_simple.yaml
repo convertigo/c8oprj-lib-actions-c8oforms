@@ -669,7 +669,7 @@ responseTimeout: 600
     // entry parameters (most of them are defined by sequence variable)
     var sRecipients = jEmailRecipients;
     var sSubject = jEmailSubject;
-    var xslFilepath =".//emails/responseMail2.xsl"
+    //var xslFilepath =".//emails/responseMail2.xsl"
     var sContentType = "";
     var currentProjectName = "lib_Actions_C8Oforms";
     
@@ -753,10 +753,34 @@ responseTimeout: 600
     }
     
     var fileXSL = null;
+    log.warn("context.getProjectDirectory()" + context.getProjectDirectory());
     if (xslFilepath.length > 0) {
     	fileXSL = new java.io.File(com.twinsoft.convertigo.engine.Engine.theApp.filePropertyManager.getFilepathFromProperty(xslFilepath, currentProjectName));
     	if (!fileXSL.exists()) {
-    		log.error("(Sequence SmtpStep) SMTP step missing xsl file");
+    		var cancelLog = false;
+    		if(xslFilepath.startsWith("./")){
+    			// split filePath with / to retrive project name
+    			var projectNameCustom = xslFilepath.split("/")[1];
+    			log.debug("projectNameCustom : " + projectNameCustom);
+    			// get project directory
+    			var projectDirectoryCustom = com.twinsoft.convertigo.engine.Engine.theApp.projectDir(projectNameCustom);
+    			log.debug("projectDirectoryCustom : " + projectDirectoryCustom);
+    			// get fullPath
+    			var fullPathCustom = projectDirectoryCustom + "/" + (xslFilepath.substring(projectNameCustom.length+2));
+    			log.debug("fullPathCustom : " + fullPathCustom);
+    			// normalize path ( \\ for windows os and / for linux os)
+    			fullPathCustom = com.twinsoft.convertigo.engine.Engine.resolveProjectPath(fullPathCustom);
+    			log.debug("fullPathCustom : " + fullPathCustom);
+    			// test again presence of file
+    			fileXSL = new java.io.File(fullPathCustom);
+    			if (fileXSL.exists()) {
+    				cancelLog = true;
+    				log.debug("fullPathCustom file exists");
+    			}
+    		}
+    		if(!cancelLog){
+    			log.error("(Sequence SmtpStep) SMTP step missing xsl file");
+    		}
     	}
     }
     if (sContentType.length == 0) {
@@ -1037,3 +1061,5 @@ responseTimeout: 600
   value: ${lib.actions.c8oforms.smtp.sender}
 ↓smtpAuthType [variables.RequestableVariable-1617700685648]: 
   value: ${lib.actions.c8oforms.smtp.security}
+↓xslFilepath [variables.RequestableVariable-1634573395289]: 
+  value: ${lib.actions.c8oforms.email.xslFilePath=.//emails/responseMail2.xsl}
