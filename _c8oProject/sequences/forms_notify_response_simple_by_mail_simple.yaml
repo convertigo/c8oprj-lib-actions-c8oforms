@@ -648,7 +648,7 @@ responseTimeout: 600
               - ↑value: ./text()
       value: 
 ↓jElement [steps.ElementStep-1599572673725]: 
-  expression: table_recap
+  expression: '(forms_mail_summary == "no" || forms_mail_summary == "non" || forms_mail_summary == "false") ? "" : table_recap'
   nodeName: tableBody
 ↓SmtpStepSequence [steps.SimpleStep-1599656012175]: 
   expression: |
@@ -1047,6 +1047,27 @@ responseTimeout: 600
     }'
   description: html
   value: Nouvelle réponse dans votre formulaire :
+↓forms_mail_summary [variables.RequestableVariable-1634583960132]: 
+  comment: |
+    '{
+      "en":{
+    	"displayName":"<p>Form summary</p>",
+        "comment":"<div>Form summary, if value is <b>no</b>, the form summary will not be included into email.</div>"
+        },
+        "fr":{
+            "displayName":"<p>Résumé du formulaire</p>",
+            "comment":"<div>Résumé du formulaire, si la valeur est <b>non</b>, le résumé du formulaire ne sera pas inclus dans l''e-mail</div>"
+        },
+        "es":{
+            "displayName":"<p>Resumen del formulario</p>",
+            "comment":"<div>Resumen del formulario, si el valor es <b>no</b>, el resumen del formulario no se incluirá en el correo electrónico</div>"
+        },
+        "it":{
+            "displayName":"<p>Riepilogo modulo</p>",
+            "comment":"<div>Riepilogo modulo, se il valore è <b>no</b>, il riepilogo del modulo non verrà incluso nell''e-mail</div>"
+        }
+    }'
+  value: 
 ↓doc [variables.RequestableVariable-1599570999736]: 
 ↓originalDoc [variables.RequestableVariable-1599570999739]: 
 ↓smtpServer [variables.RequestableVariable-1617699648242]: 
