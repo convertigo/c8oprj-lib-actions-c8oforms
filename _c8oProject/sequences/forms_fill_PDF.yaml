@@ -370,7 +370,20 @@ comment: |
                 log.error("[forms_fill_PDF] an error occurred while computing values: \n" + JSON.stringify(e));
             }
         }
-    };'
+    };
+    
+    
+    function makeid(length) {
+        var result           = '''';
+        var characters       = ''ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * 
+     charactersLength));
+       }
+       return result;
+    }
+    var filesToDelete = [];'
 ↓ComputeFieldsWIthFlatenize [steps.SimpleStep-1619788167814]: 
   expression: |
     // convert XML to JSON doc
@@ -387,8 +400,14 @@ comment: |
       expression: |
         var _use_attname = resp[item].name;
         b64Value = "";
+        var fileName = new Date().getTime() + "_" + makeid(20);
+        var dir = context.getProjectDirectory()+"/csv/";
+        var _use_attpath = dir + fileName;
+        log.warn("_use_attpath log" + _use_attpath);
+        filesToDelete.push(_use_attpath)
       output: true
     ↓Call_Transaction [steps.TransactionStep-1634225772700]: 
+      output: true
       sourceTransaction: C8Oforms.c8oforms_response_fs.GetDocumentAttachment
       ↓_use_attname [variables.StepVariable-1634225819646]: 
         description: Attachment name
@@ -396,7 +415,7 @@ comment: |
         description: Document ID
       ↓_use_attpath [variables.StepVariable-1634225819650]: 
         description: Attachment path  This path is either absolute or relative to Convertigo environment. Relative paths starting with:<br/><br/>• <span class="computer">./</span> are relative to Convertigo workspace,<br/>• <span class="computer">.//</span> are relative to current project folder. <br/><br/>
-    ↓jSimpleSource [steps.SimpleSourceStep-1634226030312]: 
+    ↓jSimpleSource1 [steps.SimpleSourceStep-1634564483589]: 
       sourceDefinition: 
         - xmlizable: 
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -404,10 +423,27 @@ comment: |
             - java.lang.String: 
               - ↑value: 1634225772700
             - java.lang.String: 
-              - ↑value: ./document/couchdb_output/data/text()
-      variableName: b64Value
+              - ↑value: ./document/couchdb_output/_c8oMeta/headers/Content_Type/text()
+      variableName: contentType
+    ↓setContentType [steps.SimpleStep-1634564564291]: 
+      expression: var fileName2 = fileName +"." +contentType.split("/")[1];
+    ↓Rename_file [steps.RenameStep-1634564646852]: 
+      newName: fileName2
+      sourcePath: _use_attpath
     ↓setB64Value [steps.SimpleStep-1634227778896]: 
-      expression: resp[item] = b64Value;
+      expression: |
+        'resp[item] = dir + fileName2;
+        log.warn("just before");
+        
+        var f = new java.io.File(dir + fileName2).exists();
+        log.warn("testing file exists : "+ f);
+        var index = filesToDelete.indexOf(_use_attpath);
+        if( index != -1){
+        	filesToDelete[index] =  dir + fileName2;
+        }
+        else{
+        	filesToDelete.push(dir + fileName2);
+        }'
       output: true
 ↓InsertData [steps.SimpleStep-1634225626617]: 
   expression: |
@@ -490,6 +526,10 @@ comment: |
     description: (string) – JSON use as a base for the document (js object). Optional
   ↓_id [variables.StepVariable-1619789928727]: 
     description: Document id
+↓jIterator_1 [steps.SimpleIteratorStep-1634565973280]: 
+  expression: filesToDelete
+  ↓Delete_file [steps.DeleteStep-1634566012874]: 
+    sourcePath: item
 ↓originalDoc [variables.RequestableVariable-1619790461009]: 
 ↓doc [variables.RequestableVariable-1619790458721]: 
 ↓forms_input_pdf_path [variables.RequestableVariable-1615311582886]: 
