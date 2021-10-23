@@ -88,8 +88,8 @@ Your sequence must have only one variable prefixed with `forms_`, that will be c
 
 ### formssource_List_of_company_employees
 
-Returns you a list of fakes employees (can be filterd).
+Returns you a list of fakes employees (can be filtered).
 
 ### formssource_List_of_Ships
 
-Returns you a list of ships (can be filterd).
+Returns you a list of ships (can be filtered).
