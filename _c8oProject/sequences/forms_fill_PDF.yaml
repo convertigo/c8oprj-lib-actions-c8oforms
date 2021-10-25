@@ -268,6 +268,7 @@ comment: |
                     }
                     else if (doc[property].type == "location") {
     					/* supported */
+    					var elem = doc[property]["name"];
                         var val = doc[property].value;
                         var formattedAddress = (val.addr != undefined) ? val.addr.FormattedAddress : null;
                         var bBox = (val.bounding_box != undefined) ? val.bounding_box : undefined;
@@ -276,7 +277,10 @@ comment: |
                         var showBbox = (bBox != undefined) ? true : false;
                         var showCoordinates = (!showFormattedAddress && !showBbox) ? true : false;
     					var value = "";
-    					if (resp[elem][''showBbox'']) {
+    					if(resp[elem] == undefined){
+    						
+    					}
+    					else if (resp[elem][''showBbox'']) {
     	                    var bboxTopLeftLat = resp[elem]["value"]["bounding_box"]["topLeft"]["lat"];
     	                    var bboxTopLeftLong = resp[elem]["value"]["bounding_box"]["topLeft"]["lon"];
     	                    var bboxbottomRightLat = resp[elem]["value"]["bounding_box"]["bottomRight"]["lat"];
