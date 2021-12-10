@@ -253,7 +253,7 @@ comment: |
                     else if (doc[property].type == "checkbox" || doc[property].type == "radio") {
     					/* supported */
                         for (var child in doc[property].children) {
-    						resp[doc[property]["name"]] = doc[property].children[child].selected ? "On" : "Off";
+    						resp[doc[property]["name"]+"_"+(child*1+1)] = doc[property].children[child].selected ? "On" : "Off";
                         }
                     }
     				else if (doc[property].type == "radio") {
