@@ -1,8 +1,23 @@
 comment: |
-  <div class="en">Return the list of company employees</div>
-  <div class="fr">Renvoi la liste des collaborateurs de l'entreprise</div>
-  <div class="es">Devolver la lista de empleados de la empresa</div>
-  <div class="it">Restituisce l'elenco dei dipendenti dell'azienda</div>
+  '{
+          "en": {
+              "displayName": "Fake list of company employees",
+              "comment": "Returns a fake list of company employees"
+          },
+          "fr": {
+              "displayName": "Fausse liste des collaborateurs de l''entreprise",
+              "comment": "Renvoi une fausse liste des collaborateurs de l''entreprise"
+          },
+          "es": {
+              "displayName": "Falsa lista de los empleados de la empresa",
+              "comment": "Devuelve una lista falsa de los empleados de la empresa"
+          },
+          "it": {
+              "displayName": "Falso elenco dei dipendenti dell''azienda",
+              "comment": "Restituisce un falso elenco di dipendenti dell''azienda"
+          },
+  	"types":["select"]
+  }'
 ↓Input_variables [steps.InputVariablesStep-1599138036190]: 
 ↓Sequence_JS [steps.SimpleStep-1599060454964]: 
   expression: |
