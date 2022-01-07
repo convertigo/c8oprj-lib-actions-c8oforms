@@ -1,0 +1,70 @@
+comment: |
+  '{
+      "en": {
+          "displayName": "<p>Removes responses from the form</p>",
+          "comment"    : "The submitted form and its responses are deleted and no longer visible in the response viewer"
+      },
+      "fr": {
+          "displayName": "<p>Supprime les réponses du formulaire</p>",
+          "comment"    : "Le formulaire soumis et ses réponses sont supprimés et n''est plus visible dans le visualisateur de réponses"
+      },
+      "es": {
+          "displayName": "<p>Elimina respuestas del formulario</p>",
+          "comment"    : "El formulario enviado y sus respuestas se eliminan y ya no están visibles en el visor de respuestas."
+      },
+      "it": {
+          "displayName": "<p>Rimuove le risposte dal modulo</p>",
+          "comment"    : "Il modulo inviato e le relative risposte vengono eliminati e non sono più visibili nel visualizzatore delle risposte."
+      }
+  }'
+↓Input_variables [steps.InputVariablesStep-1641549469506]: 
+↓response_id [steps.XMLElementStep-1641549484107]: 
+  nodeName: response_id
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1641549469506
+        - java.lang.String: 
+          - ↑value: ./doc/_id/text()
+↓Call_Transaction [steps.TransactionStep-1641550170236]: 
+  sourceTransaction: C8Oforms.c8oforms_response_fs.PostDocumentJBASE
+  ↓_use_json_base [variables.StepVariable-1641550170238]: 
+    description: (string) – JSON use as a base for the document (js object). Optional
+    value: '{"_deleted": true}'
+  ↓_id [variables.StepVariable-1641550170240]: 
+    description: Document id
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1641549484107
+          - java.lang.String: 
+            - ↑value: ./text()
+↓IfExistThenElse [steps.IfExistThenElseStep-1641562218359]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1641550170236
+        - java.lang.String: 
+          - ↑value: ./document/couchdb_output/ok
+  ↓jThen [steps.ThenStep-1641562218847]: 
+    ↓Copy [steps.XMLCopyStep-1641562050367]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1641550170236
+            - java.lang.String: 
+              - ↑value: ./document/couchdb_output/ok
+  ↓jElse [steps.ElseStep-1641562218849]: 
+    ↓Element_ok [steps.XMLElementStep-1641562240677]: 
+      nodeName: ok
+      nodeText: false
+↓originalDoc [variables.RequestableVariable-1641548333170]: 
+↓doc [variables.RequestableVariable-1641548333173]: 
