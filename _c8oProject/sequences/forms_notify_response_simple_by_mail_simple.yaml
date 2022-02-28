@@ -887,7 +887,12 @@ responseTimeout: 600
     			props.put("mail."+smtpKind+".port", ""+smtpPortRunnable);
     			props.put("mail.transport.protocol", smtpKind);
     			props.put("mail."+smtpKind+".auth", ""+(smtpAuthTypeRunnable != SmtpAuthTypeRunnable.none));
+    			if(smtpKind == "smtps"){
+    				props.put("mail."+smtpKind+".ssl.protocols", "TLSv1.2");
+    			}
     			props.put("mail.smtp.starttls.enable", ""+(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls));
+    			props.put("mail.smtp.starttls.required", "true");
+    			props.put("mail.smtp.ssl.protocols", "TLSv1.2");
     			var auth = null;
     			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls){
     				auth = new javax.mail.Authenticator({
