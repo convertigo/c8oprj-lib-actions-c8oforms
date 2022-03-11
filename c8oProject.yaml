@@ -19,7 +19,7 @@
             "comment": "<div>Azioni predefinite fornite con <i>Convertigo Form Builder</i></div>"
         }
     }'
-  version: 1.0.38
+  version: 1.0.39
   ↓c8oforms_forms_reponses_backup [connectors.FullSyncConnector]: 🗏 connectors/c8oforms_forms_reponses_backup.yaml
   ↓CNN [connectors.HttpConnector]: 🗏 connectors/CNN.yaml
   ↓SQL_mariadb [connectors.SqlConnector]: 🗏 connectors/SQL_mariadb.yaml
@@ -31,5 +31,6 @@
   ↓forms_notify_response_simple_by_mail_simple [sequences.GenericSequence]: 🗏 sequences/forms_notify_response_simple_by_mail_simple.yaml
   ↓formssource_List_of_company_employees [sequences.GenericSequence]: 🗏 sequences/formssource_List_of_company_employees.yaml
   ↓formssource_List_of_Ships [sequences.GenericSequence]: 🗏 sequences/formssource_List_of_Ships.yaml
+  ↓initSMTP [sequences.GenericSequence]: 🗏 sequences/initSMTP.yaml
   ↓Project_reference [references.ProjectSchemaReference]: 
     projectName: C8Oforms
