@@ -680,6 +680,7 @@ responseTimeout: 600
     //var smtpPassword = "lib.actions.c8oforms.smtp.password.secret";
     //var smtpServer = "lib.actions.c8oforms.smtp.server";
     //var smtpPort = "lib.actions.c8oforms.smtp.port";
+    //var sslProtocols = "lib.actions.c8oforms.smtp.sslProtocols"
     
     // define "enum" for auth type
     var SmtpAuthType = {
@@ -838,6 +839,7 @@ responseTimeout: 600
     		var smtpAuthTypeRunnable = smtpAuthType;
     		var smtpServerRunnable = smtpServer;
     		var smtpPortRunnable = smtpPort;
+    		var smtpSslProtocolsRunnable = sslProtocols;
     		var smtpUsernameRunnable = smtpUsername;
     		var smtpPasswordRunnable = smtpPassword;
     		var attachmentsRunnable = attachments;
@@ -887,12 +889,14 @@ responseTimeout: 600
     			props.put("mail."+smtpKind+".port", ""+smtpPortRunnable);
     			props.put("mail.transport.protocol", smtpKind);
     			props.put("mail."+smtpKind+".auth", ""+(smtpAuthTypeRunnable != SmtpAuthTypeRunnable.none));
-    			if(smtpKind == "smtps"){
-    				props.put("mail."+smtpKind+".ssl.protocols", "TLSv1.2");
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls){
+    				props.put("mail."+smtpKind+".ssl.protocols", ""+smtpSslProtocolsRunnable);
     			}
-    			props.put("mail.smtp.starttls.enable", ""+(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls));
-    			props.put("mail.smtp.starttls.required", "true");
-    			props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+    			else if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls){
+    				props.put("mail."+smtpKind+".ssl.protocols", ""+smtpSslProtocolsRunnable);
+    				props.put("mail.smtp.starttls.enable", ""+(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls));
+    				props.put("mail.smtp.starttls.required", "true");
+    			}
     			var auth = null;
     			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls){
     				auth = new javax.mail.Authenticator({
@@ -1089,3 +1093,5 @@ responseTimeout: 600
   value: ${lib.actions.c8oforms.smtp.security}
 ↓xslFilepath [variables.RequestableVariable-1634573395289]: 
   value: ${lib.actions.c8oforms.email.xslFilePath=.//emails/responseMail2.xsl}
+↓sslProtocols [variables.RequestableVariable-1647596746958]: 
+  value: ${lib.actions.c8oforms.smtp.sslProtocols=TLSv1.2}
