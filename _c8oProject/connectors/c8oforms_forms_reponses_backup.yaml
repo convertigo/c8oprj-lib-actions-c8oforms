@@ -1,13 +1,16 @@
 anonymousReplication: allow
 databaseName: c8oforms_forms_reponses_backup
 ↓FormResponsesDocument [transactions.couchdb.PostDocumentTransaction]: 
+  accessibility: Public
   fullSyncAclPolicy: anonymous
   ↓parent [variables.RequestableVariable-1593616616866]: 
   ↓data [variables.RequestableVariable-1593616520232]: 
     description: Document content
 ↓GetServerInfo [transactions.couchdb.GetServerInfoTransaction]: 
   ↑default: true
+  accessibility: Public
 ↓OriginalFormDocument [transactions.couchdb.PostDocumentTransaction]: 
+  accessibility: Public
   fullSyncAclPolicy: anonymous
   policy: override
   ↓_id [variables.RequestableVariable-1593615820175]: 

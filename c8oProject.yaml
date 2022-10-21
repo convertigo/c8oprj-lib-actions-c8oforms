@@ -1,25 +1,25 @@
-↑convertigo: 7.9.0.m006
+↑convertigo: 8.0.0.m006
 ↓lib_Actions_C8Oforms [core.Project]: 
   comment: |
     '{
         "en": {
-            "displayName": "Convertigo Actions",
-            "comment": "<div>Default actions provided with <i>Convertigo Form Builder</i></div>"
+            "displayName": "Convertigo Actions and Sources",
+            "comment": "<div>Azioni e fonti predefinite fornite con <i>Convertigo Form Builder</i></div>"
         },
         "fr": {
-            "displayName": "Actions Convertigo",
-            "comment": "<div>Actions par défaut fournies avec <i>Convertigo Form Builder</i></div>"
+            "displayName": "Actions et sources Convertigo",
+            "comment": "<div>Actions et sources fournies par défaut avec <i>Convertigo Form Builder</i></div>"
         },
         "es": {
-            "displayName": "Acciones Convertigo",
-            "comment": "<div>Acciones predeterminadas proporcionadas con <i>Convertigo Form Builder</i></div>"
+            "displayName": "Acciones y Fuentes Convertigo",
+            "comment": "<div>Acciones y fuentes predeterminadas provistas con <i>Convertigo Form Builder</i></div>"
         },
         "it": {
-            "displayName": "Azioni Convertigo",
-            "comment": "<div>Azioni predefinite fornite con <i>Convertigo Form Builder</i></div>"
+            "displayName": "Azioni e fonti Convertigo",
+            "comment": "<div>Azioni e fonti predefinite fornite con <i>Convertigo Form Builder</i></div>"
         }
     }'
-  version: 1.0.40
+  version: 1.0.41
   ↓c8oforms_forms_reponses_backup [connectors.FullSyncConnector]: 🗏 connectors/c8oforms_forms_reponses_backup.yaml
   ↓CNN [connectors.HttpConnector]: 🗏 connectors/CNN.yaml
   ↓SQL_mariadb [connectors.SqlConnector]: 🗏 connectors/SQL_mariadb.yaml
@@ -29,6 +29,7 @@
   ↓forms_delete_response [sequences.GenericSequence]: 🗏 sequences/forms_delete_response.yaml
   ↓forms_fill_PDF [sequences.GenericSequence]: 🗏 sequences/forms_fill_PDF.yaml
   ↓forms_notify_response_simple_by_mail_simple [sequences.GenericSequence]: 🗏 sequences/forms_notify_response_simple_by_mail_simple.yaml
+  ↓formssource_CNN_News [sequences.GenericSequence]: 🗏 sequences/formssource_CNN_News.yaml
   ↓formssource_List_of_company_employees [sequences.GenericSequence]: 🗏 sequences/formssource_List_of_company_employees.yaml
   ↓formssource_List_of_Ships [sequences.GenericSequence]: 🗏 sequences/formssource_List_of_Ships.yaml
   ↓initSMTP [sequences.GenericSequence]: 🗏 sequences/initSMTP.yaml

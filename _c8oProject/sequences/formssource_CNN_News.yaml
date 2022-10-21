@@ -1,0 +1,212 @@
+comment: |
+  '{
+          "en": {
+              "displayName": "CNN news",
+              "comment": "Returns the latest news from CNN"
+          },
+          "fr": {
+              "displayName": "Actualités de la CNN ",
+              "comment": "Renvoi les derniéres actualités de la CNN"
+          },
+          "es": {
+              "displayName": "Noticias de la CNN",
+              "comment": "Devuelve las últimas noticias de CNN"
+          },
+          "it": {
+              "displayName": "Notizie dalla CNN",
+              "comment": "Restituisce le ultime notizie dalla CNN"
+          },
+  	"types":["grid"]
+  }'
+↓Call_Transaction [steps.TransactionStep-1666355332245]: 
+  sourceTransaction: lib_Actions_C8Oforms.CNN.getNews
+↓data [steps.XMLComplexStep-1666355332248]: 
+  nodeName: data
+  ↓type [steps.XMLAttributeStep-1666355332251]: 
+    nodeName: type
+    nodeText: array
+  ↓Iterator [steps.IteratorStep-1666355332254]: 
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1666355332245
+          - java.lang.String: 
+            - ↑value: ./document/rss/channel/item
+    ↓Complex [steps.XMLComplexStep-1666355332257]: 
+      nodeName: item
+      ↓Attribute [steps.XMLAttributeStep-1666355332260]: 
+        nodeName: type
+        nodeText: object
+      ↓Element [steps.XMLElementStep-1666355332263]: 
+        nodeName: __rowValue
+        sourceDefinition: 
+          - xmlizable: 
+            - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+            - com.twinsoft.convertigo.beans.common.XMLVector: 
+              - java.lang.String: 
+                - ↑value: 1666355332254
+              - java.lang.String: 
+                - ↑value: ./title/text()
+      ↓Complex [steps.XMLComplexStep-1666355332266]: 
+        nodeName: col1
+        ↓Element [steps.XMLElementStep-1666355332269]: 
+          nodeName: displayValue
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1666355332254
+                - java.lang.String: 
+                  - ↑value: ./title/text()
+          ↓Attribute [steps.XMLAttributeStep-1666355332272]: 
+            isEnabled: false
+            nodeName: type
+            nodeText: string
+        ↓value [steps.XMLElementStep-1666355332281]: 
+          nodeName: value
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1666355332254
+                - java.lang.String: 
+                  - ↑value: ./title/text()
+        ↓type [steps.XMLElementStep-1666355332284]: 
+          nodeName: type
+          nodeText: string
+        ↓type1 [steps.XMLElementStep-1666355817811]: 
+          nodeName: displayName
+          nodeText: Title
+      ↓Complex1 [steps.XMLComplexStep-1666355565662]: 
+        nodeName: col2
+        ↓Element [steps.XMLElementStep-1666355565665]: 
+          nodeName: displayValue
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1666355332254
+                - java.lang.String: 
+                  - ↑value: ./description/text()
+          ↓Attribute [steps.XMLAttributeStep-1666355565668]: 
+            isEnabled: false
+            nodeName: type
+            nodeText: string
+        ↓value [steps.XMLElementStep-1666355565671]: 
+          nodeName: value
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1666355332254
+                - java.lang.String: 
+                  - ↑value: ./description/text()
+        ↓type [steps.XMLElementStep-1666355565674]: 
+          nodeName: type
+          nodeText: string
+        ↓type1 [steps.XMLElementStep-1666355835017]: 
+          nodeName: displayName
+          nodeText: Description
+      ↓Complex2 [steps.XMLComplexStep-1666355911558]: 
+        nodeName: col3
+        ↓Concat [steps.XMLConcatStep-1666356426647]: 
+          nodeName: displayValue
+          separator: 
+          sourcesDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: description
+                    - xmlizable: 
+                      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                      - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: <img src="
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: description
+                    - xmlizable: 
+                      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                      - com.twinsoft.convertigo.beans.common.XMLVector: 
+                        - java.lang.String: 
+                          - ↑value: 1666355332254
+                        - java.lang.String: 
+                          - ↑value: ./group/content[1]/@url
+                    - java.lang.String: 
+                      - ↑value: ''
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: description
+                    - xmlizable: 
+                      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                      - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: '" style="height:100px; width:100px">'
+        ↓value [steps.XMLElementStep-1666355911567]: 
+          nodeName: value
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1666355332254
+                - java.lang.String: 
+                  - ↑value: ./group/content[1]/@url
+        ↓type [steps.XMLElementStep-1666355911570]: 
+          nodeName: type
+          nodeText: html
+        ↓displayName [steps.XMLElementStep-1666355911573]: 
+          nodeName: displayName
+          nodeText: Image
+      ↓Complex3 [steps.XMLComplexStep-1666364901689]: 
+        nodeName: col4
+        ↓Element [steps.XMLElementStep-1666364901692]: 
+          nodeName: displayValue
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1666355332254
+                - java.lang.String: 
+                  - ↑value: ./pubDate/text()
+          ↓Attribute [steps.XMLAttributeStep-1666364901695]: 
+            isEnabled: false
+            nodeName: type
+            nodeText: string
+        ↓value [steps.XMLElementStep-1666364901698]: 
+          nodeName: value
+          sourceDefinition: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: 1666355332254
+                - java.lang.String: 
+                  - ↑value: ./pubDate/text()
+        ↓type [steps.XMLElementStep-1666364901701]: 
+          nodeName: type
+          nodeText: string
+        ↓type1 [steps.XMLElementStep-1666364901704]: 
+          nodeName: PublicationDate
+          nodeText: Description
+        ↓type2 [steps.XMLElementStep-1666364985577]: 
+          nodeName: hidden
+          nodeText: true
+          ↓Attribute [steps.XMLAttributeStep-1666364999452]: 
+            nodeName: type
+            nodeText: boolean
