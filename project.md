@@ -724,6 +724,28 @@ comment
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/sequences/images/genericsequence_color_16x16.png?raw=true "GenericSequence") formssource_CNN_News
 
 Returns the latest news from CNN
+
+<span style="color:DarkGoldenRod">Variables</span>
+
+<table>
+<tr>
+<th>
+name
+</th>
+<th>
+comment
+</th>
+</tr>
+<tr>
+<td>
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;model
+</td>
+<td>
+if source is called with model == true, model must be returned
+</td>
+</tr>
+</table>
+
 </p></blockquote></details>
 
 <details><summary><b>formssource_List_of_company_employees</b> : Returns a fake list of company employees</summary><blockquote><p>
