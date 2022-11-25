@@ -19,16 +19,18 @@
             "comment": "<div>Azioni predefinite fornite con <i>Convertigo Form Builder</i></div>"
         }
     }'
-  version: 1.0.40
+  version: 1.0.40.1
   ↓c8oforms_forms_reponses_backup [connectors.FullSyncConnector]: 🗏 connectors/c8oforms_forms_reponses_backup.yaml
   ↓CNN [connectors.HttpConnector]: 🗏 connectors/CNN.yaml
   ↓SQL_mariadb [connectors.SqlConnector]: 🗏 connectors/SQL_mariadb.yaml
   ↓void [connectors.SqlConnector]: 🗏 connectors/void.yaml
   ↓disabled_forms_insert_response_db [sequences.GenericSequence]: 🗏 sequences/disabled_forms_insert_response_db.yaml
   ↓disabled_forms_notify_response_by_mail_advanced [sequences.GenericSequence]: 🗏 sequences/disabled_forms_notify_response_by_mail_advanced.yaml
+  ↓dl_attachment [sequences.GenericSequence]: 🗏 sequences/dl_attachment.yaml
   ↓forms_delete_response [sequences.GenericSequence]: 🗏 sequences/forms_delete_response.yaml
   ↓forms_fill_PDF [sequences.GenericSequence]: 🗏 sequences/forms_fill_PDF.yaml
   ↓forms_notify_response_simple_by_mail_simple [sequences.GenericSequence]: 🗏 sequences/forms_notify_response_simple_by_mail_simple.yaml
+  ↓forms_notify_response_simple_by_mail_simple_link [sequences.GenericSequence]: 🗏 sequences/forms_notify_response_simple_by_mail_simple_link.yaml
   ↓formssource_List_of_company_employees [sequences.GenericSequence]: 🗏 sequences/formssource_List_of_company_employees.yaml
   ↓formssource_List_of_Ships [sequences.GenericSequence]: 🗏 sequences/formssource_List_of_Ships.yaml
   ↓initSMTP [sequences.GenericSequence]: 🗏 sequences/initSMTP.yaml

@@ -1,0 +1,1109 @@
+comment: |
+  '{
+      "en": {
+          "displayName": "<p>Notify response by email - LINK</p>",
+          "comment": "<div>Sends a <b>mail</b> when a new response is submitted</div>"
+      },
+      "fr": {
+          "displayName": "<p>Notifier la réponse par e-mail - LINK</p>",
+          "comment": "<div>Envoie un <b>e-mail</b> lorsqu''une nouvelle réponse est soumise</div>"
+      },
+      "es": {
+          "displayName": "<p>Notificar la respuesta por correo electrónico - LINK</p>",
+          "comment": "<div>Envía un <b>correo</b> cuando se envía una nueva respuesta</div>"
+      },
+      "it": {
+          "displayName": "<p>Notifica la risposta tramite e-mail - LINK</p>",
+          "comment": "<div>Invia una <b>mail</b> quando viene inviata una nuova risposta</div>"
+      }
+  }'
+responseTimeout: 600
+↓Input_variables [steps.InputVariablesStep-1669306624704]: 
+↓computeEmails [steps.SimpleStep-1669306624707]: 
+  expression: |
+    'var jEmailRecipients = "";
+    
+    // Mail address from AD user on authenticated form response
+    if(typeof(forms_mail_ADsender) != "undefined" && forms_mail_ADsender != ""){
+    	jEmailRecipients += "TO:" + forms_mail_ADsender + ";";
+    }
+    
+    // Mail address of the form creator
+    if(typeof(forms_mail_owner) != "undefined" && forms_mail_owner != ""){
+    	jEmailRecipients += "BCC:" + forms_mail_owner + ";";
+    }
+    
+    
+    // Mail addresses separated by comma or semicolon. Add prefix "TO:"
+    if(forms_mail_recipients_to && forms_mail_recipients_to != ""){
+    	var tos = forms_mail_recipients_to.split(/,|;/);
+    	for(var i=0; i < tos.length; i++){
+    		jEmailRecipients += "TO:" + tos[i] + ";";
+    	}
+    }
+    
+    try{
+    	//Mail addresses separated by comma or semicolon. Add prefix "CC:"
+    	if(forms_mail_recipients_cc != undefined && forms_mail_recipients_cc != ""){
+    		var ccs = forms_mail_recipients_cc.split(/,|;/);
+    		for(var i=0; i < ccs.length; i++){
+    			jEmailRecipients += "CC:" + ccs[i] + ";";
+    		}
+    	}
+    }
+    catch(e){
+    	
+    }
+    
+    try{
+    	//Mail addresses separated by comma or semicolon. Add prefix "BCC:"
+    	if(forms_mail_recipients_bcc != undefined && forms_mail_recipients_bcc != ""){
+    		var bccs = forms_mail_recipients_bcc.split(/,|;/);
+    		for(var i=0; i < bccs.length; i++){
+    			jEmailRecipients += "BCC:" + bccs[i] + ";";
+    		}
+    	}
+    }
+    catch(e){
+    	
+    }
+    
+    
+    log.debug(">>>" + jEmailRecipients);'
+↓Element [steps.XMLElementStep-1669306624710]: 
+  nodeName: emailBodyPrefix
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1669306624704
+        - java.lang.String: 
+          - ↑value: ./forms_mail_body/text()
+↓Element1 [steps.XMLElementStep-1669306624713]: 
+  nodeName: emailBodyTitle
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1669306624704
+        - java.lang.String: 
+          - ↑value: ./forms_mail_body_title/text()
+↓obj1 [steps.XMLElementStep-1669306624716]: 
+  nodeName: formName
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1669306624704
+        - java.lang.String: 
+          - ↑value: ./originalDoc/name/text()
+↓jIfThenElse [steps.IfThenElseStep-1669306624719]: 
+  condition: forms_mail_subject == undefined || forms_mail_subject == ''
+  ↓jThen [steps.ThenStep-1669306624722]: 
+    ↓Concat [steps.XMLConcatStep-1669306624725]: 
+      nodeName: emailSubject
+      sourcesDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: C8O FORMS
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: '[CONVERTIGO FORMS BUILDER]'
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: subject
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: 1669306624704
+                    - java.lang.String: 
+                      - ↑value: ./forms_mail_subject/text()
+                - java.lang.String: 
+                  - ↑value: ''
+    ↓Element2 [steps.XMLElementStep-1669306624728]: 
+      nodeName: emailLogo
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1669306624704
+            - java.lang.String: 
+              - ↑value: ./forms_mail_logo/text()
+    ↓jSimpleSource11 [steps.SimpleSourceStep-1669306624731]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1669306624725
+            - java.lang.String: 
+              - ↑value: ./text()
+      variableName: jEmailSubject
+  ↓jElse [steps.ElseStep-1669306624734]: 
+    ↓jSimpleSource [steps.SimpleSourceStep-1669306624737]: 
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1669306624704
+            - java.lang.String: 
+              - ↑value: ./forms_mail_subject/text()
+      variableName: jEmailSubject
+↓jSimpleSource2 [steps.SimpleSourceStep-1669306624740]: 
+  comment: Form name
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1669306624704
+        - java.lang.String: 
+          - ↑value: ./originalDoc/name/text()
+  variableName: jName
+↓jSimpleSource111 [steps.SimpleSourceStep-1669306624743]: 
+  comment: Response version
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1669306624704
+        - java.lang.String: 
+          - ↑value: ./doc/version/text()
+  variableName: jVersion
+↓jSimpleSource112 [steps.SimpleSourceStep-1669306624746]: 
+  comment: Response id
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1669306624704
+        - java.lang.String: 
+          - ↑value: ./doc/_id/text()
+  variableName: jId
+↓FlatenizeDoc [steps.SimpleStep-1669306624749]: 
+  expression: |
+    '//function flatenize
+    var flatenize = function (doc, prefix, resp, myid) {
+        for (var property in doc) {
+            try {
+                if (doc[property].type != undefined) {
+                    if (doc[property].type == "ion-card") {
+                        flatenize(doc[property]["children"], doc[property]["labelHtml"], resp, myid);
+                    }
+                    else if (doc[property].type == "radio_group") {
+                        for (var ninos in doc[property].children) {
+                            resp.push({ col: doc[property]["labelHtml"], "key": prefix != "" ? prefix + "(" + ninos + ")" : ninos, "value": doc[property].children[ninos], "type": doc[property].type, "name":  doc[property].name})
+                        }
+                    }
+                    else if (doc[property].type == "checkbox") {
+                        var val = "";
+                        for (var child in doc[property].children) {
+                            if (doc[property].children[child].selected) {
+                                if (val == "") {
+                                    val = doc[property].children[child].value + "";
+                                }
+                                else {
+                                    val = val + "," + doc[property].children[child].value;
+                                }
+                            }
+                        }
+                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": val, "type": doc[property].type, "name":  doc[property].name });
+                    }
+                    else if (doc[property].type == "location") {
+                        var val = doc[property].value;
+                        var formattedAddress = (val.addr != undefined) ? val.addr.FormattedAddress : null;
+                        var bBox = (val.bounding_box != undefined) ? val.bounding_box : undefined;
+                        var coordinates = (val.gps != undefined) ? val.gps : null;
+                        var showFormattedAddress = (formattedAddress != undefined && formattedAddress.length > 0) ? true : false;
+                        var showBbox = (bBox != undefined) ? true : false;
+                        var showCoordinates = (!showFormattedAddress && !showBbox) ? true : false;
+                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property].value, "type": doc[property].type, "showFormattedAddress": showFormattedAddress, "showBbox": showBbox, "showCoordinates": showCoordinates, "name":  doc[property].name })
+                    }
+                    else if (doc[property].type == "checkbox_group") {
+                        // foreach Line
+                        for (var ninos in doc[property].children) {
+                            var val = "";
+                            // foreach Column
+                            for (var child in doc[property].children[ninos]) {
+                                if (doc[property].children[ninos][child].selected) {
+                                    if (val === "") {
+                                        val = doc[property].children[ninos][child].value;
+                                    }
+                                    else {
+                                        val = val + ", " + doc[property].children[ninos][child].value;
+                                    }
+                                }
+                            }
+                            resp.push({ name: doc[property]["name"], col: doc[property]["labelHtml"], "key": prefix != "" ? prefix + "(" + ninos + ")" : ninos, "value": val, "type": doc[property].type, "name":  doc[property].name });
+                        }
+                    }
+                    else if (doc[property].type == "signature" || doc[property].type == "img") {
+                        if (doc[property].value != "") {
+    						
+                            resp.push({ "key": prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true})
+                        }
+                        else {
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true })
+                        }
+                    }
+                    else if (doc[property].type == "file") {
+                        if (doc[property].value != "") {
+                            var str = "";
+    						var arrayVal = [];
+                            for (var elem in doc[property]["value"]) {
+                                //str == "" ? str = doc[property]["value"][elem] : str += "," + doc[property]["value"][elem];
+    							arrayVal.push(doc[property]["value"][elem]);
+                            }
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": arrayVal, "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true })
+                        }
+                        else {
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": [], "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true })
+                        }
+                    }
+                    else if(doc[property].type == "grid") {
+                        if (doc[property].value != undefined) {
+                            // if grid value is a string
+                            if(typeof(doc[property].value) == "string"){
+                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
+                            }
+                            else if(Object.keys(doc[property].value).length > 0){
+                                var all = null;
+                                for(var i in doc[property].value){
+                                    // if its a row
+                                    if(typeof(doc[property].value[i]) == "string"){
+                                        all = false;
+                                    }
+                                    // if its all data
+                                    else{
+                                        all = true;
+                                    }
+                                    break;
+                                }
+                                resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "all": all, "name":  doc[property].name })
+                            }
+    						else{
+                            	resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type, "name":  doc[property].name})
+                        	}
+                        }
+                        else{
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": "", "type": doc[property].type, "name":  doc[property].name})
+                        }
+                    }
+                    else {
+                        resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name })
+                    }
+    
+                }
+            }
+            catch (e) {
+                log.error("[forms_notify_response_simple_by_mail_simple] an error occurred while computing email value : \n" + JSON.stringify(e));
+            }
+        }
+    };
+    
+    var writeFile = function (filep, filen, arr) {
+        var csvWriter = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter(filep + filen, true)));
+        try {
+            titles = "";
+            values = "";
+            for (var i = 0; i < arr.length; i++) {
+                titles += arr[i]["key"] + ((i < arr.length - 1) ? ";" : "");
+            }
+            for (var i = 0; i < arr.length; i++) {
+                values += arr[i]["value"] + ((i < arr.length - 1) ? ";" : "");
+            }
+            csvWriter.println(titles);
+            csvWriter.println(values);
+            csvWriter.close();
+        }
+        catch (e) {
+            csvWriter.close();
+            log.warning(e + "");
+        }
+    }
+    
+    var arrayOrder = ["c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o1","c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o2", "c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o3"];
+    var getOrder = (doc) => {
+    	for(var i in doc) {
+    		try {
+    			if(doc[i].type == "ion-card"){
+    				getOrder(doc[i]["children"])
+    			}
+    			else{
+    				arrayOrder.push(doc[i]["name"])
+    			}
+    		}
+    		catch(e){
+    			
+    		}
+    	}
+    }
+    
+    var applyOrder = (order, resp) =>{
+    	resp.sort((a, b) => {
+        	return order.indexOf(a.name) - order.indexOf(b.name)
+    	});
+    }
+    
+    var jDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
+    var date = jDoc.variable.timestamp;
+    var resp = [{ "key": "horodateur", "value": date, "type": "text", "name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o1"  }, { "key": "name", "value": jName, "type": "text","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o2" }, { "key": "version", "value": jVersion, "type": "integer","name":"c8o_c8o_1453random_name_will_not_be_the_same__c8o_c8o3" }];
+    flatenize(jDoc.variable.resp, "", resp, jDoc.variable._id);
+    var jOriginalDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(originalDoc, true, true));
+    if(jOriginalDoc != undefined && jOriginalDoc.variable != undefined && jOriginalDoc.variable.formulaire != undefined){
+    	getOrder(jOriginalDoc.variable.formulaire);
+    	applyOrder(arrayOrder,resp);
+    }
+    
+    // Define var isWindows to detect unix like system or not
+    var isWindows = org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+    // Define separator switch os
+    var separator = isWindows ? "\\" :"/";
+    
+    var filepath = context.getProjectDirectory() + separator + "csv" + separator;
+    var attachPath = context.getProjectDirectory() + separator+ "att" + separator;
+    var attach2Path = context.getProjectDirectory() + separator + "attach" + separator;
+    
+    
+    //var jName = java.lang.String(jId);
+    //var digest = java.security.MessageDigest.getInstance("SHA-256");
+    //var encodedhash = digest.digest(jName.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    //var filename = encodedhash + ".csv";
+    //writeFile(filepath, filename, resp);
+    var findUniqueNameForFile = (attachmentsArray, signatures, name)=>{
+    	try{
+    		// get all attachment name
+    		var attachByName = attachmentsArray.map((elem)=>{
+    			return elem.name.substring(elem.name.indexOf("_")+1);
+    		});
+    		var signaturesByName = signatures.map((elem)=>{
+    			return elem.name.substring(elem.name.indexOf("_")+1);
+    		});
+    		// merge two existing array of attachments
+    		var allAttach = attachByName.concat(signaturesByName);
+    		
+    		//search for next name dispo
+    		var getNextNameDispo = (name, index)=>{
+    			var tryName = index == null ? name : ("("+index+")"+name);
+    			if(allAttach.indexOf(tryName) != -1){
+    				//if still exists call myself recursivly
+    				return getNextNameDispo(name, index == null ? 1: index +1 )
+    			}
+    			else{
+    				// if is dispo
+    				return tryName;
+    			}
+    		}
+    		name = getNextNameDispo(name, null);
+    		return name;
+    	}
+    	catch(e){
+    		return "";
+    	}
+    }
+    var signatures = [];
+    var attachmentsArray = [];
+    var headerCheckBoxGroup = {};
+    var table_recap = "<table><thead><tr><td><p class=''under''>Date</p></td><td><p>" + new Date(+resp["0"]["value"]) + "</p></td></tr>";
+    table_recap += "<tr><td><p class=''under''>" + resp["1"]["key"] + "</p></td><td><p>" + resp["1"]["value"] + "</p></td></tr>";
+    table_recap += "<tr><td><p class=''under''>" + resp["2"]["key"] + "</p></td><td><p>" + resp["2"]["value"] + "</p></td></tr></thead>";
+    table_recap += "<tbody>"
+    
+    log.debug("[forms_notify_response_simple_by_mail_simple] response computed : \n" + JSON.stringify(resp));
+    
+    for (var elem in resp) {
+        try {
+            if (+elem > 2) {
+    			var fs_attach = {
+    						name: resp[elem]["value"],
+    						docid: jId,
+    					};
+    			var  href = context.getConvertigoUrl() + "projects/" + context.projectName + "/.bin?__sequence=dl_attachment&token=";
+                if (resp[elem]["type"] == "signature") {
+    				if(resp[elem]["att_type"] == true){
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["name"] + ".png");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["name"] + ".png";
+    					attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    					fs_attach["filename"] = name;
+    					var crypto_fs_attach = com.twinsoft.convertigo.engine.util.Crypto2.encodeToHexString(JSON.stringify(fs_attach));
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p><a href=''"+href + crypto_fs_attach+"''>" + name + "</a></p></td></tr>";
+    				}
+    				else{
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"] + ".png");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"] + ".png";
+    	                signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				}
+                }
+                else if (resp[elem]["type"] == "img") {
+    				if(resp[elem]["att_type"] == true){
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["name"]+".jpg");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["name"]+".jpg";
+    	               	attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    					//var fs_attach = context.getConvertigoUrl() + "fullsync/c8oforms_response_fs/" + encodeURIComponent(jId) + "/" + resp[elem]["value"];
+    					fs_attach["filename"] = name;
+    					var crypto_fs_attach = com.twinsoft.convertigo.engine.util.Crypto2.encodeToHexString(JSON.stringify(fs_attach));
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p><a href=''"+href + crypto_fs_attach+"''>" + name + "</a></p></td></tr>";
+    				}
+    				else{
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
+    					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
+    	                signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
+    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    				}
+                }
+                else if (resp[elem]["type"] == "file") {
+    				var longName = "";
+    				for(var fileElem in resp[elem]["value"]){
+    					var currentE = resp[elem]["value"][fileElem];
+    					var idx1 = currentE.indexOf("_C80C80_");
+    	                var idx2 = currentE.indexOf("_C80C80_", idx1 + 1);
+    	                var name = currentE.substring(idx1 + 8, idx2);
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
+    					name = uniqueName != "" ? uniqueName : name;
+    					longName += ", "+name;
+    	                attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (currentE) });
+    				}
+                   	longName = longName.substring(2);
+    				fs_attach["filename"] = name;
+    				var crypto_fs_attach = com.twinsoft.convertigo.engine.util.Crypto2.encodeToHexString(JSON.stringify(fs_attach));
+                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p><a href=''"+href + crypto_fs_attach+"''>" + longName + "</a></p></td></tr>";
+                }
+                else if (resp[elem]["type"] == "checkbox_group") {
+                    // table_recap += "<table>"; // table class=''cbgroup-table''
+                    if (headerCheckBoxGroup[resp[elem]["name"]] == undefined) {
+                        headerCheckBoxGroup[resp[elem]["name"]] = true;
+                        table_recap += "<tr><th colspan=''2'' class=''group-table-header''>" + resp[elem]["col"] + "</th></tr>";
+                        // table_recap += "<tr><tdcolspan=''2'' style=''text-align:center''><p class=''under''>"+resp[elem]["col"]+"</p></td></tr>"; // question of the checkbox_group
+                    }
+                    // table_recap += "<tbody>";
+                    table_recap += "<tr><td class=''group-table-data''><p class=''under''>" + resp[elem]["key"] + "</p></td><td class=''group-table-data''><p>" + resp[elem]["value"] + "</p></td></tr>"; // answers of the checkbox_group
+    
+                    // table_recap += "</tbody></table>"
+                }
+                else if (resp[elem]["type"] == "radio_group") {
+    
+                    if (headerCheckBoxGroup[resp[elem]["name"]] == undefined) {
+                        headerCheckBoxGroup[resp[elem]["name"]] = true;
+                        table_recap += "<tr><th colspan=''2'' class=''group-table-header''>" + resp[elem]["col"] + "</th></tr>";
+                    }
+                    table_recap += "<tr><td class=''group-table-data''><p class=''under''>" + resp[elem]["key"] + "</p></td><td class=''group-table-data''><p>" + resp[elem]["value"] + "</p></td></tr>";
+    
+                } else if (resp[elem]["type"] == "location") {
+                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td>";
+                    if (resp[elem][''showBbox'']) {
+                        var bboxTopLeftLat = resp[elem]["value"]["bounding_box"]["topLeft"]["lat"];
+                        var bboxTopLeftLong = resp[elem]["value"]["bounding_box"]["topLeft"]["lon"];
+                        var bboxbottomRightLat = resp[elem]["value"]["bounding_box"]["bottomRight"]["lat"];
+                        var bboxbottomRightLong = resp[elem]["value"]["bounding_box"]["bottomRight"]["lon"];
+                        table_recap += "<br /> Bounding Box : <br />" + bboxTopLeftLat + "<br />" + bboxTopLeftLong + "<br />" + bboxbottomRightLat + "<br />" + bboxbottomRightLong + "<br />"
+                    }
+                    else if (resp[elem][''showFormattedAddress'']) {
+                        table_recap += "<td>" + resp[elem]["value"]["addr"]["FormattedAddress"];
+                    }
+                    else if (resp[elem][''showCoordinates'']) {
+                        var latitude = resp[elem]["value"]["gps"]["latitude"];
+                        var longitude = resp[elem]["value"]["gps"]["longitude"];
+                        var accuracy = resp[elem]["value"]["gps"]["accuracy"];
+                        table_recap += "<br /> Latitude: " + latitude + "<br /> Longitude: " + longitude + "<br /> Accuracy: " + accuracy + " meters";
+                    }
+                    table_recap += "</td>"
+    
+                }
+                else if(resp[elem]["type"] == "grid"){
+                    // if there is no value or a simple string
+                    if(resp[elem]["all"] == null){
+                        table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + resp[elem]["value"] + "</p></td></tr>";
+                    }
+                    // if this is a row (not formatted)
+                    else if(resp[elem]["all"] == false){
+                        if (headerCheckBoxGroup[resp[elem]["name"]] == undefined) {
+    	                    headerCheckBoxGroup[resp[elem]["name"]] = true;
+    	                    table_recap += "<tr><th colspan=''100%'' class=''group-table-header''>" + resp[elem]["key"] + "</th></tr>";
+    	                }
+    					table_recap += "<tr>";
+    					for(var i in resp[elem]["value"]){
+    						table_recap += "<td class=''group-table-data''><p>" + resp[elem]["value"][i] + "</p></td>";
+    					}
+    					table_recap += "</tr>";
+                    }
+                    // if this is all data
+                    else if(resp[elem]["all"] == true){
+    					if (headerCheckBoxGroup[resp[elem]["name"]] == undefined) {
+    	                    headerCheckBoxGroup[resp[elem]["name"]] = true;
+    	                    table_recap += "<tr><th colspan=''100%'' class=''group-table-header''>" + resp[elem]["key"] + "</th></tr>";
+    	                }
+    					
+    					for(var i in resp[elem]["value"]){
+    						table_recap += "<tr>";
+    						for(var j in resp[elem]["value"][i]){
+    							var val = "";
+    							 if(typeof(resp[elem]["value"][i][j]) == "string"){
+    								val = resp[elem]["value"][i][j];
+    							}
+    							else if(resp[elem]["value"][i][j]["displayValue"] != undefined){
+    								val = resp[elem]["value"][i][j]["displayValue"];
+    							}
+    							else if(resp[elem]["value"][i][j]["value"] != undefined){
+    								val = resp[elem]["value"][i][j]["value"];
+    							}
+    							table_recap += "<td class=''group-table-data''><p>" + val + "</p></td>";
+    						}
+    						table_recap += "</tr>";
+    					}
+    					
+                    }
+                }
+                else {
+                    table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + resp[elem]["value"] + "</p></td></tr>";
+                }
+    
+            }
+        }
+        catch (e) {
+            log.error("[forms_notify_response_simple_by_mail_simple] an error occurred while building email summary => \n" + JSON.stringify(e));
+        }
+    
+    }
+    for (var elem in jDoc.variable.actionsValue) {
+        try {
+            table_recap += "<tr><td><p class=''under''>" + elem + "</p></td><td><p>" + jDoc.variable.actionsValue[elem]["value"] + "</p></td></tr>";
+            if (jDoc.variable.actionsValue[elem]["valueType"] == "attachment") {
+                attachmentsArray.push({ name: new Date().getTime()+"_"+ jDoc.variable.actionsValue[elem]["value"], "value": ("" + jDoc.variable.actionsValue[elem]["value"]) });
+            }
+        }
+        catch (e) {
+            log.error("[forms_notify_response_simple_by_mail_simple] an error occurred while building email actions attachments => \n" + JSON.stringify(e));
+        }
+    
+    }
+    table_recap += "</tbody></table>";'
+↓jIterator [steps.SimpleIteratorStep-1669306624752]: 
+  expression: signatures
+  isEnabled: false
+  ↓Sequence_JS [steps.SimpleStep-1669306624755]: 
+    expression: |
+      log.warn("into signatures");
+      log.warn(""+JSON.stringify(item))
+  ↓jElement [steps.ElementStep-1669306624758]: 
+    expression: item.value
+  ↓Write_binary_from_Base64 [steps.WriteBase64Step-1669306624761]: 
+    dataFile: attachPath + item.name
+    sourceDefinition: 
+      - xmlizable: 
+        - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+        - com.twinsoft.convertigo.beans.common.XMLVector: 
+          - java.lang.String: 
+            - ↑value: 1669306624758
+          - java.lang.String: 
+            - ↑value: ./text()
+↓jIterator1 [steps.SimpleIteratorStep-1669306624764]: 
+  expression: attachmentsArray
+  isEnabled: false
+  ↓Sequence_JS [steps.SimpleStep-1669306624767]: 
+    expression: |
+      log.warn("into att arr");
+      log.warn(""+JSON.stringify(item))
+  ↓jElement [steps.ElementStep-1669306624770]: 
+    expression: item.value
+  ↓jElement1 [steps.ElementStep-1669306624773]: 
+    expression: attachPath + item.name
+  ↓Call_Transaction [steps.TransactionStep-1669306624776]: 
+    output: true
+    sourceTransaction: C8Oforms.c8oforms_response_fs.GetDocumentAttachment
+    ↓_use_attname [variables.StepVariable-1669306624779]: 
+      description: Attachment name
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1669306624770
+            - java.lang.String: 
+              - ↑value: ./text()
+    ↓_use_docid [variables.StepVariable-1669306624782]: 
+      description: Document ID
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1669306624704
+            - java.lang.String: 
+              - ↑value: ./doc/_id/text()
+    ↓_use_attpath [variables.StepVariable-1669306624785]: 
+      description: Attachment path  This path is either absolute or relative to Convertigo environment. Relative paths starting with:<br/><br/>• <span class="computer">./</span> are relative to Convertigo workspace,<br/>• <span class="computer">.//</span> are relative to current project folder. <br/><br/>
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1669306624773
+            - java.lang.String: 
+              - ↑value: ./text()
+      value: 
+↓jElement [steps.ElementStep-1669306624788]: 
+  expression: '(forms_mail_summary == "no" || forms_mail_summary == "non" || forms_mail_summary == "false") ? "" : table_recap'
+  nodeName: tableBody
+↓SmtpStepSequence [steps.SimpleStep-1669306624791]: 
+  expression: |
+    '/* re write smtp step */
+    
+    // get all attachments
+    /*var attachments = [];
+    
+    for(var att in signatures){
+    	var attachment = {"path": attachPath + signatures[att].name, "name": signatures[att].name};
+    	attachments.push(attachment);
+    }
+    for(var att in attachmentsArray){
+    	var attachment = {"path": attachPath + attachmentsArray[att].name, "name": attachmentsArray[att].name};
+    	attachments.push(attachment);
+    }*/
+    
+    // entry parameters (most of them are defined by sequence variable)
+    var sRecipients = jEmailRecipients;
+    var sSubject = jEmailSubject;
+    //var xslFilepath =".//emails/responseMail2.xsl"
+    var sContentType = "";
+    var currentProjectName = "lib_Actions_C8Oforms";
+    
+    /** symbols */
+    //var smtpAuthType = "lib.actions.c8oforms.smtp.security";
+    //var sSender = "lib.actions.c8oforms.smtp.sender"
+    //var smtpUsername ="lib.actions.c8oforms.smtp.user";
+    //var smtpPassword = "lib.actions.c8oforms.smtp.password.secret";
+    //var smtpServer = "lib.actions.c8oforms.smtp.server";
+    //var smtpPort = "lib.actions.c8oforms.smtp.port";
+    //var sslProtocols = "lib.actions.c8oforms.smtp.sslProtocols"
+    
+    // define "enum" for auth type
+    var SmtpAuthType = {
+    		none: "None",
+    		basic: "Basic",
+    		startTls: "STARTTLS",
+    		sslTls: "SSL/TLS"
+    }
+    // deifne build mail function
+    var buildMail = (message, log)=>{
+    	var ret = message;
+    	try {
+    		var replies = [];
+    		replies[0] = new javax.mail.internet.InternetAddress(sSender);
+    		var recipients = sRecipients.split(/,|;/)
+    		// Adding sender
+    		ret.setFrom(new javax.mail.internet.InternetAddress(sSender));
+    		ret.setSender(new javax.mail.internet.InternetAddress(sSender));
+    		ret.setReplyTo(replies);
+    		log.debug("(Sequence SmtpStep) list of recipients: "+ JSON.stringify(recipients));
+    		//Adding recipients
+    		// when there is just 1 reciepent
+    		if (recipients[0].indexOf(":") != -1) {
+    			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0].split(":")[1]));
+    		} else {
+    			ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(recipients[0]));
+    		}
+    		for (var i = 1; i < recipients.length; i++) {
+    			if (recipients[i].indexOf(":") != -1) {
+    				var sRecipientType  = recipients[i].split(":")[0];
+    				var sRecipientAddress  = recipients[i].split(":")[1];
+    				if(sRecipientAddress != "" && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(sRecipientAddress)){
+    					log.debug("(Sequence SmtpStep) valid email adress : "+ sRecipientAddress+ " we will add it to recipients");
+    					if ("TO".toUpperCase() === sRecipientType.toUpperCase()) {
+    						ret.addRecipient(javax.mail.Message.RecipientType.TO, new javax.mail.internet.InternetAddress(sRecipientAddress));
+    					} else if ("BCC".toUpperCase() === sRecipientType.toUpperCase()) {
+    						ret.addRecipient(javax.mail.Message.RecipientType.BCC, new javax.mail.internet.InternetAddress(sRecipientAddress));
+    					} else {
+    						ret.addRecipient(javax.mail.Message.RecipientType.CC, new javax.mail.internet.InternetAddress(sRecipientAddress));
+    					}
+    				}
+    				else{
+    					log.warn("(Sequence SmtpStep) invalid email adress : "+ sRecipientAddress+ " we will ignore it");
+    				}
+    			} else {
+    				if(recipients[i] != ""){
+    					ret.addRecipient(javax.mail.Message.RecipientType.CC, new javax.mail.internet.InternetAddress(recipients[i]));
+    				}
+    			}
+    		}		
+    		//Adding mail subject
+    		ret.setSubject(sSubject);
+    
+    		//Adding content
+    		if (bodyParts.size() > 0) {
+    			var multipart = new javax.mail.internet.MimeMultipart();
+    			var msgPart = new javax.mail.internet.MimeBodyPart();
+    			msgPart.setContent(sMessageText, sContentType);
+    			multipart.addBodyPart(msgPart);
+    			for(var i =0; i < bodyParts.size(); i++) {
+    				multipart.addBodyPart(bodyParts.get(i));
+    			}
+    			ret.setContent(multipart);
+    		} else {
+    			ret.setContent(sMessageText, sContentType);
+    		}
+    	} catch (e1) {
+    		log.error("(Sequence SmtpStep) An error occured while trying to build e-mail : " + e1);
+    	}
+    	return ret;
+    }
+    
+    var fileXSL = null;
+    log.warn("context.getProjectDirectory()" + context.getProjectDirectory());
+    if (xslFilepath.length > 0) {
+    	fileXSL = new java.io.File(com.twinsoft.convertigo.engine.Engine.theApp.filePropertyManager.getFilepathFromProperty(xslFilepath, currentProjectName));
+    	if (!fileXSL.exists()) {
+    		var cancelLog = false;
+    		if(xslFilepath.startsWith("./")){
+    			// split filePath with / to retrive project name
+    			var projectNameCustom = xslFilepath.split("/")[1];
+    			log.debug("projectNameCustom : " + projectNameCustom);
+    			// get project directory
+    			var projectDirectoryCustom = com.twinsoft.convertigo.engine.Engine.theApp.projectDir(projectNameCustom);
+    			log.debug("projectDirectoryCustom : " + projectDirectoryCustom);
+    			// get fullPath
+    			var fullPathCustom = projectDirectoryCustom + "/" + (xslFilepath.substring(projectNameCustom.length+2));
+    			log.debug("fullPathCustom : " + fullPathCustom);
+    			// normalize path ( \\ for windows os and / for linux os)
+    			fullPathCustom = com.twinsoft.convertigo.engine.Engine.resolveProjectPath(fullPathCustom);
+    			log.debug("fullPathCustom : " + fullPathCustom);
+    			// test again presence of file
+    			fileXSL = new java.io.File(fullPathCustom);
+    			if (fileXSL.exists()) {
+    				cancelLog = true;
+    				log.debug("fullPathCustom file exists");
+    			}
+    		}
+    		if(!cancelLog){
+    			log.error("(Sequence SmtpStep) SMTP step missing xsl file");
+    		}
+    	}
+    }
+    if (sContentType.length == 0) {
+    	sContentType = fileXSL != null ? "text/html; charset=UTF-8" : "text/plain; charset=UTF-8";
+    }
+    var transformer = fileXSL != null ? com.twinsoft.convertigo.engine.util.XMLUtils.getNewTransformer(new javax.xml.transform.stream.StreamSource(fileXSL)) : com.twinsoft.convertigo.engine.util.XMLUtils.getNewTransformer();
+    transformer.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+    transformer.setOutputProperty(javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION, "yes");
+    var sw = new java.io.StringWriter();
+    
+    transformer.transform(new javax.xml.transform.dom.DOMSource(context.outputDocument), new javax.xml.transform.stream.StreamResult(sw));
+    sMessageText = sw.toString();
+    var bodyParts = new java.util.LinkedList();
+    bodyParts.clear();
+    /*for (var i in attachments) {
+    	var attachment = attachments[i];
+    	var filepath = attachment["path"];
+    	try {
+    		
+    		filepath = filepath == undefined  ? "" : filepath;
+    		if (filepath.length > 0) {
+    			var file = new java.io.File(com.twinsoft.convertigo.engine.Engine.theApp.filePropertyManager.getFilepathFromProperty(filepath, com.twinsoft.convertigo.engine.Engine.theApp.databaseObjectsManager.getOriginalProjectByName(currentProjectName).getName()));
+    			if (file.exists()) {
+    				if (file.isFile()) {
+    					var filename = attachment["name"];
+    					filename = filename == undefined ? file.getName() : filename;
+    					var bodyPart = new javax.mail.internet.MimeBodyPart();
+    					bodyPart.attachFile(file);
+    					var index = filename.indexOf("_");
+    					index = index == -1 ? 0 : index + 1
+    					bodyPart.setFileName(filename.substring(index));
+    					//bodyPart.setContentID("some-image-cid");
+    					//bodyPart.setDisposition(javax.mail.internet.MimeBodyPart.INLINE);
+    					bodyParts.add(bodyPart);
+    				} else {
+    					log.info("(Sequence SmtpStep) Unable attach a directory : " + file.getAbsolutePath());
+    				}
+    			} else {
+    				log.info("(Sequence SmtpStep) attach an unexisting file : " + file.getAbsolutePath());
+    			}
+    		} else {
+    			log.info("(Sequence SmtpStep) Unable attach an empty filepath");
+    		}
+    	} catch (e) {
+    		log.info("(Sequence SmtpStep) Unable attach " + filepath + " error: "+JSON.stringify(e));
+    	}							
+    }*/
+    var running = false;
+    var r = new java.lang.Runnable() {
+        run: () => {
+    		// copy variables before their deletion from scope
+    		var logRunnable = log;
+    		var SmtpAuthTypeRunnable = SmtpAuthType;
+    		var smtpAuthTypeRunnable = smtpAuthType;
+    		var smtpServerRunnable = smtpServer;
+    		var smtpPortRunnable = smtpPort;
+    		var smtpSslProtocolsRunnable = sslProtocols;
+    		var smtpUsernameRunnable = smtpUsername;
+    		var smtpPasswordRunnable = smtpPassword;
+    		//var attachmentsRunnable = attachments;
+    		var currentProjectNameRunnable = currentProjectName;
+    		// create deleteAttachmentsAfterEmail to execute after sending email
+    		/*var deleteAttachmentsAfterEmail = ()=>{
+    			for(var i in attachmentsRunnable){
+    				try{
+    					var current = attachmentsRunnable[i];
+    					var filepath = current == undefined || current["path"] == undefined ? "": current["path"];
+    					var file = new java.io.File(com.twinsoft.convertigo.engine.Engine.theApp.filePropertyManager.getFilepathFromProperty(filepath, com.twinsoft.convertigo.engine.Engine.theApp.databaseObjectsManager.getOriginalProjectByName(currentProjectNameRunnable).getName()));
+    					if(file.exists()){
+    						if(file.delete()){
+    							logRunnable.info("(Sequence SmtpStep) Attachment file ''"+current["name"]+"'' has been succesfully deleted");
+    						}
+    						else{
+    							logRunnable.warn("(Sequence SmtpStep) Can''t delete attachment file ''"+current["name"]+"''");
+    						}
+    					}
+    				}
+    				catch(e){
+    					logRunnable.warn("(Sequence SmtpStep) An error occured wile deleting attachment file ''"+current["name"]+"'' " + JSON.stringify(e));
+    				}
+    			}
+    		}*/
+    		
+    		logRunnable.info("(Sequence SmtpStep): starting async Thread");
+    		// equivalent to sendMess
+    		var mailcapCommandMap = null;
+    		var props = new java.util.Properties();
+    		try {
+    			if (mailcapCommandMap == null) {
+    				var mc = javax.activation.CommandMap.getDefaultCommandMap();
+    				if (mailcapCommandMap == null) {
+    					mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
+    					mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+    					mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+    					mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+    					mc.addMailcap("multipart/mixed;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+    					mc.addMailcap("message/rfc822;; x-java-content- handler=com.sun.mail.handlers.message_rfc822");
+    				}
+    				mailcapCommandMap = mc;
+    			}
+    			// define auth properties
+    			var smtpKind = smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls ? "smtps" : "smtp";
+    			props.put("mail."+smtpKind+".host", ""+smtpServerRunnable);
+    			props.put("mail."+smtpKind+".port", ""+smtpPortRunnable);
+    			props.put("mail.transport.protocol", smtpKind);
+    			props.put("mail."+smtpKind+".auth", ""+(smtpAuthTypeRunnable != SmtpAuthTypeRunnable.none));
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls){
+    				props.put("mail."+smtpKind+".ssl.protocols", ""+smtpSslProtocolsRunnable);
+    			}
+    			else if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls){
+    				props.put("mail."+smtpKind+".ssl.protocols", ""+smtpSslProtocolsRunnable);
+    				props.put("mail.smtp.starttls.enable", ""+(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls));
+    				props.put("mail.smtp.starttls.required", "true");
+    			}
+    			var auth = null;
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls){
+    				auth = new javax.mail.Authenticator({
+    					// override java 
+    					getPasswordAuthentication: function() {
+    						var username = smtpUsernameRunnable;
+    						var password = smtpPasswordRunnable;
+    						return new javax.mail.PasswordAuthentication(username, password);
+    					}
+    				});
+    			}
+    			
+    			var mailSession = javax.mail.Session.getInstance(props, auth);
+    			var message = new javax.mail.internet.MimeMessage(mailSession);
+    		
+    			// Building message
+    			message = buildMail(message, logRunnable);
+    		
+    			//Sending e-mail
+    			logRunnable.info("(Sequence SmtpStep) Sending e-mail with "+smtpAuthTypeRunnable);
+    			var transport = mailSession.getTransport(smtpKind);
+    			running = true;
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.sslTls || smtpAuthTypeRunnable == SmtpAuthTypeRunnable.basic){
+    				transport.connect(smtpServerRunnable, +smtpPortRunnable, smtpUsernameRunnable, smtpPasswordRunnable);
+    			}
+    			else if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.startTls){
+    				transport.connect(smtpServerRunnable, smtpUsernameRunnable, smtpPasswordRunnable);
+    			}
+    			if(smtpAuthTypeRunnable == SmtpAuthTypeRunnable.none){
+    				javax.mail.Transport.send(message);
+    			}
+    			else{
+    				transport.sendMessage(message, message.getAllRecipients());
+    			}
+    			transport.close();
+    			logRunnable.info("(Sequence SmtpStep) E-mail has been sent");
+    			//deleteAttachmentsAfterEmail();
+    			
+    		} catch (e) {
+    			logRunnable.error("(Sequence SmtpStep) An error occured while trying to send e-mail : " + e + (e.javaException != undefined ? "\n"+e.javaException : ""));
+    			
+    			//deleteAttachmentsAfterEmail();
+    		}
+    		logRunnable.info("(Sequence SmtpStep): ending async Thread");
+    	}
+    };
+    new java.lang.Thread(r).start();
+    var cpt = 500;
+    while(running != true && --cpt){
+    	java.lang.Thread.sleep(50);
+    }
+    '
+  output: true
+↓forms_mail_recipients_to [variables.RequestableVariable-1669306624794]: 
+  comment: |
+    '{
+      "en":{
+    	"displayName":"<p>To</p>",
+           "comment":"<div>Mail recipients separated by comma or semicolon. <i>(mandatory)</i></div>"
+        },
+        "fr":{
+            "displayName":"<p>À</p>",
+            "comment":"<div>Destinataires du courrier séparés par une virgule ou un point-virgule. <i>(obligatoire)</i></div>"
+        },
+        "es":{
+            "displayName":"<p>A</p>",
+            "comment":"<div>Destinatarios de correo separados por coma o punto y coma. <i>(obligatorio)</i></div>"
+        },
+        "it":{
+            "displayName":"<p>A</p>",
+            "comment":"<div>Destinatari di posta separati da virgola o punto e virgola. <i>(obbligatorio)</i></div>"
+        }
+    }'
+  value: 
+↓forms_mail_recipients_cc [variables.RequestableVariable-1669306624797]: 
+  comment: |
+    '{
+        "en":{
+          "displayName":"<p>Cc</p>",
+             "comment":"<div>Mail <b>copy</b> recipients separated by comma or semicolon.</div>"
+          },
+          "fr":{
+              "displayName":"<p>Cc</p>",
+              "comment":"<div>Destinataires <b>en copie</b> du courrier séparés par une virgule ou un point-virgule.</div>"
+          },
+          "es":{
+              "displayName":"<p>Cc</p>",
+              "comment":"<div>Destinatarios <b>en copia<b/> de correo separados por coma o punto y coma.</div>"
+          },
+          "it":{
+              "displayName":"<p>Cc</p>",
+              "comment":"<div>Destinatari <b>della copia</b> di posta separati da virgola o punto e virgola.</div>"
+          }
+      }'
+  value: 
+↓forms_mail_recipients_bcc [variables.RequestableVariable-1669306624800]: 
+  comment: |
+    '{
+        "en":{
+          "displayName":"<p>Bcc</p>",
+             "comment":"<div>Mail <b>blind</b> recipients separated by comma or semicolon.</div>"
+          },
+          "fr":{
+              "displayName":"<p>Bcc</p>",
+              "comment":"<div>Destinataires <b>en copie cachée</b> du courrier séparés par une virgule ou un point-virgule.</div>"
+          },
+          "es":{
+              "displayName":"<p>Bcc</p>",
+              "comment":"<div>Destinatarios <b>ciegos<b/> de correo separados por coma o punto y coma.</div>"
+          },
+          "it":{
+              "displayName":"<p>Bcc</p>",
+              "comment":"<div>Destinatari <b>ciechi</b> di posta separati da virgola o punto e virgola.</div>"
+          }
+      }'
+  value: 
+↓forms_mail_subject [variables.RequestableVariable-1669306624803]: 
+  comment: |
+    '{
+        "en":{
+          "displayName":"<p>Email subject</p>",
+             "comment":"<div>Email subject</div>"
+          },
+          "fr":{
+              "displayName":"<p>Objet de l''email</p>",
+              "comment":"<div>Objet de l''email</div>"
+          },
+          "es":{
+              "displayName":"<p>Asunto del correo electrónico</p>",
+              "comment":"<div>Asunto del correo electrónico</div>"
+          },
+          "it":{
+              "displayName":"<p>ggetto dell''email</p>",
+              "comment":"<div>ggetto dell''email</div>"
+          }
+      }'
+  value: 
+↓forms_mail_body [variables.RequestableVariable-1669306624806]: 
+  comment: |
+    '{
+      "en":{
+    	"displayName":"<p>Email body</p>",
+        "comment":"<div>Email body, the message you want to send to recipients.</div>"
+        },
+        "fr":{
+            "displayName":"<p>Corps de l''e-mail</p>",
+            "comment":"<div>Corps de l''e-mail, le message que vous voulez envoyer aux destinataires.</div>"
+        },
+        "es":{
+            "displayName":"<p>Cuerpo del correo</p>",
+            "comment":"<div>Cuerpo del correo electrónico, el mensaje que desea enviar a los destinatarios.</div>"
+        },
+        "it":{
+            "displayName":"<p>Corpo dell''email</p>",
+            "comment":"<div>Corpo dell''e-mail, il messaggio che si desidera inviare ai destinatari.</div>"
+        }
+    }'
+  description: html
+  value: Nouvelle réponse dans votre formulaire :
+↓forms_mail_summary [variables.RequestableVariable-1669306624809]: 
+  comment: |
+    '{
+      "en":{
+    	"displayName":"<p>Form summary</p>",
+        "comment":"<div>Form summary, if value is <b>no</b>, the form summary will not be included into email.</div>"
+        },
+        "fr":{
+            "displayName":"<p>Résumé du formulaire</p>",
+            "comment":"<div>Résumé du formulaire, si la valeur est <b>non</b>, le résumé du formulaire ne sera pas inclus dans l''e-mail</div>"
+        },
+        "es":{
+            "displayName":"<p>Resumen del formulario</p>",
+            "comment":"<div>Resumen del formulario, si el valor es <b>no</b>, el resumen del formulario no se incluirá en el correo electrónico</div>"
+        },
+        "it":{
+            "displayName":"<p>Riepilogo modulo</p>",
+            "comment":"<div>Riepilogo modulo, se il valore è <b>no</b>, il riepilogo del modulo non verrà incluso nell''e-mail</div>"
+        }
+    }'
+  value: 
+↓doc [variables.RequestableVariable-1669306624812]: 
+↓originalDoc [variables.RequestableVariable-1669306624815]: 
+↓smtpServer [variables.RequestableVariable-1669306624818]: 
+  value: ${lib.actions.c8oforms.smtp.server}
+↓smtpPassword [variables.RequestableVariable-1669306624821]: 
+  value: ${lib.actions.c8oforms.smtp.password.secret}
+↓smtpUsername [variables.RequestableVariable-1669306624824]: 
+  value: ${lib.actions.c8oforms.smtp.user}
+↓smtpPort [variables.RequestableVariable-1669306624827]: 
+  value: ${lib.actions.c8oforms.smtp.port}
+↓sSender [variables.RequestableVariable-1669306624830]: 
+  value: ${lib.actions.c8oforms.smtp.sender}
+↓smtpAuthType [variables.RequestableVariable-1669306624833]: 
+  value: ${lib.actions.c8oforms.smtp.security}
+↓xslFilepath [variables.RequestableVariable-1669306624836]: 
+  value: ${lib.actions.c8oforms.email.xslFilePath=.//emails/responseMail2.xsl}
+↓sslProtocols [variables.RequestableVariable-1669306624839]: 
+  value: ${lib.actions.c8oforms.smtp.sslProtocols=TLSv1.2}
