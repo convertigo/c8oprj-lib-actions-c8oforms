@@ -9,6 +9,7 @@ Comments are exposed to Convertigo forms, please follow `formssource_List_of_Shi
 - [Lib_Actions_C8Oforms](#lib_actions_c8oforms)
   - [Actions sequences](#actions-sequences)
     - [forms_notify_response_by_mail](#forms_notify_response_by_mail)
+    - [forms_notify_response_by_mail_link](#forms_notify_response_by_mail_link)
     - [forms_insert_response_db](#forms_insert_response_db)
     - [forms_fill_PDF](#forms_fill_pdf)
   - [Source Sequences](#source-sequences)
@@ -52,6 +53,9 @@ This can also be used to send mails to multiple addresses.
     - *forms_mail_recipients_bcc* (Bcc Mail recipients separated by comma or semicolon.)
     - *forms_mail_sender* (Mail recipient for anonymous form. If empty, tries to retrieve mail address from C8OForms account)
     - *forms_mail_notify_owner* (Notify form owner of a new response. true/false)
+
+### forms_notify_response_by_mail_link
+Exact same action as [forms_notify_response_by_mail](#forms_notify_response_by_mail) but attachments are links to download the file.
 
 ### forms_insert_response_db
 Save responses to an external Database.
