@@ -1,0 +1,68 @@
+comment: |
+  '{
+      "en": {
+          "displayName": "<p>Change the value of a field in the response</p>",
+          "comment"    : "Allows you to modify the value of the field in the current response"
+      },
+      "fr": {
+          "displayName": "<p>Change la valeur d''un champs dans la réponse </p>",
+          "comment"    : "Permets de modifier la valeur du champs dans la réponse actuelle"
+      },
+      "es": {
+          "displayName": "<p>Cambiar el valor de un campo en la respuesta</p>",
+          "comment"    : "Le permite modificar el valor del campo en la respuesta actual."
+      },
+      "it": {
+          "displayName": "<p>Modificare il valore di un campo nella risposta</p>",
+          "comment"    : "Consente di modificare il valore del campo nella risposta corrente"
+      }
+  }'
+↓Input_variables [steps.InputVariablesStep-1699970310090]: 
+↓_doc [steps.JsonSourceStep-1699971915127]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1699970310090
+        - java.lang.String: 
+          - ↑value: ./doc
+  variableName: _doc
+↓editField [steps.SimpleStep-1699970963916]: 
+  expression: |
+    'log.warn("there !!!!!!!!!!!!");
+    log.warn("forms_input_field_name: " + forms_input_field_name);
+    log.warn("forms_input_field_value: " + forms_input_field_value)
+    _doc = _doc.doc;
+    for (let e in _doc.resp) {
+    	if (_doc.resp[e].type === "ion-card") {
+    		for (let f in _doc.resp[e].children) {
+    			if(_doc.resp[e].children.name == forms_input_field_name){
+    				_doc.resp[e].children.value = forms_input_field_value;
+    			}
+    		}
+    	}
+    	else {
+    		if(_doc.resp[e].name == forms_input_field_name){
+    			_doc.resp[e].value = forms_input_field_value;
+    			log.warn("found !!!!!")
+    			log.warn("_doc.resp[e].name "+ _doc.resp[e].name);
+    		}
+    	}
+    }
+    
+    delete _doc.c8oMeta;
+    delete _doc._attachments;
+    log.warn(JSON.stringify(_doc));
+    let mergeRules = new java.util.HashMap();
+    mergeRules.put(java.util.Arrays.asList(new java.lang.String("resp")), new java.lang.String("override"));
+    const fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
+    let res= fsclient.postDocument(java.lang.String("c8oforms_response_fs"), new org.codehaus.jettison.json.JSONObject(_doc), new java.util.HashMap(), com.twinsoft.convertigo.engine.enums.CouchPostDocumentPolicy.merge, mergeRules, false);
+    res = JSON.parse(res.toString());
+    log.warn("res");
+    log.warn(JSON.stringify(res));
+    log.warn("there !!!!!!!!!!!! rend ")'
+↓originalDoc [variables.RequestableVariable-1699970310120]: 
+↓doc [variables.RequestableVariable-1699970310123]: 
+↓forms_input_field_name [variables.RequestableVariable-1699970412414]: 
+↓forms_input_field_value [variables.RequestableVariable-1699971222020]: 
