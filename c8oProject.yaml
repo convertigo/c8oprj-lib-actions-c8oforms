@@ -19,7 +19,7 @@
             "comment": "<div>Azioni e fonti predefinite fornite con <i>Convertigo Form Builder</i></div>"
         }
     }'
-  version: 1.0.42
+  version: 1.0.43
   ↓c8oforms_forms_reponses_backup [connectors.FullSyncConnector]: 🗏 connectors/c8oforms_forms_reponses_backup.yaml
   ↓CNN [connectors.HttpConnector]: 🗏 connectors/CNN.yaml
   ↓SQL_mariadb [connectors.SqlConnector]: 🗏 connectors/SQL_mariadb.yaml
