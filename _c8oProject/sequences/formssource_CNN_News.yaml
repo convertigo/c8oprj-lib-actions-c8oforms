@@ -1,22 +1,22 @@
 comment: |
   '{
-          "en": {
-              "displayName": "CNN news",
-              "comment": "Returns the latest news from CNN"
-          },
-          "fr": {
-              "displayName": "Actualités de la CNN ",
-              "comment": "Renvoi les derniéres actualités de la CNN"
-          },
-          "es": {
-              "displayName": "Noticias de la CNN",
-              "comment": "Devuelve las últimas noticias de CNN"
-          },
-          "it": {
-              "displayName": "Notizie dalla CNN",
-              "comment": "Restituisce le ultime notizie dalla CNN"
-          },
-  	"types":["grid"]
+    "en": {
+        "displayName": "CNN news",
+        "comment": "Demo data source. Just returns some news from CNN"
+    },
+    "fr": {
+        "displayName": "Actualités CNN",
+        "comment": "Source de données de démonstration. Retourne simplement quelques nouvelles de CNN"
+    },
+    "it": {
+        "displayName": "Notizie CNN",
+        "comment": "Fonte di dati demo. Restituisce solo alcune notizie dalla CNN"
+    },
+    "es": {
+        "displayName": "Noticias CNN",
+        "comment": "Fuente de datos de demostración. Simplemente devuelve algunas noticias de CNN"
+    },
+    "types": ["grid"]
   }'
 ↓jIfThenElse [steps.IfThenElseStep-1666599746235]: 
   comment: if model has been set to true, Convertigo Forms is asking for model
