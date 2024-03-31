@@ -4,19 +4,19 @@
     '{
         "en": {
             "displayName": "Default Actions and sample data sources",
-            "comment": "Default data sources and actions. Many other data sources and actions can be added by installing Convertigo No Code Studio plugins. Please refer to documentation to understand how to create plugins with the Convertigo Low Code Studio<a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Convertigo Plugins</a>"
+            "comment": "Default data sources and actions. Many other data sources and actions can be added by installing Convertigo No Code Studio plugins. Please refer to documentation to understand how to create plugins with the Convertigo Low Code Studio <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Convertigo Plugins</a>"
         },
         "fr": {
             "displayName": "Actions par défaut et exemples de sources de données",
-            "comment": "Sources de données et actions par défaut. De nombreuses autres sources de données et actions peuvent être ajoutées en installant des plugins Convertigo No Code Studio. Veuillez consulter la documentation pour comprendre comment créer des plugins avec le Convertigo Low Code Studio<a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Plugins Convertigo</a>"
+            "comment": "Sources de données et actions par défaut. De nombreuses autres sources de données et actions peuvent être ajoutées en installant des plugins Convertigo No Code Studio. Veuillez consulter la documentation pour comprendre comment créer des plugins avec le Convertigo Low Code Studio <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Plugins Convertigo</a>"
         },
         "it": {
             "displayName": "Azioni predefinite e fonti di dati di esempio",
-            "comment": "Fonti di dati e azioni predefinite. Molte altre fonti di dati e azioni possono essere aggiunte installando i plugin di Convertigo No Code Studio. Si prega di fare riferimento alla documentazione per capire come creare plugin con il Convertigo Low Code Studio<a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Plugin Convertigo</a>"
+            "comment": "Fonti di dati e azioni predefinite. Molte altre fonti di dati e azioni possono essere aggiunte installando i plugin di Convertigo No Code Studio. Si prega di fare riferimento alla documentazione per capire come creare plugin con il Convertigo Low Code Studio <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Plugin Convertigo</a>"
         },
         "es": {
             "displayName": "Acciones predeterminadas y fuentes de datos de ejemplo",
-            "comment": "Fuentes de datos y acciones predeterminadas. Se pueden añadir muchas otras fuentes de datos y acciones instalando plugins de Convertigo No Code Studio. Por favor, consulte la documentación para entender cómo crear plugins con el Convertigo Low Code Studio<a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Plugins de Convertigo</a>"
+            "comment": "Fuentes de datos y acciones predeterminadas. Se pueden añadir muchas otras fuentes de datos y acciones instalando plugins de Convertigo No Code Studio. Por favor, consulte la documentación para entender cómo crear plugins con el Convertigo Low Code Studio <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Plugins de Convertigo</a>"
         }
     }'
     
