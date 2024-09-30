@@ -164,6 +164,16 @@ responseTimeout: 600
             - java.lang.String: 
               - ↑value: ./forms_mail_subject/text()
       variableName: jEmailSubject
+    ↓Element2 [steps.XMLElementStep-1727712301933]: 
+      nodeName: emailLogo
+      sourceDefinition: 
+        - xmlizable: 
+          - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+          - com.twinsoft.convertigo.beans.common.XMLVector: 
+            - java.lang.String: 
+              - ↑value: 1599570999604
+            - java.lang.String: 
+              - ↑value: ./forms_mail_logo/text()
 ↓jSimpleSource2 [steps.SimpleSourceStep-1599570999682]: 
   comment: Form name
   sourceDefinition: 

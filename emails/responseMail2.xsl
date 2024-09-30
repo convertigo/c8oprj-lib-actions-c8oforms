@@ -158,9 +158,11 @@
 																<td
 																	style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
 																	<!-- shows a logo if emailLogo is defined in sequence scope -->
+																	<xsl:if test="string-length(//emailLogo/text()) > 0">
 																	<img
 																		style="display: block; margin-left: auto; margin-right: auto;"
 																		src="{//emailLogo}" />
+																	</xsl:if>
 																	<!-- displays form's title if formName is defined in sequence scope -->	
 																	<h1 style="text-align: center;"><xsl:value-of select="//formName"/></h1>
 																	<!-- displays form's email body define by user in the form -->			
