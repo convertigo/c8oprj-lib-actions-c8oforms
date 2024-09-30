@@ -1,7 +1,7 @@
 
 # ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/core/images/project_color_16x16.png?raw=true "Project") lib_Actions_C8Oforms
 
-<div>Azioni e fonti predefinite fornite con <i>Convertigo Form Builder</i></div>
+Default data sources and actions. Many other data sources and actions can be added by installing Convertigo No Code Studio plugins. Please refer to documentation to understand how to create plugins with the Convertigo Low Code Studio <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Convertigo Plugins</a>
 
 <details><summary><span style="color:DarkGoldenRod"><i>References</i></span></summary><blockquote><p>
 
@@ -9,7 +9,7 @@
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/references/images/ProjectSchemaReference_16x16.png?raw=true "ProjectSchemaReference") C8Oforms
 
 
-see [readme](https://github.com/convertigo/C8oForms/tree/NGX#readme)
+see [readme](https://github.com/convertigo/C8oForms/tree/hotfix/2.0.50.X#readme)
 </p></blockquote></details>
 
 <details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
@@ -658,6 +658,17 @@ comment
 </tr>
 <tr>
 <td>
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;forms_mail_logo
+</td>
+<td>
+<div class="en">URL to a logo. || <i>(optional)</i></div>
+<div class="fr">URL vers un logo. || <i>(optionnel)</i></div>
+<div class="es">URL a un logotipo. || <i>(opcional)</i></div>
+<div class="it">OURL di un logo. || <i>(facoltativo)</i> </div>
+</td>
+</tr>
+<tr>
+<td>
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;forms_mail_recipients_bcc
 </td>
 <td>
@@ -772,12 +783,12 @@ comment
 
 </p></blockquote></details>
 
-<details><summary><b>formssource_CNN_News</b> : Returns the latest news from CNN</summary><blockquote><p>
+<details><summary><b>formssource_CNN_News</b> : Demo data source</summary><blockquote><p>
 
 
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/sequences/images/genericsequence_color_16x16.png?raw=true "GenericSequence") formssource_CNN_News
 
-Returns the latest news from CNN
+Demo data source. Just returns some news from CNN
 
 <span style="color:DarkGoldenRod">Variables</span>
 

@@ -1056,6 +1056,13 @@ responseTimeout: 600
     }'
   description: html
   value: Nouvelle réponse dans votre formulaire :
+↓forms_mail_logo [variables.RequestableVariable-1727700608188]: 
+  comment: |
+    <div class="en">URL to a logo. || <i>(optional)</i></div>
+    <div class="fr">URL vers un logo. || <i>(optionnel)</i></div>
+    <div class="es">URL a un logotipo. || <i>(opcional)</i></div>
+    <div class="it">OURL di un logo. || <i>(facoltativo)</i> </div>
+  value: https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2020/Feb/24/1281954440-0-c8oforms-logo_avatar.png
 ↓forms_mail_summary [variables.RequestableVariable-1634583960132]: 
   comment: |
     '{
