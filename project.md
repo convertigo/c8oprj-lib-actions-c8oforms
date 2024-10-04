@@ -1,7 +1,7 @@
 
 # ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/core/images/project_color_16x16.png?raw=true "Project") lib_Actions_C8Oforms
 
-Default data sources and actions. Many other data sources and actions can be added by installing Convertigo No Code Studio plugins. Please refer to documentation to understand how to create plugins with the Convertigo Low Code Studio <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Convertigo Plugins</a>
+Default data sources and actions. Many other data sources and actions can be added by installing Convertigo No Code Studio plugins. Please refer to documentation to understand how to create plugins with the Convertigo Low Code Studio: <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Convertigo Plugins</a>
 
 <details><summary><span style="color:DarkGoldenRod"><i>References</i></span></summary><blockquote><p>
 
@@ -9,6 +9,7 @@ Default data sources and actions. Many other data sources and actions can be add
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/references/images/ProjectSchemaReference_16x16.png?raw=true "ProjectSchemaReference") C8Oforms
 
 
+see [readme](https://github.com/convertigo/C8oForms/tree/NGX#readme)
 </p></blockquote></details>
 
 <details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
@@ -606,7 +607,7 @@ comment
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;forms_input_pdf_path
 </td>
 <td>
-Fill in the dynamic PDF file you want to use as a template. You can use for example <a href='https://www.pdfescape.com/open/' target='_blank'> PDFescape </a> to make your PDF dynamic, either from a new PDF or from 'an existing one. <br/> The name of the PDF fields must be identical to the technical identifiers of the fields in your form. <br/>Only the fields "input text", "checkbox", "date", "time", "camera", "group", "barcode", "signature", and "location" are supported. <Br / > For the checkboxes, each box of the PDF must have the technical name + "_1", + "_2" etc ...
+Fill in the dynamic PDF file you want to use as a template. You can use, for example, <a href='https://www.libreoffice.org/' target='_blank'>LibreOffice Writer</a> to make your PDF dynamic, either from a new PDF or from 'an existing one. <br/> The name of the PDF fields must be identical to the technical identifiers of the fields in your form. <br/>Only the fields "input text", "checkbox", "date", "time", "camera", "group", "barcode", "signature", and "location" are supported. <Br / > For the checkboxes, each box of the PDF must have the technical name + "_1", + "_2" etc ...
 </td>
 </tr>
 <tr>
