@@ -474,7 +474,7 @@ comment: |
     _use_docid = _id = jDoc.variable._id;
     
     // get current action
-    var currentAction = JSON.parse(currentAction)["item"];
+    var currentAction = JSON.parse(currentAction);
     // get current action name
     var currentActionName = currentAction["name"];
     // get current action executing sequence
