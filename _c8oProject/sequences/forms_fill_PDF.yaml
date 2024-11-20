@@ -477,6 +477,13 @@ comment: |
     var currentAction = JSON.parse(currentAction);
     // get current action name
     var currentActionName = currentAction["name"];
+    try{
+    	// try to get original name of the pdf file
+    	currentActionName = Object.entries(currentAction.actions).find(([key,value]) => {return value.enabled})[1].vars.forms_input_pdf_path.original_name
+    }
+    catch (e) {
+    }
+    
     // get current action executing sequence
     //var currentSeq = Object.keys(currentAction["actions"])[0];
     
