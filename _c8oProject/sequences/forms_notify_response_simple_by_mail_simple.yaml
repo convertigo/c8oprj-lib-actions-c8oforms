@@ -365,12 +365,20 @@ responseTimeout: 600
     		}
     	}
     }
+    var applyOrder = (order, resp) => {
+        // Add an original index to each item to preserve initial order in case of ties
+        resp.forEach((item, index) => item._originalIndex = index);
+        
+        resp.sort((a, b) => {
+            // Compare based on the order array
+            const orderDiff = order.indexOf(a.name) - order.indexOf(b.name);
+            // If names are at the same rank in the order array, use the original index to break the tie
+            return orderDiff !== 0 ? orderDiff : a._originalIndex - b._originalIndex;
+        });
     
-    var applyOrder = (order, resp) =>{
-    	resp.sort((a, b) => {
-        	return order.indexOf(a.name) - order.indexOf(b.name)
-    	});
-    }
+        // Clean up the added indices after sorting
+        resp.forEach(item => delete item._originalIndex);
+    };
     
     var jDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
     var date = jDoc.variable.timestamp;
