@@ -473,10 +473,11 @@ responseTimeout: 600
     	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
     				}
     				else{
-    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
-    					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
-    	                signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
-    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    //					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
+    //					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
+    //	                signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
+    //	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    					table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + "</p></td></tr>";
     				}
                 }
                 else if (resp[elem]["type"] == "file") {
