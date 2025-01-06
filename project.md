@@ -661,10 +661,7 @@ comment
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;forms_mail_logo
 </td>
 <td>
-<div class="en">URL to a logo. || <i>(optional)</i></div>
-<div class="fr">URL vers un logo. || <i>(optionnel)</i></div>
-<div class="es">URL a un logotipo. || <i>(opcional)</i></div>
-<div class="it">OURL di un logo. || <i>(facoltativo)</i> </div>
+<div>The URL to the logo in the email header.</div>
 </td>
 </tr>
 <tr>
@@ -704,7 +701,7 @@ comment
 <img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;forms_mail_summary
 </td>
 <td>
-<div>Form summary, if value is <b>no</b>, the form summary will not be included into email.</div>
+<div>Add a form summary to the email</div>
 </td>
 </tr>
 <tr>

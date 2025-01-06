@@ -365,12 +365,20 @@ responseTimeout: 600
     		}
     	}
     }
+    var applyOrder = (order, resp) => {
+        // Add an original index to each item to preserve initial order in case of ties
+        resp.forEach((item, index) => item._originalIndex = index);
+        
+        resp.sort((a, b) => {
+            // Compare based on the order array
+            const orderDiff = order.indexOf(a.name) - order.indexOf(b.name);
+            // If names are at the same rank in the order array, use the original index to break the tie
+            return orderDiff !== 0 ? orderDiff : a._originalIndex - b._originalIndex;
+        });
     
-    var applyOrder = (order, resp) =>{
-    	resp.sort((a, b) => {
-        	return order.indexOf(a.name) - order.indexOf(b.name)
-    	});
-    }
+        // Clean up the added indices after sorting
+        resp.forEach(item => delete item._originalIndex);
+    };
     
     var jDoc = JSON.parse('''' + com.twinsoft.convertigo.engine.util.XMLUtils.XmlToJson(doc, true, true));
     var date = jDoc.variable.timestamp;
@@ -465,10 +473,11 @@ responseTimeout: 600
     	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
     				}
     				else{
-    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
-    					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
-    	                signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
-    	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    //					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"]+".jpg");
+    //					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"]+".jpg";
+    //	                signatures.push({ name: new Date().getTime()+"_"+name , "value": (resp[elem]["value"]) });
+    //	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
+    					table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + "</p></td></tr>";
     				}
                 }
                 else if (resp[elem]["type"] == "file") {
@@ -658,7 +667,7 @@ responseTimeout: 600
               - ↑value: ./text()
       value: 
 ↓jElement [steps.ElementStep-1599572673725]: 
-  expression: '(forms_mail_summary == "no" || forms_mail_summary == "non" || forms_mail_summary == "false") ? "" : table_recap'
+  expression: '(forms_mail_summary == "no" || forms_mail_summary == "non" || forms_mail_summary == "false") ? "" : (forms_mail_summary == "true" || forms_mail_summary == "") ? table_recap : ""'
   nodeName: tableBody
 ↓SmtpStepSequence [steps.SimpleStep-1599656012175]: 
   expression: |
@@ -1068,31 +1077,46 @@ responseTimeout: 600
   value: Nouvelle réponse dans votre formulaire :
 ↓forms_mail_logo [variables.RequestableVariable-1727700608188]: 
   comment: |
-    <div class="en">URL to a logo. || <i>(optional)</i></div>
-    <div class="fr">URL vers un logo. || <i>(optionnel)</i></div>
-    <div class="es">URL a un logotipo. || <i>(opcional)</i></div>
-    <div class="it">OURL di un logo. || <i>(facoltativo)</i> </div>
+    '{
+        "en": {
+            "displayName": "Email header logo",
+            "comment": "<div>The URL to the logo in the email header.</div>"
+        },
+        "fr": {
+            "displayName": "Logo en en-tête de l''email",
+            "comment": "<div>L''URL vers le logo en en-tête de l''email.</div>"
+        },
+        "es": {
+            "displayName": "Logo en el encabezado del correo electrónico",
+            "comment": "<div>La URL del logo en el encabezado del correo electrónico.</div>"
+        },
+        "it": {
+            "displayName": "Logo nell''intestazione dell''email",
+            "comment": "<div>L''URL del logo nell''intestazione dell''email.</div>"
+        }
+    }'
   value: https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2020/Feb/24/1281954440-0-c8oforms-logo_avatar.png
 ↓forms_mail_summary [variables.RequestableVariable-1634583960132]: 
   comment: |
     '{
-      "en":{
-    	"displayName":"<p>Form summary</p>",
-        "comment":"<div>Form summary, if value is <b>no</b>, the form summary will not be included into email.</div>"
+        "en": {
+            "displayName": "<p>Form summary</p>",
+            "comment": "<div>Add a form summary to the email</div>"
         },
-        "fr":{
-            "displayName":"<p>Résumé du formulaire</p>",
-            "comment":"<div>Résumé du formulaire, si la valeur est <b>non</b>, le résumé du formulaire ne sera pas inclus dans l''e-mail</div>"
+        "fr": {
+            "displayName": "<p>Résumé du formulaire</p>",
+            "comment": "<div>Ajouter un résumé du formulaire dans l''e-mail</div>"
         },
-        "es":{
-            "displayName":"<p>Resumen del formulario</p>",
-            "comment":"<div>Resumen del formulario, si el valor es <b>no</b>, el resumen del formulario no se incluirá en el correo electrónico</div>"
+        "es": {
+            "displayName": "<p>Resumen del formulario</p>",
+            "comment": "<div>Agregar un resumen del formulario al correo electrónico</div>"
         },
-        "it":{
-            "displayName":"<p>Riepilogo modulo</p>",
-            "comment":"<div>Riepilogo modulo, se il valore è <b>no</b>, il riepilogo del modulo non verrà incluso nell''e-mail</div>"
+        "it": {
+            "displayName": "<p>Riepilogo del modulo</p>",
+            "comment": "<div>Aggiungi un riepilogo del modulo all''email</div>"
         }
     }'
+  description: boolean
   value: 
 ↓doc [variables.RequestableVariable-1599570999736]: 
 ↓originalDoc [variables.RequestableVariable-1599570999739]: 
