@@ -267,7 +267,7 @@ responseTimeout: 600
                     else if (doc[property].type == "signature" || doc[property].type == "img") {
                         if (doc[property].value != "") {
     						
-                            resp.push({ "key": prefix + doc[property]["name"], "value": doc[property].value, "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true})
+                            resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property].value, "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true})
                         }
                         else {
                             resp.push({ "key": prefix != "" ? prefix + "(" + doc[property]["labelHtml"] + ")" : doc[property]["labelHtml"], "value": doc[property]["value"], "type": doc[property].type, "name":  doc[property].name, att_type: doc[property].att_type == true })
