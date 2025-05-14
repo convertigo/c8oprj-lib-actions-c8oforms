@@ -15,7 +15,7 @@ comment: |
       "it": {
           "displayName": "<p>Modificare il valore di un campo nella risposta</p>",
           "comment"    : "Consente di modificare il valore del campo nella risposta corrente"
-      }
+      }	
   }'
 ↓Input_variables [steps.InputVariablesStep-1699970310090]: 
 ↓_doc [steps.JsonSourceStep-1699971915127]: 

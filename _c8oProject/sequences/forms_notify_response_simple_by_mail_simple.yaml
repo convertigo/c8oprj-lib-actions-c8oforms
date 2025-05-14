@@ -1,22 +1,23 @@
 comment: |
   '{
       "en": {
-          "displayName": "<p>Notify response by email</p>",
-          "comment": "<div>Sends a <b>mail</b> when a new response is submitted</div>"
+          "displayName": "<p>Send an email</p>",
+          "comment": "<div>Allows sending an <b>email</b> when a new response is submitted, or when a button is clicked</div>"
       },
       "fr": {
-          "displayName": "<p>Notifier la réponse par e-mail</p>",
-          "comment": "<div>Envoie un <b>e-mail</b> lorsqu''une nouvelle réponse est soumise</div>"
+          "displayName": "<p>Envoyer un e-mail</p>",
+          "comment": "<div>Permets d''envoyer un <b>e-mail</b> lorsqu''une nouvelle réponse est soumise, ou lors d''un click sur un bouton</div>"
       },
       "es": {
-          "displayName": "<p>Notificar la respuesta por correo electrónico</p>",
-          "comment": "<div>Envía un <b>correo</b> cuando se envía una nueva respuesta</div>"
+          "displayName": "<p>Enviar un correo electrónico</p>",
+          "comment": "<div>Permite enviar un <b>correo</b> cuando se envía una nueva respuesta, o al hacer clic en un botón</div>"
       },
       "it": {
-          "displayName": "<p>Notifica la risposta tramite e-mail</p>",
-          "comment": "<div>Invia una <b>mail</b> quando viene inviata una nuova risposta</div>"
+          "displayName": "<p>Inviare un''e-mail</p>",
+          "comment": "<div>Permette di inviare un''<b>e-mail</b> quando viene inviata una nuova risposta, o al clic su un pulsante</div>"
       }
-  }'
+  }
+  '
 responseTimeout: 600
 ↓Input_variables [steps.InputVariablesStep-1599570999604]: 
 ↓computeEmails [steps.SimpleStep-1599570999655]: 

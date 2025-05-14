@@ -9,7 +9,7 @@ Default data sources and actions. Many other data sources and actions can be add
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/references/images/ProjectSchemaReference_16x16.png?raw=true "ProjectSchemaReference") C8Oforms
 
 
-see [readme](https://github.com/convertigo/C8oForms/tree/hotfix/2.0.4#readme)
+see [readme](https://github.com/convertigo/C8oForms/tree/NGX#readme)
 </p></blockquote></details>
 
 <details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
@@ -622,12 +622,12 @@ Fill in the dynamic PDF file you want to use as a template. You can use, for exa
 
 </p></blockquote></details>
 
-<details><summary><b>forms_notify_response_simple_by_mail_simple</b> : <div>Sends a <b>mail</b> when a new response is submitted</div></summary><blockquote><p>
+<details><summary><b>forms_notify_response_simple_by_mail_simple</b> : <div>Allows sending an <b>email</b> when a new response is submitted, or when a button is clicked</div></summary><blockquote><p>
 
 
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/sequences/images/genericsequence_color_16x16.png?raw=true "GenericSequence") forms_notify_response_simple_by_mail_simple
 
-<div>Sends a <b>mail</b> when a new response is submitted</div>
+<div>Allows sending an <b>email</b> when a new response is submitted, or when a button is clicked</div>
 
 <span style="color:DarkGoldenRod">Variables</span>
 
