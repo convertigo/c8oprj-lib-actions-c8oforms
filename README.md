@@ -1,95 +1,335 @@
-# Lib_Actions_C8Oforms #
 
-This project contains Actions (sequences) and Sources (sequences) that can be called by Convertigo Forms Builder.\
 
-Deploy this project on the same Convertigo server with **C8OForms** project to enhance your forms with the following features:
 
-Comments are exposed to Convertigo forms, please follow `formssource_List_of_Ships` sequence as example for multi lang comments
+# lib_Actions_C8Oforms
 
-- [Lib_Actions_C8Oforms](#lib_actions_c8oforms)
-  - [Actions sequences](#actions-sequences)
-    - [forms_notify_response_by_mail](#forms_notify_response_by_mail)
-    - [forms_insert_response_db](#forms_insert_response_db)
+Default data sources and actions. Many other data sources and actions can be added by installing Convertigo No Code Studio plugins. Please refer to documentation to understand how to create plugins with the Convertigo Low Code Studio: <a href='https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/' target='_blank'>Convertigo Plugins</a>
+
+
+For more technical informations : [documentation](./project.md)
+
+- [Installation](#installation)
+- [Sequences](#sequences)
+    - [__disabled_formssource_CNN_News](#__disabled_formssource_cnn_news)
+    - [__disabled_formssource_List_of_company_employees](#__disabled_formssource_list_of_company_employees)
+    - [_disabled_formssource_List_of_Ships](#_disabled_formssource_list_of_ships)
+    - [disabled_forms_insert_response_db](#disabled_forms_insert_response_db)
+    - [disabled_forms_notify_response_by_mail_advanced](#disabled_forms_notify_response_by_mail_advanced)
+    - [forms_delete_response](#forms_delete_response)
+    - [forms_edit_field](#forms_edit_field)
     - [forms_fill_PDF](#forms_fill_pdf)
-  - [Source Sequences](#source-sequences)
-    - [formssource_List_of_company_employees](#formssource_list_of_company_employees)
-    - [formssource_List_of_Ships](#formssource_list_of_ships)
+    - [forms_notify_response_simple_by_mail_simple](#forms_notify_response_simple_by_mail_simple)
+    - [initSMTP](#initsmtp)
 
-## Actions sequences
-Can be used from an action component (submit), to trigger a server sequence when an user submit a form.
 
-To expose an action sequence to Convertigo forms, you must name your sequence using `forms_` prefix.
+## Installation
 
-In the same way, to expose a variable of your exposed action sequence, you must prefix it's name by `forms_`
+1. In your Convertigo Studio click on ![](https://github.com/convertigo/convertigo/blob/develop/eclipse-plugin-studio/icons/studio/project_import.gif?raw=true "Import a project in treeview") to import a project in the treeview
+2. In the import wizard
 
-### forms_notify_response_by_mail
-Sends a mail to the form owner when a new response is submited.\
-This can also be used to send mails to multiple addresses.
+   ![](https://github.com/convertigo/convertigo/blob/develop/eclipse-plugin-studio/tomcat/webapps/convertigo/templates/ftl/project_import_wzd.png?raw=true "Import Project")
+   
+   paste the text below into the `Project remote URL` field:
+   <table>
+     <tr><td>Usage</td><td>Click the copy button at the end of the line</td></tr>
+     <tr><td>To contribute</td><td>
 
-- Symbols:
-    - *lib.actions.c8oforms.smtp.server* (Defines the name or IP address of the SMTP server.)
-    - *lib.actions.c8oforms.smtp.port* (Defines the listening port of the SMTP server. Default is 25 for non-auth servers, it can be 587 or 465 for TLS/SSL or STARTTLS servers.)
-    - *lib.actions.c8oforms.smtp.security* (Defines the SMTP authentication type.)
-    - *lib.actions.c8oforms.smtp.sender* (Defines the email address of the sender.)
-    - *lib.actions.c8oforms.smtp.user* (Defines the SMTP server authentication username.)
-    - *lib.actions.c8oforms.smtp.pwd* (Defines the SMTP server authentication user password.)
-    - *lib.actions.c8oforms.email.xslFilePath* (Defines the file path to the xsl file to be used to built emails).
-      -  Default value is .//emails/responseMail2.xsl
-      -  You can provide your own xsl file with an external project.
-      -  For example: if you provide an external Project1 with the following structure:
-         -  Project1
-            -  email
-               -  customEmail.xsl
-      -  You must provide ./Project1/emails/customEmail.xsl as symbole value to use this xsl
+     ```
+     lib_Actions_C8Oforms=git@github.com:convertigo/c8oprj-lib-actions-c8oforms.git:branch=master
+     ```
+     </td></tr>
+     <tr><td>To simply use</td><td>
 
-- Variables:
-    - *forms_mail_subject* (Mail subject - short string)
-    - *forms_mail_body* (Mail body - short string)
-    - *forms_mail_body_title* (Mail body title - short string)
-    - *forms_mail_logo* (URL to a logo image)
-    - *forms_mail_recipients_to* (To Mail recipients separated by comma or semicolon.)
-    - *forms_mail_recipients_cc* (Cc Mail recipients separated by comma or semicolon.)
-    - *forms_mail_recipients_bcc* (Bcc Mail recipients separated by comma or semicolon.)
-    - *forms_mail_sender* (Mail recipient for anonymous form. If empty, tries to retrieve mail address from C8OForms account)
-    - *forms_mail_notify_owner* (Notify form owner of a new response. true/false)
+     ```
+     lib_Actions_C8Oforms=git@github.com:convertigo/c8oprj-lib-actions-c8oforms/archive/master.zip
+     ```
+     </td></tr>
+    </table>
+3. Click the `Finish` button. This will automatically import the __lib_Actions_C8Oforms__ project
 
-### forms_insert_response_db
-Save responses to an external Database.
 
-1. MySQL / MariaDB
-- Symbols:
-    - *lib.actions.c8oforms.sql.host* (hostname or IP of the database server)
-    - *lib.actions.c8oforms.sql.port* (database server port)
-    - *lib.actions.c8oforms.sql.user* (database server username)
-    - *lib.actions.c8oforms.sql.pwd* (database server password)
+## Sequences
 
-- Variables:
-    - *forms_db_type* (Database type. Supports "fs" or "mysql")
-    - *forms_db_name* (Database name created to store form responses)
-    - *forms_db_destination* (Can be used to override SQL symbols)
+### __disabled_formssource_CNN_News
+
+Demo data source. Just returns some news from CNN
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>model</td><td>if source is called with model == true, model must be returned</td>
+</tr>
+</table>
+
+### __disabled_formssource_List_of_company_employees
+
+Returns a fake list of company employees
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>forms_filter</td><td></td>
+</tr>
+</table>
+
+### _disabled_formssource_List_of_Ships
+
+Returns a fake list of ships under construction
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>forms_filter</td><td></td>
+</tr>
+</table>
+
+### disabled_forms_insert_response_db
+
+Save responses to an external Database (demo).
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>doc</td><td></td>
+</tr>
+<tr>
+<td>forms_db_destination</td><td>Can be used to override SQL symbols</td>
+</tr>
+<tr>
+<td>forms_db_name</td><td>Database name created to store form responses</td>
+</tr>
+<tr>
+<td>forms_db_type</td><td>Database type. Supports "fs" or "mysql"</td>
+</tr>
+<tr>
+<td>originalDoc</td><td></td>
+</tr>
+</table>
+
+### disabled_forms_notify_response_by_mail_advanced
+
+<div class="en">Sends a <b>mail</b> when a new response is submitted</div>
+<div class="fr">Envoie un <b>e-mail</b> lorsqu'une nouvelle réponse est soumise</div>
+<div class="es">Envía un <b>correo</b> cuando se envía una nueva respuesta</div>
+<div class="it">Invia una <b>mail</b> quando viene inviata una nuova risposta</div>
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>doc</td><td></td>
+</tr>
+<tr>
+<td>forms_mail_body</td><td><div class="en">Email body (short string). || <i>(optional)</i></div>
+<div class="fr">Corps de l'e-mail (chaîne courte). || <i>(optionnel)</i></div>
+<div class="es">Cuerpo del correo electrónico (cadena corta). || <i>(opcional)</i></div>
+<div class="it">Corpo dell'email (stringa breve). || <i>(facoltativo)</i></div></td>
+</tr>
+<tr>
+<td>forms_mail_body_title</td><td><div class="en">Mail body title (short string). || <i>(optional)</i></div>
+<div class="fr">Titre du corps du message (chaîne courte). || <i>(optionnel)</i></div>
+<div class="es">Título del cuerpo del correo (cadena corta). || <i>(opcional)</i></div>
+<div class="it">Titolo del corpo della posta (stringa corta). || <i>(facoltativo)</i></div></td>
+</tr>
+<tr>
+<td>forms_mail_logo</td><td><div class="en">URL to a logo. || <i>(optional)</i></div>
+<div class="fr">URL vers un logo. || <i>(optionnel)</i></div>
+<div class="es">URL a un logotipo. || <i>(opcional)</i></div>
+<div class="it">OURL di un logo. || <i>(facoltativo)</i> </div></td>
+</tr>
+<tr>
+<td>forms_mail_notify_owner</td><td><div class="en">This setting allows you to enable notification to the owner of the form. || <i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
+<div class="fr">Ce paramétre vous permets d'activer la notification au propriétaire du formulaire. || <i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
+<div class="es">Esta configuración le permite habilitar la notificación al propietario del formulario. || <i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
+<div class="it">Questa impostazione consente di abilitare la notifica al proprietario del modulo. || <i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div></td>
+</tr>
+<tr>
+<td>forms_mail_notify_sender</td><td><div class="en">This setting allows you to activate the notification to the person who replied to the form. || <i>(optional)</i> <b> boolean</b> (<b>true</b> or <b>false</b>). <small>Default value is <b>false</b></small></div>
+<div class="fr">Ce paramétre vous permets d'activer la notification à la personne qui a répondu au formulaire. || <i>(optionnel)</i> <b> booléen</b> (<b>true</b> ou <b>false</b>). <small>La valeur par défaut est <b>false</b></small></div>
+<div class="es">Esta configuración le permite activar la notificación a la persona que respondió al formulario. || <i>(opcional)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>El valor predeterminado es <b>false</b></small></div>
+<div class="it">Questa impostazione ti consente di attivare la notifica alla persona che ha risposto al modulo. || <i>(facoltativo)</i> <b> booleano</b> (<b>true</b> o <b>false</b>). <small>Il valore predefinito è <b>false</b></small></div></td>
+</tr>
+<tr>
+<td>forms_mail_recipients_bcc</td><td><div class="en">"Bcc" Mail recipients separated by comma or semicolon. || <i>(optional)</i></div>
+<div class="fr">"Bcc" Destinataires du courrier séparés par une virgule ou un point-virgule. || <i>(optionnel)</i></div>
+<div class="es">"Bcc" Destinatarios de correo separados por coma o punto y coma. || <i>(opcional)</i></div>
+<div class="it">"Bcc" Destinatari di posta separati da virgola o punto e virgola. || <i>(facoltativo)</i></div></td>
+</tr>
+<tr>
+<td>forms_mail_recipients_cc</td><td><div class="en">"Cc" Mail recipients separated by comma or semicolon. || <i>(optional)</i></div>
+<div class="fr">"Cc" Destinataires du courrier séparés par une virgule ou un point-virgule. || <i>(optionnel)</i></div>
+<div class="es">"Cc" Destinatarios de correo separados por coma o punto y coma. || <i>(opcional)</i></div>
+<div class="it">"Cc" Destinatari di posta separati da virgola o punto e virgola. || <i>(facoltativo)</i></div></td>
+</tr>
+<tr>
+<td>forms_mail_recipients_to</td><td><div class="en">"To" Mail recipients separated by comma or semicolon. || <i>(mandatory)</i></div>
+<div class="fr">"À" Destinataires du courrier séparés par une virgule ou un point-virgule. || <i>(obligatoire)</i></div>
+<div class="es">"To" Destinatarios de correo separados por coma o punto y coma. || <i>(obligatorio)</i></div>
+<div class="it">"To" Destinatari di posta separati da virgola o punto e virgola. || <i>(obbligatorio)</i></div></td>
+</tr>
+<tr>
+<td>forms_mail_sender</td><td><div class="en">Email of sender for anonymous forms. If empty, we try to retrieve mail address from C8oForms account. || <i>(optional)</i></div>
+<div class="fr">Courriel de l'expéditeur pour les formulaires anonymes. S'il est vide, nous essayons de récupérer l'adresse e-mail du compte C8oForms. || <i>(optionnel)</i></div>
+<div class="es">Correo electrónico del remitente para formularios anónimos. Si está vacío, intentamos recuperar la dirección de correo de la cuenta de C8oForms. || <i>(opcional)</i></div>
+<div class="it">Email del mittente per moduli anonimi. Se vuoto, proviamo a recuperare l'indirizzo e-mail dall'account C8oForms. || <i>(facoltativo)</i></div></td>
+</tr>
+<tr>
+<td>forms_mail_subject</td><td><div class="en">Email subject (short string). || <i>(optional)</i></div>
+<div class="fr">Objet de l'e-mail (chaîne courte). || <i>(optionnel)</i></div>
+<div class="es">Asunto del correo electrónico (cadena corta). || <i>(opcional)</i></div>
+<div class="it">Oggetto dell'email (stringa breve). || <i>(facoltativo)</i></div></td>
+</tr>
+<tr>
+<td>originalDoc</td><td></td>
+</tr>
+</table>
+
+### forms_delete_response
+
+The submitted form and its responses are deleted and no longer visible in the response viewer
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>doc</td><td></td>
+</tr>
+<tr>
+<td>originalDoc</td><td></td>
+</tr>
+</table>
+
+### forms_edit_field
+
+Allows you to modify the value of the field in the current response
+
+**variables**
+
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>doc</td><td></td>
+</tr>
+<tr>
+<td>forms_input_field_name</td><td></td>
+</tr>
+<tr>
+<td>forms_input_field_value</td><td></td>
+</tr>
+<tr>
+<td>originalDoc</td><td></td>
+</tr>
+</table>
 
 ### forms_fill_PDF
-Fills a PDF Form template from C8OForm responses.
 
-- Variables:
-    - *forms_input_pdf_path* (Relative ("./" or ".//) or absolute path of the PDF template.)
-    - *forms_output_pdf_path* (Relative ("./" or ".//) or absolute path of the target PDF.)
+Fills out a PDF form from the form responses using a template PDF file.
 
-In your C8OForm form, the **Technical ID** of your component must match the field name in your PDF template.\
-For images, use a **Submit** button field and set its desired size in your PDF template.\
-For Checkboxes, in your PDF template, name them as **\<C8OForm Technical ID>_N**, where N is a number from 1 to N correponding to the number of checkboxes you have in your C8OForm form.
+**variables**
 
-## Source Sequences
-Can be used from a select component as a data source to fill your select. 
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>doc</td><td></td>
+</tr>
+<tr>
+<td>forms_input_pdf_path</td><td>Fill in the dynamic PDF file you want to use as a template. You can use, for example, <a href='https://www.libreoffice.org/' target='_blank'>LibreOffice Writer</a> to make your PDF dynamic, either from a new PDF or from 'an existing one. <br/> The name of the PDF fields must be identical to the technical identifiers of the fields in your form. <br/>Only the fields "input text", "checkbox", "date", "time", "camera", "group", "barcode", "signature", and "location" are supported. <Br / > For the checkboxes, each box of the PDF must have the technical name + "_1", + "_2" etc ...</td>
+</tr>
+<tr>
+<td>originalDoc</td><td></td>
+</tr>
+</table>
 
-To expose a source sequence to Convertigo forms, you must name your sequence using `formssource_` prefix.
+### forms_notify_response_simple_by_mail_simple
 
-Your sequence must have only one variable prefixed with `forms_`, that will be called with searchbar value, to allow you to perform actions, such as filter results for example.
+<div>Allows sending an <b>email</b> when a new response is submitted, or when a button is clicked</div>
 
-### formssource_List_of_company_employees
+**variables**
 
-Returns you a list of fakes employees (can be filtered).
+<table>
+<tr>
+<th>name</th><th>comment</th>
+</tr>
+<tr>
+<td>doc</td><td></td>
+</tr>
+<tr>
+<td>forms_mail_body</td><td><div>Email body, the message you want to send to recipients.</div></td>
+</tr>
+<tr>
+<td>forms_mail_logo</td><td><div>The URL to the logo in the email header.</div></td>
+</tr>
+<tr>
+<td>forms_mail_recipients_bcc</td><td><div>Mail <b>blind</b> recipients separated by comma or semicolon.</div></td>
+</tr>
+<tr>
+<td>forms_mail_recipients_cc</td><td><div>Mail <b>copy</b> recipients separated by comma or semicolon.</div></td>
+</tr>
+<tr>
+<td>forms_mail_recipients_to</td><td><div>Mail recipients separated by comma or semicolon. <i>(mandatory)</i></div></td>
+</tr>
+<tr>
+<td>forms_mail_subject</td><td><div>Email subject</div></td>
+</tr>
+<tr>
+<td>forms_mail_summary</td><td><div>Add a form summary to the email</div></td>
+</tr>
+<tr>
+<td>originalDoc</td><td></td>
+</tr>
+<tr>
+<td>smtpAuthType</td><td></td>
+</tr>
+<tr>
+<td>smtpPassword</td><td></td>
+</tr>
+<tr>
+<td>smtpPort</td><td></td>
+</tr>
+<tr>
+<td>smtpServer</td><td></td>
+</tr>
+<tr>
+<td>smtpUsername</td><td></td>
+</tr>
+<tr>
+<td>sSender</td><td></td>
+</tr>
+<tr>
+<td>sslProtocols</td><td></td>
+</tr>
+<tr>
+<td>xslFilepath</td><td></td>
+</tr>
+</table>
 
-### formssource_List_of_Ships
+### initSMTP
 
-Returns you a list of ships (can be filtered).
+
+

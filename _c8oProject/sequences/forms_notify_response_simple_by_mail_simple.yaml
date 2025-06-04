@@ -484,14 +484,19 @@ responseTimeout: 600
                 else if (resp[elem]["type"] == "file") {
     				var longName = "";
     				for(var fileElem in resp[elem]["value"]){
-    					var currentE = resp[elem]["value"][fileElem];
-    					var idx1 = currentE.indexOf("_C80C80_");
-    	                var idx2 = currentE.indexOf("_C80C80_", idx1 + 1);
-    	                var name = currentE.substring(idx1 + 8, idx2);
-    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
-    					name = uniqueName != "" ? uniqueName : name;
-    					longName += ", "+name;
-    	                attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (currentE) });
+    					try{
+    						var currentE = resp[elem]["value"][fileElem];
+    						var idx1 = currentE.indexOf("_C80C80_");
+    		                var idx2 = currentE.indexOf("_C80C80_", idx1 + 1);
+    		                var name = currentE.substring(idx1 + 8, idx2);
+    						var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
+    						name = uniqueName != "" ? uniqueName : name;
+    						longName += ", "+name;
+    		                attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (currentE) });
+    					}
+    					catch(e){
+    						
+    					}
     				}
                    	longName = longName.substring(2);
                     table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + longName + "</p></td></tr>";
