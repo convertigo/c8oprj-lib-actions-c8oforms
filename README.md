@@ -277,6 +277,9 @@ Fills out a PDF form from the form responses using a template PDF file.
 <th>name</th><th>comment</th>
 </tr>
 <tr>
+<td>_c8o_timezone_offset</td><td></td>
+</tr>
+<tr>
 <td>doc</td><td></td>
 </tr>
 <tr>
