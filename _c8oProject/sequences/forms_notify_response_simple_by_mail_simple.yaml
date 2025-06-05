@@ -39,7 +39,7 @@ responseTimeout: 600
     if(forms_mail_recipients_to && forms_mail_recipients_to != ""){
     	var tos = forms_mail_recipients_to.split(/,|;/);
     	for(var i=0; i < tos.length; i++){
-    		jEmailRecipients += "TO:" + tos[i] + ";";
+    		jEmailRecipients += "TO:" + tos[i].replace(/\s/g, "") + ";";
     	}
     }
     
@@ -48,7 +48,7 @@ responseTimeout: 600
     	if(forms_mail_recipients_cc != undefined && forms_mail_recipients_cc != ""){
     		var ccs = forms_mail_recipients_cc.split(/,|;/);
     		for(var i=0; i < ccs.length; i++){
-    			jEmailRecipients += "CC:" + ccs[i] + ";";
+    			jEmailRecipients += "CC:" + ccs[i].replace(/\s/g, "") + ";";
     		}
     	}
     }
@@ -61,7 +61,7 @@ responseTimeout: 600
     	if(forms_mail_recipients_bcc != undefined && forms_mail_recipients_bcc != ""){
     		var bccs = forms_mail_recipients_bcc.split(/,|;/);
     		for(var i=0; i < bccs.length; i++){
-    			jEmailRecipients += "BCC:" + bccs[i] + ";";
+    			jEmailRecipients += "BCC:" + bccs[i].replace(/\s/g, "") + ";";
     		}
     	}
     }
