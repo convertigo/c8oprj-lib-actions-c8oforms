@@ -488,7 +488,7 @@ comment: |
     //var currentSeq = Object.keys(currentAction["actions"])[0];
     
     // generate an attachment name to put generated PDF
-    var _use_attname = currentActionName + ".pdf";
+    var _use_attname = currentActionName + (currentActionName.indexOf(".pdf") == (currentActionName.length - 4) ? "" : ".pdf");
     // define attachment type
     var _use_attcontent_type = "application/pdf";
     
