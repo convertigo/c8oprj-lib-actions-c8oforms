@@ -531,7 +531,7 @@ comment: |
     <div class="fr">Corps de l'e-mail (chaîne courte). || <i>(optionnel)</i></div>
     <div class="es">Cuerpo del correo electrónico (cadena corta). || <i>(opcional)</i></div>
     <div class="it">Corpo dell'email (stringa breve). || <i>(facoltativo)</i></div>
-  value: Nouvelle réponse dans votre formulaire :
+  value: Nouvelle réponse dans votre application :
 ↓forms_mail_subject [variables.RequestableVariable-1594043020998]: 
   comment: |
     <div class="en">Email subject (short string). || <i>(optional)</i></div>

@@ -1102,7 +1102,7 @@ responseTimeout: 600
         }
     }'
   description: html
-  value: Nouvelle réponse dans votre formulaire :
+  value: Nouvelle réponse dans votre application :
 ↓forms_mail_logo [variables.RequestableVariable-1727700608188]: 
   comment: |
     '{
