@@ -695,7 +695,7 @@ responseTimeout: 600
               - ↑value: ./text()
       value: 
 ↓jElement [steps.ElementStep-1599572673725]: 
-  expression: '(forms_mail_summary == "no" || forms_mail_summary == "non" || forms_mail_summary == "false") ? "" : (forms_mail_summary == "true" || forms_mail_summary == "") ? table_recap : ""'
+  expression: '(forms_mail_summary == "no" || forms_mail_summary == "non" || forms_mail_summary == "false" || forms_mail_summary == "") ? "" : (forms_mail_summary == "true") ? table_recap : ""'
   nodeName: tableBody
 ↓SmtpStepSequence [steps.SimpleStep-1599656012175]: 
   expression: |
