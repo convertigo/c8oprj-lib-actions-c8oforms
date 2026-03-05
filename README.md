@@ -298,6 +298,9 @@ Fills out a PDF form from the form responses using a template PDF file.
 <td>forms_mail_recipients_to</td><td><div>Mail recipients separated by comma or semicolon. <i>(mandatory)</i></div></td>
 </tr>
 <tr>
+<td>forms_mail_sender_alias</td><td><div>Display name used as email sender alias. <i>(optional)</i></div></td>
+</tr>
+<tr>
 <td>forms_mail_subject</td><td><div>Email subject</div></td>
 </tr>
 <tr>

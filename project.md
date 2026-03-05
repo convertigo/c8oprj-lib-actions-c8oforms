@@ -9,7 +9,6 @@ Default data sources and actions. Many other data sources and actions can be add
 ## ![](https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/references/images/ProjectSchemaReference_16x16.png?raw=true "ProjectSchemaReference") C8Oforms
 
 
-see [readme](https://github.com/convertigo/C8oForms/tree/hotfix/2.1.10#readme)
 </p></blockquote></details>
 
 <details><summary><span style="color:DarkGoldenRod"><i>Connectors</i></span></summary><blockquote><p>
@@ -784,6 +783,14 @@ comment
 </td>
 <td>
 <div>Mail recipients separated by comma or semicolon. <i>(mandatory)</i></div>
+</td>
+</tr>
+<tr>
+<td>
+<img src="https://github.com/convertigo/convertigo/blob/develop/engine/src/com/twinsoft/convertigo/beans/variables/images/variable_color_16x16.png?raw=true "  alt="RequestableVariable" >&nbsp;forms_mail_sender_alias
+</td>
+<td>
+<div>Display name used as email sender alias. <i>(optional)</i></div>
 </td>
 </tr>
 <tr>

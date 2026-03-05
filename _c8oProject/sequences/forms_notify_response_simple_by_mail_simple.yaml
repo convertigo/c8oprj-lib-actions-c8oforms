@@ -110,30 +110,10 @@ responseTimeout: 600
         - xmlizable: 
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - xmlizable: 
-              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-              - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: C8O FORMS
-                - xmlizable: 
-                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-                  - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: '[CONVERTIGO FORMS BUILDER]'
-            - xmlizable: 
-              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-              - com.twinsoft.convertigo.beans.common.XMLVector: 
-                - java.lang.String: 
-                  - ↑value: subject
-                - xmlizable: 
-                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
-                  - com.twinsoft.convertigo.beans.common.XMLVector: 
-                    - java.lang.String: 
-                      - ↑value: 1599570999604
-                    - java.lang.String: 
-                      - ↑value: ./forms_mail_subject/text()
-                - java.lang.String: 
-                  - ↑value: ''
+            - java.lang.String: 
+              - ↑value: '[C8O FORMS, [CONVERTIGO FORMS BUILDER]]'
+            - java.lang.String: 
+              - ↑value: '[subject, 1599570999604, ./forms_mail_subject/text(), ]'
     ↓Element2 [steps.XMLElementStep-1599570999676]: 
       nodeName: emailLogo
       sourceDefinition: 
@@ -729,6 +709,36 @@ responseTimeout: 600
     //var smtpPort = "lib.actions.c8oforms.smtp.port";
     //var sslProtocols = "lib.actions.c8oforms.smtp.sslProtocols"
     
+    // Build a safe sender address object and optionally override sender alias
+    var senderAddressObject = null;
+    try{
+    	var senderBase = new javax.mail.internet.InternetAddress(sSender);
+    	var senderEmail = senderBase.getAddress();
+    	if(senderEmail == null || senderEmail == ""){
+    		throw "Sender address is empty";
+    	}
+    	if(forms_mail_sender_alias != undefined && forms_mail_sender_alias != ""){
+    		var senderAlias = ("" + forms_mail_sender_alias)
+    			.replace(/[\r\n]/g, " ")
+    			.replace(/[<>\"''();]/g, " ")
+    			.replace(/\s+/g, " ")
+    			.trim();
+    		if(senderAlias.length > 128){
+    			senderAlias = senderAlias.substring(0, 128);
+    		}
+    		if(senderAlias != ""){
+    			senderAddressObject = new javax.mail.internet.InternetAddress(senderEmail, senderAlias, "UTF-8");
+    		}
+    	}
+    	if(senderAddressObject == null){
+    		senderAddressObject = new javax.mail.internet.InternetAddress(sSender);
+    	}
+    }
+    catch(e){
+    	log.warn("(Sequence SmtpStep) invalid sender alias override, keeping default sender: " + e);
+    	senderAddressObject = new javax.mail.internet.InternetAddress(sSender);
+    }
+    
     // define "enum" for auth type
     var SmtpAuthType = {
     		none: "None",
@@ -741,11 +751,11 @@ responseTimeout: 600
     	var ret = message;
     	try {
     		var replies = [];
-    		replies[0] = new javax.mail.internet.InternetAddress(sSender);
+    		replies[0] = senderAddressObject;
     		var recipients = sRecipients.split(/,|;/)
     		// Adding sender
-    		ret.setFrom(new javax.mail.internet.InternetAddress(sSender));
-    		ret.setSender(new javax.mail.internet.InternetAddress(sSender));
+    		ret.setFrom(senderAddressObject);
+    		ret.setSender(senderAddressObject);
     		ret.setReplyTo(replies);
     		log.debug("(Sequence SmtpStep) list of recipients: "+ JSON.stringify(recipients));
     		//Adding recipients
@@ -1060,6 +1070,26 @@ responseTimeout: 600
           }
       }'
   value: 
+↓forms_mail_sender_alias [variables.RequestableVariable-1772729297287]: 
+  comment: |
+    '{
+        "en": {
+            "displayName": "<p>Sender alias</p>",
+            "comment": "<div>Display name used as email sender alias. <i>(optional)</i></div>"
+        },
+        "fr": {
+            "displayName": "<p>Alias de l''expéditeur</p>",
+            "comment": "<div>Nom affiché comme alias de l''expéditeur de l''e-mail. <i>(optionnel)</i></div>"
+        },
+        "es": {
+            "displayName": "<p>Alias del remitente</p>",
+            "comment": "<div>Nombre mostrado como alias del remitente del correo electrónico. <i>(opcional)</i></div>"
+        },
+        "it": {
+            "displayName": "<p>Alias mittente</p>",
+            "comment": "<div>Nome visualizzato come alias del mittente dell''e-mail. <i>(facoltativo)</i></div>"
+        }
+    }'
 ↓forms_mail_subject [variables.RequestableVariable-1615473057323]: 
   comment: |
     '{
