@@ -110,10 +110,30 @@ responseTimeout: 600
         - xmlizable: 
           - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
           - com.twinsoft.convertigo.beans.common.XMLVector: 
-            - java.lang.String: 
-              - ↑value: '[C8O FORMS, [CONVERTIGO FORMS BUILDER]]'
-            - java.lang.String: 
-              - ↑value: '[subject, 1599570999604, ./forms_mail_subject/text(), ]'
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: C8O FORMS
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: '[CONVERTIGO FORMS BUILDER]'
+            - xmlizable: 
+              - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+              - com.twinsoft.convertigo.beans.common.XMLVector: 
+                - java.lang.String: 
+                  - ↑value: subject
+                - xmlizable: 
+                  - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+                  - com.twinsoft.convertigo.beans.common.XMLVector: 
+                    - java.lang.String: 
+                      - ↑value: 1599570999604
+                    - java.lang.String: 
+                      - ↑value: ./forms_mail_subject/text()
+                - java.lang.String: 
+                  - ↑value: ''
     ↓Element2 [steps.XMLElementStep-1599570999676]: 
       nodeName: emailLogo
       sourceDefinition: 
