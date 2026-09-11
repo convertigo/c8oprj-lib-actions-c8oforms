@@ -28,7 +28,7 @@ comment: |
         - java.lang.String: 
           - ↑value: ./doc
   variableName: _doc
-↓editField [steps.SimpleStep-1699970963916]: 
+↓editField1_0_61 [steps.SimpleStep-1699970963916]: 
   expression: |
     'log.warn("there !!!!!!!!!!!!");
     log.warn("forms_input_field_name: " + forms_input_field_name);
@@ -62,6 +62,96 @@ comment: |
     log.warn("res");
     log.warn(JSON.stringify(res));
     log.warn("there !!!!!!!!!!!! rend ")'
+  isEnabled: false
+↓editField1_0_62 [steps.SimpleStep-1789119401579]: 
+  expression: |
+    'var editFieldResult = {
+    	status: "FIELD_NOT_FOUND",
+    	found: false,
+    	fieldName: forms_input_field_name == null ? "" : "" + forms_input_field_name
+    };
+    
+    var response = _doc != null && _doc.doc != null ? _doc.doc : _doc;
+    var fieldName = editFieldResult.fieldName;
+    var targetField = null;
+    
+    function walkCollection(collection) {
+    	if (collection == null || targetField != null) {
+    		return;
+    	}
+    	if (Array.isArray(collection)) {
+    		for (var i = 0; i < collection.length; i++) {
+    			walkNode(collection[i]);
+    		}
+    		return;
+    	}
+    	if (typeof collection == "object") {
+    		for (var key in collection) {
+    			if (collection.hasOwnProperty == null || collection.hasOwnProperty(key)) {
+    				walkNode(collection[key]);
+    			}
+    		}
+    	}
+    }
+    
+    function walkNode(node) {
+    	if (node == null || targetField != null || typeof node != "object") {
+    		return;
+    	}
+    	if (node.name != null && ("" + node.name) == fieldName && node.type != "ion-card") {
+    		targetField = node;
+    		return;
+    	}
+    	walkCollection(node.children);
+    }
+    
+    if (response != null) {
+    	walkCollection(response.resp);
+    }
+    
+    if (targetField == null) {
+    	editFieldResult = {
+    		status: "FIELD_NOT_FOUND",
+    		found: false,
+    		fieldName: fieldName,
+    		responseId: response != null && response._id != null ? "" + response._id : ""
+    	};
+    	log.warn("forms_edit_field FIELD_NOT_FOUND field=" + fieldName + " response=" + editFieldResult.responseId);
+    }
+    else {
+    	targetField.value = forms_input_field_value;
+    	delete response.c8oMeta;
+    	delete response._attachments;
+    
+    	var mergeRules = new java.util.HashMap();
+    	mergeRules.put(java.util.Arrays.asList(new java.lang.String("resp")), new java.lang.String("override"));
+    	var fsclient = com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager.getFullSyncClient();
+    	var postResult = fsclient.postDocument(java.lang.String("c8oforms_response_fs"), new org.codehaus.jettison.json.JSONObject(response), new java.util.HashMap(), com.twinsoft.convertigo.engine.enums.CouchPostDocumentPolicy.merge, mergeRules, false);
+    	postResult = JSON.parse(postResult.toString());
+    
+    	editFieldResult = {
+    		status: "OK",
+    		found: true,
+    		fieldName: fieldName,
+    		responseId: response != null && response._id != null ? "" + response._id : "",
+    		id: postResult.id,
+    		rev: postResult.rev
+    	};
+    	log.info("forms_edit_field updated field=" + fieldName + " response=" + editFieldResult.responseId);
+    }'
+↓result [steps.JsonToXmlStep-1789119386039]: 
+  jsonObject: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: JS
+        - →→: editFieldResult
+  key: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.steps.SmartType
+      - SmartType: 
+        - ↑mode: PLAIN
+        - →→: result
 ↓originalDoc [variables.RequestableVariable-1699970310120]: 
 ↓doc [variables.RequestableVariable-1699970310123]: 
 ↓forms_input_field_name [variables.RequestableVariable-1699970412414]: 

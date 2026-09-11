@@ -19,7 +19,7 @@
             "comment": "Fuentes de datos y acciones predeterminadas. Se pueden añadir muchas otras fuentes de datos y acciones instalando plugins de Convertigo No Code Studio. Por favor, consulte la documentación para entender cómo crear plugins con el Convertigo Low Code Studio : <a href=''https://doc.convertigo.com/documentation/latest/no-code-forms/creating-data-for-c8o-forms/'' target=''_blank''>Plugins de Convertigo</a>"
         }
     }'
-  version: 1.0.61
+  version: 1.0.62
   ↓c8oforms_forms_reponses_backup [connectors.FullSyncConnector]: 🗏 connectors/c8oforms_forms_reponses_backup.yaml
   ↓CNN [connectors.HttpConnector]: 🗏 connectors/CNN.yaml
   ↓SQL_mariadb [connectors.SqlConnector]: 🗏 connectors/SQL_mariadb.yaml
