@@ -1,0 +1,10 @@
+# Never served under /convertigo/projects/lib_Actions_C8Oforms/ (engine .httpignore, gitignore syntax).
+# Development and CI material.
+/.github/
+/.vscode/
+/tests/
+/tools/
+# Temporary files of the actions (attachments of the responses), deleted after use: never served.
+/att/
+/attach/
+/csv/

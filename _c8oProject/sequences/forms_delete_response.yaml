@@ -1,3 +1,4 @@
+accessibility: Private
 comment: |
   '{
       "en": {
@@ -18,8 +19,7 @@ comment: |
       }
   }'
 ↓Input_variables [steps.InputVariablesStep-1641549469506]: 
-↓response_id [steps.XMLElementStep-1641549484107]: 
-  nodeName: response_id
+↓_doc [steps.JsonSourceStep-1895000000202]: 
   sourceDefinition: 
     - xmlizable: 
       - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
@@ -27,7 +27,38 @@ comment: |
         - java.lang.String: 
           - ↑value: 1641549469506
         - java.lang.String: 
-          - ↑value: ./doc/_id/text()
+          - ↑value: ./doc
+  variableName: _doc
+↓_originalDoc [steps.JsonSourceStep-1895000000203]: 
+  sourceDefinition: 
+    - xmlizable: 
+      - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
+      - com.twinsoft.convertigo.beans.common.XMLVector: 
+        - java.lang.String: 
+          - ↑value: 1641549469506
+        - java.lang.String: 
+          - ↑value: ./originalDoc
+  variableName: _originalDoc
+↓CheckStoredResponse [steps.SimpleStep-1895000000204]: 
+  expression: |
+    '// Deletes the response stored for this form: doc must be a saved response whose formId is the id of originalDoc.
+    var submitted = _doc != null && _doc.doc != null ? _doc.doc : _doc;
+    var form = _originalDoc != null && _originalDoc.originalDoc != null ? _originalDoc.originalDoc : _originalDoc;
+    var stored = null;
+    try {
+    	stored = submitted != null && submitted._id != null ? JSON.parse("" + com.twinsoft.convertigo.engine.Engine.theApp.couchDbManager
+    		.getFullSyncClient().getDocument("c8oforms_response_fs", "" + submitted._id).toString()) : null;
+    } catch (e) {
+    	stored = null;
+    }
+    if (stored == null || stored.error || stored._deleted || form == null || form._id == null ||
+    		("" + stored.formId) != ("" + form._id)) {
+    	throw new java.lang.Exception("Response not found for this form");
+    }
+    var storedResponseId = "" + stored._id;'
+↓response_id [steps.ElementStep-1895000000205]: 
+  expression: storedResponseId
+  nodeName: response_id
 ↓Call_Transaction [steps.TransactionStep-1641550170236]: 
   sourceTransaction: C8Oforms.c8oforms_response_fs.PostDocumentJBASE
   ↓_use_json_base [variables.StepVariable-1641550170238]: 
@@ -40,7 +71,7 @@ comment: |
         - ↑classname: com.twinsoft.convertigo.beans.common.XMLVector
         - com.twinsoft.convertigo.beans.common.XMLVector: 
           - java.lang.String: 
-            - ↑value: 1641549484107
+            - ↑value: 1895000000205
           - java.lang.String: 
             - ↑value: ./text()
 ↓IfExistThenElse [steps.IfExistThenElseStep-1641562218359]: 

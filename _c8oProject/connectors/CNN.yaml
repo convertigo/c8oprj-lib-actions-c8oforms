@@ -1,7 +1,7 @@
 server: rss.cnn.com
 ↓Default_transaction [transactions.HttpTransaction]: 
   ↑default: true
-  accessibility: Public
+  accessibility: Private
 ↓getNews [transactions.XmlHttpTransaction]: 
-  accessibility: Public
+  accessibility: Private
   subDir: rss/edition.rss

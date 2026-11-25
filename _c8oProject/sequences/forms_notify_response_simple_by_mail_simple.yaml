@@ -1,3 +1,4 @@
+accessibility: Private
 comment: |
   '{
       "en": {
@@ -406,6 +407,66 @@ responseTimeout: 600
     //var encodedhash = digest.digest(jName.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     //var filename = encodedhash + ".csv";
     //writeFile(filepath, filename, resp);
+    // Attachment names (field names, labels, uploaded file names, action values) are written as plain file names
+    // in the att/ folder: the folder part and control characters are dropped, 150 characters at most.
+    var safeFileName = function (name) {
+        var value = ("" + (name == null ? "" : name)).replace(/[\u0000-\u001f\u007f]/g, "");
+        value = value.substring(Math.max(value.lastIndexOf("/"), value.lastIndexOf("\\")) + 1).trim();
+        if (value == "" || value == "." || value == "..") {
+            value = "file";
+        }
+        return value.length > 150 ? value.substring(value.length - 150) : value;
+    };
+    // The attachments the author chose to send (forms_mail_attachments). Empty: every attachment of the response, as
+    // before. Otherwise {"fields": [names of the file, signature and image fields], "documents": [names of the steps that
+    // created a document, such as Fill a PDF]}, a JSON array or a comma separated list of such names: only these are
+    // attached, the summary is unchanged. A value that cannot be read attaches nothing.
+    var readAttachmentChoice = function (value) {
+        var text = value == null ? "" : ("" + value).trim();
+        if (text == "" || text == "null" || text == "undefined") {
+            return null;
+        }
+        var choice = { fields: Object.create(null), documents: Object.create(null) };
+        var add = function (target, names) {
+            if (names == null || typeof names == "string" || typeof names.length != "number") {
+                return;
+            }
+            for (var i = 0; i < names.length; i++) {
+                if (names[i] != null && typeof names[i] != "object" && ("" + names[i]) != "") {
+                    target["" + names[i]] = true;
+                }
+            }
+        };
+        try {
+            if (text.charAt(0) == "{" || text.charAt(0) == "[") {
+                var parsed = JSON.parse(text);
+                if (parsed instanceof Array) {
+                    add(choice.fields, parsed);
+                    add(choice.documents, parsed);
+                }
+                else if (parsed != null && typeof parsed == "object") {
+                    add(choice.fields, parsed.fields);
+                    add(choice.documents, parsed.documents);
+                }
+            }
+            else {
+                var names = text.split(/[,;]/).map(function (name) { return name.trim(); });
+                add(choice.fields, names);
+                add(choice.documents, names);
+            }
+        }
+        catch (e) {
+            log.warn("[forms_notify_response_simple_by_mail_simple] forms_mail_attachments cannot be read, no attachment is sent: " + e);
+        }
+        return choice;
+    };
+    var attachmentChoice = readAttachmentChoice(typeof forms_mail_attachments == "undefined" ? null : forms_mail_attachments);
+    var isFieldAttached = function (name) {
+        return attachmentChoice == null || attachmentChoice.fields["" + name] === true;
+    };
+    var isDocumentAttached = function (name) {
+        return attachmentChoice == null || attachmentChoice.documents["" + name] === true;
+    };
     var findUniqueNameForFile = (attachmentsArray, signatures, name)=>{
     	try{
     		// get all attachment name
@@ -474,25 +535,34 @@ responseTimeout: 600
             if (+elem > 2) {
                 if (resp[elem]["type"] == "signature") {
     				if(resp[elem]["att_type"] == true){
-    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["name"] + ".png");
-    					var name =  uniqueName != "" ? uniqueName : resp[elem]["name"] + ".png";
-    					attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    					var name = safeFileName(resp[elem]["name"] + ".png");
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
+    					name = uniqueName != "" ? uniqueName : name;
+    					if (isFieldAttached(resp[elem]["name"])) {
+    						attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    					}
     					log.warn("pushing :" + resp[elem]["value"])
     	                //signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
     	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
     				}
     				else{
-    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["key"] + ".png");
-    					var name =  uniqueName != "" ? uniqueName : resp[elem]["key"] + ".png";
-    	                signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
+    					var name = safeFileName(resp[elem]["key"] + ".png");
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
+    					name = uniqueName != "" ? uniqueName : name;
+    					if (isFieldAttached(resp[elem]["name"])) {
+    		                signatures.push({ name: new Date().getTime()+"_" +name , "value": (resp[elem]["value"]).substring(22) });
+    					}
     	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
     				}
                 }
                 else if (resp[elem]["type"] == "img") {
     				if(resp[elem]["att_type"] == true){
-    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, resp[elem]["name"]+".jpg");
-    					var name =  uniqueName != "" ? uniqueName : resp[elem]["name"]+".jpg";
-    	               	attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    					var name = safeFileName(resp[elem]["name"]+".jpg");
+    					var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
+    					name = uniqueName != "" ? uniqueName : name;
+    					if (isFieldAttached(resp[elem]["name"])) {
+    		               	attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": resp[elem]["value"] });
+    					}
     	                table_recap += "<tr><td><p class=''under''>" + resp[elem]["key"] + "</p></td><td><p>" + name + "</p></td></tr>";
     				}
     				else{
@@ -505,16 +575,19 @@ responseTimeout: 600
                 }
                 else if (resp[elem]["type"] == "file") {
     				var longName = "";
+    				var fieldAttached = isFieldAttached(resp[elem]["name"]);
     				for(var fileElem in resp[elem]["value"]){
     					try{
     						var currentE = resp[elem]["value"][fileElem];
     						var idx1 = currentE.indexOf("_C80C80_");
     		                var idx2 = currentE.indexOf("_C80C80_", idx1 + 1);
-    		                var name = currentE.substring(idx1 + 8, idx2);
+    		                var name = safeFileName(currentE.substring(idx1 + 8, idx2));
     						var uniqueName = findUniqueNameForFile(attachmentsArray, signatures, name);
     						name = uniqueName != "" ? uniqueName : name;
     						longName += ", "+name;
-    		                attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (currentE) });
+    						if (fieldAttached) {
+    			                attachmentsArray.push({ name: new Date().getTime()+"_"+name, "value": (currentE) });
+    						}
     					}
     					catch(e){
     						
@@ -622,8 +695,8 @@ responseTimeout: 600
     for (var elem in jDoc.variable.actionsValue) {
         try {
             table_recap += "<tr><td><p class=''under''>" + elem + "</p></td><td><p>" + jDoc.variable.actionsValue[elem]["value"] + "</p></td></tr>";
-            if (jDoc.variable.actionsValue[elem]["valueType"] == "attachment") {
-                attachmentsArray.push({ name: new Date().getTime()+"_"+ jDoc.variable.actionsValue[elem]["value"], "value": ("" + jDoc.variable.actionsValue[elem]["value"]) });
+            if (jDoc.variable.actionsValue[elem]["valueType"] == "attachment" && isDocumentAttached(elem)) {
+                attachmentsArray.push({ name: new Date().getTime()+"_"+ safeFileName(jDoc.variable.actionsValue[elem]["value"]), "value": ("" + jDoc.variable.actionsValue[elem]["value"]) });
             }
         }
         catch (e) {
@@ -1195,6 +1268,32 @@ responseTimeout: 600
         }
     }'
   description: boolean
+  value: 
+↓forms_mail_attachments [variables.RequestableVariable-1794244153565]: 
+  comment: |
+    '{
+        "en": {
+            "displayName": "<p>Attachments</p>",
+            "comment": "<div>Files attached to the email. By default every file of the response is attached: files, signatures, photos and the documents created by the flow, such as a filled PDF. Choose the ones to attach.</div>"
+        },
+        "fr": {
+            "displayName": "<p>Pièces jointes</p>",
+            "comment": "<div>Fichiers joints à l''e-mail. Par défaut, tous les fichiers de la réponse sont joints : fichiers, signatures, photos et documents créés par le flux, comme un PDF rempli. Choisissez ceux à joindre.</div>"
+        },
+        "es": {
+            "displayName": "<p>Archivos adjuntos</p>",
+            "comment": "<div>Archivos adjuntos al correo electrónico. Por defecto se adjuntan todos los archivos de la respuesta: archivos, firmas, fotos y los documentos creados por el flujo, como un PDF rellenado. Elija los que desea adjuntar.</div>"
+        },
+        "it": {
+            "displayName": "<p>Allegati</p>",
+            "comment": "<div>File allegati all''e-mail. Per impostazione predefinita vengono allegati tutti i file della risposta: file, firme, foto e documenti creati dal flusso, come un PDF compilato. Scegli quelli da allegare.</div>"
+        },
+        "zh": {
+            "displayName": "<p>附件</p>",
+            "comment": "<div>随电子邮件发送的文件。默认附加回复中的所有文件：文件、签名、照片以及流程生成的文档（例如填写好的 PDF）。请选择要附加的文件。</div>"
+        }
+    }'
+  description: attachments
   value: 
 ↓doc [variables.RequestableVariable-1599570999736]: 
 ↓originalDoc [variables.RequestableVariable-1599570999739]: 
